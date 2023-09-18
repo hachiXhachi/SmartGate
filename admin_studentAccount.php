@@ -34,7 +34,7 @@
   </style>
   <form action="" method="post">
     <div class="container" id="container_pass">
-    CREATE asdasdasda ACCOUNT FOR STUDENTS
+    CREATE ACCOUNT FOR STUDENTS
         <div class="row">
             <div class="col-md-4">
                 <div class="form-group">
