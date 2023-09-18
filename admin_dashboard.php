@@ -340,7 +340,7 @@ file_put_contents('UIDContainer.php', $Write);
             });
     }
     function addDiv() {
-        var newDiv = $("<div>").addClass("child-div").html('<input type="text" class="form-control bg-transparent add_children" placeholder="Student Number" style="width:100%; border: 2px solid black; margin-bottom:10px;">');
+        var newDiv = $("<div>").addClass("child-div").html('<input type="text" class="form-control bg-transparent add_children" placeholder="Student Number" style="width:100%; border: 2px solid black; margin-bottom:10px;" required>');
         $("#targetDiv").append(newDiv);
     }
 
