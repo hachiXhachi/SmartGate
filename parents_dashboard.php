@@ -134,7 +134,7 @@ include 'includes/session.php';
         <li><a class="text-decoration-none text-white d-block text-center py-2"  onclick="loadView('parents_change_password')"><i class="fa-solid fa-key"></i> Change Password</a></li>
       </ul>
       <div class="text-center py-5">
-      <button type="button" class="btn tn btn-outline-secondary text-white px-5" style="border: 2px solid black; border-radius: 5px;">Log-out</button>
+      <button type="button" id="logout_button" class="btn tn btn-outline-secondary text-white px-5" style="border: 2px solid black; border-radius: 5px;">Logout</button>
       </div>
     </div>
     <div class="content">
@@ -247,6 +247,11 @@ include 'includes/session.php';
       var newDiv = $("<div>").addClass("child-div").text("Gagong student enter the school premises");
       $("#targetDiv").append(newDiv);
     }
+
+    function logoutFunction() {
+        window.location.href = 'login.php';
+    }
+    document.getElementById("logout_button").addEventListener("click", logoutFunction);
 
 </script>
 
