@@ -40,22 +40,22 @@
             <div class="col-md-4">
                 <div class="form-group">
                     <label for="column1">First Name</label>
-                    <input type="text" class="form-control bg-transparent" name="first_name" id="column1" placeholder="First Name"
-                        style="border: 2px solid black;" required>
+                    <input type="text" class="form-control bg-transparent" name="first_name" id="column1"
+                        placeholder="First Name" style="border: 2px solid black;" required>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="form-group">
                     <label for="column2">Middle Name</label>
-                    <input type="text" class="form-control bg-transparent" name="middle_name" id="column2" placeholder="Middle Name"
-                        style="border: 2px solid black;" required>
+                    <input type="text" class="form-control bg-transparent" name="middle_name" id="column2"
+                        placeholder="Middle Name" style="border: 2px solid black;" required>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="form-group">
                     <label for="column3">Last Name</label>
-                    <input type="text" class="form-control bg-transparent" name="last_name" id="column3" placeholder="Last Name"
-                        style="border: 2px solid black;" required>
+                    <input type="text" class="form-control bg-transparent" name="last_name" id="column3"
+                        placeholder="Last Name" style="border: 2px solid black;" required>
                 </div>
             </div>
             <div class="col-lg-12">
@@ -95,7 +95,8 @@
         <input type="button" class="btn btn-secondary" value="Verify Students">
         <p id="id">
         <div style="display: flex;justify-content: flex-end;margin-top: 10px; ">
-            <button class="btn btn-primary btn-block" onclick="getInputValues()" style="background-color: #773535">Create Account</button>
+            <button class="btn btn-primary btn-block" onclick="getInputValues()"
+                style="background-color: #773535">Create Account</button>
         </div>
     </div>
 </form>
