@@ -296,6 +296,7 @@ file_put_contents('UIDContainer.php', $Write);
 <script src="node_modules\bootstrap\dist\js\bootstrap.bundle.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
+    
     $(document).ready(function () {
         $("#getUID").load("UIDContainer.php");
         setInterval(function () {
