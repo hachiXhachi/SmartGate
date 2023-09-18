@@ -1,15 +1,21 @@
 <?php
 	include 'includes/connection.php';
 	$con = $pdo->open();
+	
+	$studentid = $_POST['studentid'];
+	$first_name = $_POST['first_name'];
+	$middle_name = $_POST['middle_name'];
+	$last_name = $_POST['last_name'];
+	$name = $first_name." ".$middle_name." ".$last_name;
+	$sectionid = $_POST['sectionid'];
+	$department = $_POST['department'];
+	$schoolemail = $_POST['schoolemail'];
+	$rfidtag = $_POST['rfidtag'];
 
-	$name = $_POST['name'];
-	$email = $_POST['email'];
-	$password = $_POST['confirmpassword'];
-
-	$sql = "INSERT INTO users(name, email, password) VALUES (?, ?, ?)";
-	$data = array($name, $email, $password);
+	$sql = "INSERT INTO student_tbl(studentid, name, sectionid, department, schoolemail, rfidtag) VALUES (?, ?, ?, ?, ?, ?)";
+	$data = array($studentid, $name, $sectionid, $department, $schoolemail, $rfidtag);
 
 	$stmt=$con->prepare($sql);
 	$stmt->execute($data);
-	header("location:index.php");
+	header("location:admin_dashboard.php");
 ?>

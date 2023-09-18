@@ -32,59 +32,59 @@
     }
     
   </style>
-  <form action="" method="post">
+  <form action="add_student.php" method="post">
     <div class="container" id="container_pass">
-    CREATE  ACCOUNT FOR STUDENTS
+    CREATE ACCOUNT FOR STUDENTS
         <div class="row">
             <div class="col-md-4">
                 <div class="form-group">
                     <label for="column1">First Name</label>
-                    <input type="text" class="form-control bg-transparent" id="column1" placeholder="First Name"  style="border: 2px solid black;">
+                    <input type="text" class="form-control bg-transparent" name="first_name" id="column1" placeholder="First Name"  style="border: 2px solid black;">
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="form-group">
                     <label for="column2">Middle Name</label>
-                    <input type="text" class="form-control bg-transparent" id="column2" placeholder="Middle Name" style="border: 2px solid black;">
+                    <input type="text" class="form-control bg-transparent" name="middle_name" id="column2" placeholder="Middle Name" style="border: 2px solid black;">
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="form-group">
                     <label for="column3">Last Name</label>
-                    <input type="text" class="form-control bg-transparent" id="column3" placeholder="Last Name" style="border: 2px solid black;">
+                    <input type="text" class="form-control bg-transparent" name="last_name" id="column3" placeholder="Last Name" style="border: 2px solid black;">
                 </div>
             </div>
             <!-- Second Row -->
             <div class="col-md-4">
                 <div class="form-group">
                     <label for="column4">Student Number</label>
-                    <input type="text" class="form-control bg-transparent" id="column4" placeholder="Student Number" style="border: 2px solid black;">
+                    <input type="text" class="form-control bg-transparent" name="studentid" id="column4" placeholder="Student Number" style="border: 2px solid black;">
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="form-group">
                     <label for="column5">Section</label>
-                    <input type="text" class="form-control bg-transparent" id="column5" placeholder="Section" style="border: 2px solid black;">
+                    <input type="text" class="form-control bg-transparent" name="sectionid" id="column5" placeholder="Section" style="border: 2px solid black;">
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="form-group">
-                    <label for="column6">Rfid Code</label>
-                    <textarea rows="1" name="id" id="getUID" class="form-control bg-transparent column6" style="border: 2px solid black; resize:none;" placeholder="Please Tag your Card"
-                        required></textarea>
+            <div class="form-group">
+                    <label for="column8">Department</label>
+                    <input type="text" class="form-control bg-transparent" name="department" id="column7" placeholder="Department" style="width:100%; border: 2px solid black;">
                 </div>
             </div>
             <div class="col-lg-12">
                 <div class="form-group">
-                    <label for="column7">Address</label>
-                    <input type="text" class="form-control bg-transparent" id="column7" placeholder="Address" style="width:100%; border: 2px solid black;">
+                    <label for="column7">Email</label>
+                    <input type="text" class="form-control bg-transparent" name="schoolemail" id="column7" placeholder="Email" style="width:100%; border: 2px solid black;">
                 </div>
             </div>
             <br>
             <div class="col-md-4">
                 <div class="form-group">
-                    <label for="column8">Contact Number</label>
-                    <input type="text" class="form-control bg-transparent" id="column7" placeholder="Contact Number" style="width:100%; border: 2px solid black;">
+                    <label for="column6">Rfid Code</label>
+                    <textarea rows="1" name="rfidtag" id="getUID" class="form-control bg-transparent column6" style="border: 2px solid black; resize:none;" placeholder="Please Tag your Card"
+                        required></textarea>
                 </div>
             </div>
             <div style="display: flex;justify-content: flex-end;margin-top: 10px; ">
