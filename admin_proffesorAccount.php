@@ -60,10 +60,23 @@
                 </div>
             </div>
             <div class="col-lg-12">
-                <div class="form-group">
-                    <label for="column7">Department</label>
-                    <input type="text" class="form-control bg-transparent" id="column7" placeholder="Department" style="width:100%; border: 2px solid black;">
-                </div>
+            <div class="col-md-4">
+        <div class="form-group text-white">
+            <label for="sectionSelect">Choose a Section:</label>
+            <select class="form-control bg-transparent" id="sectionSelect" name="section" style="width:100%; border: 2px solid black;">
+                <?php
+                include 'includes/session.php';
+                $sql = "SELECT section_name FROM section_tbl";
+                $stmt = $con->query($sql);
+
+                while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                    echo '<option>' . $row['section_name'] . '</option>';
+                }
+                $conn = null;
+                ?>
+            </select>
+        </div>
+    </div>
             </div>
             <div class="col-lg-12">
                 <div class="form-group">
