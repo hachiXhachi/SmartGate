@@ -65,26 +65,32 @@
                         style="width:100%; border: 2px solid black;">
                 </div>
             </div>
-            <div class="col-lg-12">
-                <div class="col-md-4">
-                    <div class="form-group text-white">
-                        <label for="sectionSelect">Choose a Section:</label>
-                        <select class="form-control bg-transparent" id="sectionSelect" name="section"
-                            style="width:100%; border: 2px solid black;">
-                            <?php
-                            include 'includes/session.php';
-                            $sql = "SELECT section_name FROM section_tbl";
-                            $stmt = $con->query($sql);
 
-                            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                                echo '<option>' . $row['section_name'] . '</option>';
-                            }
-                            $conn = null;
-                            ?>
-                        </select>
-                    </div>
+            <div class="col-md-4">
+                <div class="form-group text-white">
+                    <label for="sectionSelect">Choose a Section:</label>
+                    <select class="form-control bg-transparent" id="sectionSelect" name="sectionSelect"
+                        onchange="changeFunction()" style="width:100%; border: 2px solid black;">
+                        <?php
+                        include 'includes/session.php';
+                        $sql = "SELECT section_name, department_name FROM section_tbl";
+                        $stmt = $con->query($sql);
+
+                        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                            $sectionName = $row['section_name'];
+                            echo '<option id="option">' . $sectionName . '</option>';
+                        }
+                        ?>
+                    </select>
                 </div>
             </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="column3">Department</label>
+                    <input type="text" class="form-control bg-transparent" id="department" name="department"
+                        style="border: 2px solid black;" readonly>
+                </div>
+                </div>
             <div class="col-lg-12">
                 <div class="form-group">
                     <label for="column7">Contact Number</label>
@@ -99,3 +105,7 @@
         </div>
     </div>
 </form>
+<?
+$conn = null;
+?>
+
