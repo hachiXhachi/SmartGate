@@ -244,7 +244,7 @@ include 'includes/session.php';
             });
     }
     function myFunction() {
-      var newDiv = $("<div>").addClass("child-div").text("Gagong student enter the school premises");
+      var newDiv = $("<div>").addClass("child-div").text("Student enter the school premises");
       $("#targetDiv").append(newDiv);
     }
 
