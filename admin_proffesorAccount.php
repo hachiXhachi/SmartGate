@@ -65,11 +65,11 @@
                         style="width:100%; border: 2px solid black;">
                 </div>
             </div>
-
             <div class="col-md-4">
                 <div class="form-group text-white">
                     <label for="sectionSelect">Choose a Section:</label>
-                    <select class="form-control" id="sectionSelect" name="section">
+                    <select class="form-control bg-transparent" id="sectionSelect" name="sectionSelect"
+                        onchange="changeFunction()" style="width:100%; border: 2px solid black;">
                         <?php
                         include 'includes/session.php';
                         $sql = "SELECT section_name, department_name FROM section_tbl";
@@ -79,18 +79,17 @@
                             $sectionName = $row['section_name'];
                             echo '<option id="option">' . $sectionName . '</option>';
                         }
-                        
                         ?>
                     </select>
                 </div>
             </div>
-            <div class="col-md-4" >
+            <div class="col-md-4">
                 <div class="form-group">
                     <label for="column3">Department</label>
                     <input type="text" class="form-control bg-transparent" id="department" name="department"
-                        style="border: 2px solid black;">
+                        style="border: 2px solid black;" readonly>
                 </div>
-            </div>
+                </div>
             <div class="col-lg-12">
                 <div class="form-group">
                     <label for="column7">Contact Number</label>
@@ -105,28 +104,6 @@
         </div>
     </div>
 </form>
-<script>
-     document.addEventListener("DOMContentLoaded", function () {
-        const dropdown = document.getElementById("sectionSelect");
-        const selectedText = document.getElementById("department");
-
-        // Add an event listener to the dropdown
-        dropdown.addEventListener("change", function () {
-            selectedText.textContent = "Selected: " + dropdown.options[dropdown.selectedIndex].text;
-            // <?php
-            // include 'includes/session.php';
-            // $sectiondrop = $_POST['section'];
-            // $stmt = $con->prepare("SELECT department_name from section_tbl where section_name=:sectiondrop");
-            // $stmt->bindParam(':sectiondrop', $sectiondrop);
-            // $stmt->execute();
-            // $row = $stmt->fetch();
-            // $department = $row['section_department'];
-            // ?>
-            //selectedText.value=dropdown;
-            
-        });
-    });
-</script>
 <?
 $conn = null;
 ?>

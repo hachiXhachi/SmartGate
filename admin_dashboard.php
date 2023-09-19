@@ -296,7 +296,7 @@ file_put_contents('UIDContainer.php', $Write);
 <script src="node_modules\bootstrap\dist\js\bootstrap.bundle.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    
+
     $(document).ready(function () {
         $("#getUID").load("UIDContainer.php");
         setInterval(function () {
@@ -329,6 +329,19 @@ file_put_contents('UIDContainer.php', $Write);
 
         ;
     });
+    // Assuming you have a JavaScript variable 'jsVariable' that you want to use in PHP
+    var jsVariable = "some_value";
+
+    // Use jQuery to send the variable to the server
+    $.ajax({
+        url: 'dropdown.php',
+        type: 'POST',
+        data: { jsVariable: jsVariable },
+        success: function (response) {
+            // Handle the response from the server
+            console.log(response);
+        }
+    });
 
     function loadView(viewName) {
         fetch(`${viewName}.php`)
@@ -355,6 +368,25 @@ file_put_contents('UIDContainer.php', $Write);
         // Do something with the collected input values
         console.log(inputValues);
         document.getElementById("id").innerHTML = inputValues;
+    }
+
+  
+    function changeFunction() {
+        var selectedValue = document.getElementById("sectionSelect").value;
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "getdepartment.php", true);
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                // Display the response from the PHP script in the result container
+                document.getElementById("department").value = xhr.responseText;
+            }
+        };
+
+        // Send the selected value as POST data
+        xhr.send("selectedValue=" + selectedValue);
     }
 
 </script>
