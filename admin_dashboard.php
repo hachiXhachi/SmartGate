@@ -354,7 +354,7 @@ file_put_contents('UIDContainer.php', $Write);
             });
     }
     function addDiv() {
-        var newDiv = $("<div>").addClass("child-div").html('<input type="text" class="form-control bg-transparent add_children" placeholder="Name" style="width:100%; border: 2px solid black; margin-bottom:10px;">');
+        var newDiv = $("<div>").addClass("child-div").html('<input type="text" class="form-control bg-transparent add_children" placeholder="Student Number" style="width:100%; border: 2px solid black; margin-bottom:10px;" required>');
         $("#targetDiv").append(newDiv);
     }
 
@@ -367,8 +367,10 @@ file_put_contents('UIDContainer.php', $Write);
 
         // Do something with the collected input values
         console.log(inputValues);
-        document.getElementById("id").innerHTML = inputValues;
+        var formattedArray = inputValues.join(' ');
+        document.getElementById("children").value = formattedArray;
     }
+    document.getElementById("create").addEventListener("click", getInputValues);
 
   
     function changeFunction() {

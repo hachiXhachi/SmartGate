@@ -65,6 +65,7 @@
                         style="width:100%; border: 2px solid black;">
                 </div>
             </div>
+
             <div class="col-md-4">
                 <div class="form-group text-white">
                     <label for="sectionSelect">Choose a Section:</label>
@@ -107,3 +108,4 @@
 <?
 $conn = null;
 ?>
+
