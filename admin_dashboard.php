@@ -149,7 +149,7 @@ file_put_contents('UIDContainer.php', $Write);
         }
     </style>
 </head>
-<div class="modal fade" id="confirmationModal" tabindex="5" aria-labelledby="exampleModalLabel" aria-hidden="true" style="font-family:sans-seriff">
+<div class="modal fade" id="confirmationModal" tabindex="5" aria-labelledby="exampleModalLabel" aria-hidden="true" style="font-family:arial">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
