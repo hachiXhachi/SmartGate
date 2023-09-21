@@ -157,11 +157,11 @@ file_put_contents('UIDContainer.php', $Write);
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                ...
+                Create this Account?
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary" id="confirmButton" onclick="submitForm()">Save changes</button>
+                <button type="submit" class="btn btn-primary" id="confirmButton" onclick="submitForm()">Add Account</button>
             </div>
         </div>
     </div>
