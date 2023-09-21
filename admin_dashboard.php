@@ -149,7 +149,23 @@ file_put_contents('UIDContainer.php', $Write);
         }
     </style>
 </head>
-
+<div class="modal fade" id="confirmationModal" tabindex="5" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                ...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary" id="confirmButton" onclick="submitForm()">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
 <body id="background-image-dashboard">
     <div class="main-container d-flex" style="font-family: sans-seriff;">
         <div class="sidebar d-mb-none" id="side_nav">
@@ -329,19 +345,6 @@ file_put_contents('UIDContainer.php', $Write);
 
         ;
     });
-    // Assuming you have a JavaScript variable 'jsVariable' that you want to use in PHP
-    var jsVariable = "some_value";
-
-    // Use jQuery to send the variable to the server
-    $.ajax({
-        url: 'dropdown.php',
-        type: 'POST',
-        data: { jsVariable: jsVariable },
-        success: function (response) {
-            // Handle the response from the server
-            console.log(response);
-        }
-    });
 
     function loadView(viewName) {
         fetch(`${viewName}.php`)
@@ -358,6 +361,11 @@ file_put_contents('UIDContainer.php', $Write);
         $("#targetDiv").append(newDiv);
     }
 
+
+
+
+
+
     function getInputValues() {
         var inputValues = [];
         // Iterate through all input elements with type="text"
@@ -372,7 +380,7 @@ file_put_contents('UIDContainer.php', $Write);
     }
     document.getElementById("create").addEventListener("click", getInputValues);
 
-  
+
     function changeFunction() {
         var selectedValue = document.getElementById("sectionSelect").value;
 
@@ -390,7 +398,16 @@ file_put_contents('UIDContainer.php', $Write);
         // Send the selected value as POST data
         xhr.send("selectedValue=" + selectedValue);
     }
-
+   
+    function submitForm() {
+        myForm = document.getElementById("registrationForm");
+        if(myForm.checkValidity()){
+            myForm.submit();    
+        }else{
+            alert("Please fill out all required fields");
+        }
+        
+    }
 </script>
 
 </html>

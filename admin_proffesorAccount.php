@@ -90,7 +90,7 @@
                     <input type="text" class="form-control bg-transparent" id="department" name="department"
                         style="border: 2px solid black;" readonly>
                 </div>
-                </div>
+            </div>
             <div class="col-lg-12">
                 <div class="form-group">
                     <label for="column7">Contact Number</label>
@@ -108,4 +108,3 @@
 <?
 $conn = null;
 ?>
-
