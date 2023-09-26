@@ -40,43 +40,43 @@
             <div class="col-md-4">
                 <div class="form-group">
                     <label for="column1">First Name</label>
-                    <input type="text" class="form-control bg-transparent" name="first_name" id="column1"
+                    <input type="text" class="form-control bg-transparent" name="first_name" id="parent_first_name"
                         placeholder="First Name" style="border: 2px solid black;" required>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="form-group">
                     <label for="column2">Middle Name</label>
-                    <input type="text" class="form-control bg-transparent" name="middle_name" id="column2"
+                    <input type="text" class="form-control bg-transparent" name="middle_name" id="parent_middle_name"
                         placeholder="Middle Name" style="border: 2px solid black;" required>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="form-group">
                     <label for="column3">Last Name</label>
-                    <input type="text" class="form-control bg-transparent" name="last_name" id="column3"
+                    <input type="text" class="form-control bg-transparent" name="last_name" id="parent_last_name"
                         placeholder="Last Name" style="border: 2px solid black;" required>
                 </div>
             </div>
             <div class="col-lg-12">
                 <div class="form-group">
                     <label for="column7">Email</label>
-                    <input type="text" class="form-control bg-transparent" name="email" id="column7" placeholder="Email"
+                    <input type="text" class="form-control bg-transparent" name="email" id="parent_email" placeholder="Email"
                         style="width:100%; border: 2px solid black;" required>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="form-group">
                     <label for="column5">Student Number</label>
-                    <input type="text" class="form-control bg-transparent" id="column5" placeholder="Student Number"
-                        style="border: 2px solid black;">
+                    <input type="text" class="form-control bg-transparent" id="parent_student_number" placeholder="Student Number"
+                        style="border: 2px solid black;" required>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="form-group">
-                    <label for="column8">Contact Number</label>
-                    <input type="text" class="form-control bg-transparent" id="column8" placeholder="Contact Number"
-                        style="width:100%; border: 2px solid black;">
+                    <!-- <label for="column8">Contact Number</label>
+                     <input type="text" class="form-control bg-transparent" id="parent_contact_number" placeholder="Contact Number"
+                        style="width:100%; border: 2px solid black;"> --> 
 
                     <input type="text" class="form-control bg-transparent" name="children" id="children"
                         style="width:100%; border: 2px solid black;" hidden>

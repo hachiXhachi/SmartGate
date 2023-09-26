@@ -149,7 +149,8 @@ file_put_contents('UIDContainer.php', $Write);
         }
     </style>
 </head>
-<div class="modal fade" id="confirmationModal" tabindex="5" aria-labelledby="exampleModalLabel" aria-hidden="true" style="font-family:arial">
+<div class="modal fade" id="confirmationModal" tabindex="5" aria-labelledby="exampleModalLabel" aria-hidden="true"
+    style="font-family:arial">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -161,28 +162,30 @@ file_put_contents('UIDContainer.php', $Write);
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary" id="confirmButton" >Add Account</button>
+                <button type="submit" class="btn btn-primary" id="confirmButton">Add Account</button>
             </div>
         </div>
     </div>
 </div>
 <!-- Error Modal -->
-<div class="modal fade" id="Errormodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"  style="font-family:arial">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">Please fill out the fields properly</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body" id=Errormodalbody>
-        ...
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-      </div>
+<div class="modal fade" id="Errormodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
+    style="font-family:arial">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Please fill out the fields properly</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id=Errormodalbody>
+                ...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
+
 <body id="background-image-dashboard">
     <div class="main-container d-flex" style="font-family: sans-seriff;">
         <div class="sidebar d-mb-none" id="side_nav">
@@ -373,11 +376,17 @@ file_put_contents('UIDContainer.php', $Write);
                 console.error('Error loading view:', error);
             });
     }
+
     function addDiv() {
-        var newDiv = $("<div>").addClass("child-div").html('<input type="text" class="form-control bg-transparent add_children" placeholder="Student Number" style="width:100%; border: 2px solid black; margin-bottom:10px;" required>');
+        var newDiv = $("<div>").addClass("child-div").html('<div style="display:flex;"><input type="text" class="form-control bg-transparent add_children" placeholder="Student Number" style="width:100%; border: 2px solid black; margin-bottom:10px;" required><input type="button" onclick="removediv(this)" class="btn btn-danger" value="x"></div>');
         $("#targetDiv").append(newDiv);
     }
 
+    function removediv(deleteButton) {
+        // Get the parent div of the clicked delete button and remove it
+        const parentDiv = deleteButton.parentNode.parentNode; // Traverse up to the parent div
+        parentDiv.remove();
+    }
     function getInputValues() {
         var inputValues = [];
         // Iterate through all input elements with type="text"
@@ -411,21 +420,21 @@ file_put_contents('UIDContainer.php', $Write);
         xhr.send("selectedValue=" + selectedValue);
     }
     function validateNumberInput(inputElement) {
-            const inputValue = inputElement.value;
-            const sanitizedValue = inputValue.replace(/[^0-9]/g, ''); 
-            inputElement.value = sanitizedValue;
+        const inputValue = inputElement.value;
+        const sanitizedValue = inputValue.replace(/[^0-9]/g, '');
+        inputElement.value = sanitizedValue;
+    }
+    function checkMaxLength(input, maxLength) {
+        if (input.value.length > maxLength) {
+            input.value = input.value.slice(0, maxLength); // Truncate the input value
         }
-        function checkMaxLength(input, maxLength) {
-            if (input.value.length > maxLength) {
-                input.value = input.value.slice(0, maxLength); // Truncate the input value
-            }
-        }
+    }
     function submitFormStudent() {
         $('#confirmationModal').modal('show');
         document.getElementById("confirmButton").onclick = validationStudent;
-         
+
     }
-    function validationStudent(){
+    function validationStudent() {
         const fname = document.getElementById("fname");
         const mname = document.getElementById("mname");
         const lname = document.getElementById("lname");
@@ -438,40 +447,40 @@ file_put_contents('UIDContainer.php', $Write);
         studid.setCustomValidity(" ");
         myForm = document.getElementById("registrationForm");
         const convert = studid.value.toString();
-        if(myForm.checkValidity()){
-            myForm.submit();    
-        }else{
-          if(!fname.validity.valid){
-            errorMessage = fname.validationMessage + ("(First Name)");
-           }
-           else if(!mname.validity.valid){
-            errorMessage = mname.validationMessage + ("(Middle Name)");
-           }
-           else if(!lname.validity.valid){
-            errorMessage = lname.validationMessage + ("(Last Name)");
-           }
-           else if(convert.length!== 10){
-            studid.setCustomValidity("Your student id must be 10-digit number");
-            if(!studid.validity.valid){
-            errorMessage = studid.validationMessage + ("(Student Number)");
+        if (myForm.checkValidity()) {
+            myForm.submit();
+        } else {
+            if (!fname.validity.valid) {
+                errorMessage = fname.validationMessage + ("(First Name)");
             }
-           }
-           else if(!section.validity.valid){
-            errorMessage = section.validationMessage + ("(Section)");
-           }
-           else if(!email.validity.valid){
-            errorMessage = email.validationMessage + ("(Email)");
-           }
-           else if(!rfid.validity.valid){
-            errorMessage = "Please Scan a RFID Tag"; //<-- not sure if works, still not tested for rfid scanner
-           }
-           modalbodycontent.innerHTML = errorMessage;
-             $('#Errormodal').modal('show');
-             // alert(errorMessage);
+            else if (!mname.validity.valid) {
+                errorMessage = mname.validationMessage + ("(Middle Name)");
+            }
+            else if (!lname.validity.valid) {
+                errorMessage = lname.validationMessage + ("(Last Name)");
+            }
+            else if (convert.length !== 10) {
+                studid.setCustomValidity("Your student id must be 10-digit number");
+                if (!studid.validity.valid) {
+                    errorMessage = studid.validationMessage + ("(Student Number)");
+                }
+            }
+            else if (!section.validity.valid) {
+                errorMessage = section.validationMessage + ("(Section)");
+            }
+            else if (!email.validity.valid) {
+                errorMessage = email.validationMessage + ("(Email)");
+            }
+            else if (!rfid.validity.valid) {
+                errorMessage = "Please Scan a RFID Tag"; //<-- not sure if works, still not tested for rfid scanner
+            }
+            modalbodycontent.innerHTML = errorMessage;
+            $('#Errormodal').modal('show');
+            // alert(errorMessage);
         }
-     
+
     }
-    function validationProf(){
+    function validationProf() {
         const prof_fname = document.getElementById("prof_fname");
         const prof_mname = document.getElementById("prof_mname");
         const prof_lname = document.getElementById("prof_lname");
@@ -480,37 +489,37 @@ file_put_contents('UIDContainer.php', $Write);
         const prof_Form = document.getElementById("professorForm");
         var modalbodycontent = document.getElementById("Errormodalbody");
         var errorMessage;
-        if(prof_Form.checkValidity()){
+        if (prof_Form.checkValidity()) {
             prof_Form.submit();
-        }else{
-            if(!prof_fname.validity.valid){
-            errorMessage = prof_fname.validationMessage + ("(First Name)");
-           }
-           else if(!prof_mname.validity.valid){
-            errorMessage = prof_mname.validationMessage + ("(Middle Name)");
-           }
-           else if(!prof_lname.validity.valid){
-            errorMessage = prof_lname.validationMessage + ("(Last Name)");
-           }
-           else if(!prof_email.validity.valid){
-            errorMessage = prof_email.validationMessage + ("(Email)");
-           }
-           else if(!prof_section.validity.valid){
-            prof_section.value = "hahaha";
-            errorMessage = prof_section.validationMessage + ("(Section)");
-           }
-           modalbodycontent.innerHTML = errorMessage;
-             $('#Errormodal').modal('show');
-             // alert(errorMessage);
+        } else {
+            if (!prof_fname.validity.valid) {
+                errorMessage = prof_fname.validationMessage + ("(First Name)");
+            }
+            else if (!prof_mname.validity.valid) {
+                errorMessage = prof_mname.validationMessage + ("(Middle Name)");
+            }
+            else if (!prof_lname.validity.valid) {
+                errorMessage = prof_lname.validationMessage + ("(Last Name)");
+            }
+            else if (!prof_email.validity.valid) {
+                errorMessage = prof_email.validationMessage + ("(Email)");
+            }
+            else if (!prof_section.validity.valid) {
+                prof_section.value = "hahaha";
+                errorMessage = prof_section.validationMessage + ("(Section)");
+            }
+            modalbodycontent.innerHTML = errorMessage;
+            $('#Errormodal').modal('show');
+            // alert(errorMessage);
         }
-        
+
     }
     function submitFormProf() {
         document.getElementById("confirmationBody").innerHTML = "Add this Professor Account";
         document.getElementById("exampleModalLabel").innerHTML = "Add Professor Account";
         $('#confirmationModal').modal('show');
         document.getElementById("confirmButton").onclick = validationProf;
-        
+
     }
 </script>
 
