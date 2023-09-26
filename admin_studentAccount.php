@@ -70,7 +70,7 @@
             <div class="col-md-4">
                 <div class="form-group text-white">
                     <label for="sectionSelect">Choose a Section:</label>
-                    <select class="form-control bg-transparent" placeholder="Section" id="sectionSelect"
+                    <select class="form-control bg-transparent" id="sectionSelect"
                         name="sectionid" onchange="changeFunction()" required style="width:100%; border: 2px solid black;">
                         <option value="" disabled selected hidden>Section</option>
                         <?php

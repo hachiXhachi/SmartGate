@@ -433,7 +433,6 @@ file_put_contents('UIDContainer.php', $Write);
         const section = document.getElementById("sectionSelect");
         const email = document.getElementById("email");
         const rfid = document.getElementById("getUID");
-        var modalbody = document.getElementById("Errormodal");
         var modalbodycontent = document.getElementById("Errormodalbody");
         var errorMessage;
         studid.setCustomValidity(" ");
@@ -473,6 +472,37 @@ file_put_contents('UIDContainer.php', $Write);
      
     }
     function validationProf(){
+        const prof_fname = document.getElementById("prof_fname");
+        const prof_mname = document.getElementById("prof_mname");
+        const prof_lname = document.getElementById("prof_lname");
+        const prof_email = document.getElementById("prof_email");
+        const prof_section = document.getElementById("sectionSelect");
+        const prof_Form = document.getElementById("professorForm");
+        var modalbodycontent = document.getElementById("Errormodalbody");
+        var errorMessage;
+        if(prof_Form.checkValidity()){
+            prof_Form.submit();
+        }else{
+            if(!prof_fname.validity.valid){
+            errorMessage = prof_fname.validationMessage + ("(First Name)");
+           }
+           else if(!prof_mname.validity.valid){
+            errorMessage = prof_mname.validationMessage + ("(Middle Name)");
+           }
+           else if(!prof_lname.validity.valid){
+            errorMessage = prof_lname.validationMessage + ("(Last Name)");
+           }
+           else if(!prof_email.validity.valid){
+            errorMessage = prof_email.validationMessage + ("(Email)");
+           }
+           else if(!prof_section.validity.valid){
+            prof_section.value = "hahaha";
+            errorMessage = prof_section.validationMessage + ("(Section)");
+           }
+           modalbodycontent.innerHTML = errorMessage;
+             $('#Errormodal').modal('show');
+             // alert(errorMessage);
+        }
         
     }
     function submitFormProf() {
