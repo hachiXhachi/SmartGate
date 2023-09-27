@@ -33,7 +33,7 @@
         }
     }
 </style>
-<form action="add_parent.php" method="post">
+<form action="add_parent.php" method="post" id="parentForm">
     <div class="container" id="container_pass">
         CREATE ACCOUNT FOR PARENTS
         <div class="row">
@@ -61,17 +61,17 @@
             <div class="col-lg-12">
                 <div class="form-group">
                     <label for="column7">Email</label>
-                    <input type="text" class="form-control bg-transparent" name="email" id="parent_email" placeholder="Email"
+                    <input type="email" class="form-control bg-transparent" name="email" id="parent_email" placeholder="Email"
                         style="width:100%; border: 2px solid black;" required>
                 </div>
             </div>
-            <div class="col-md-4">
+            <!-- <div class="col-md-4">
                 <div class="form-group">
                     <label for="column5">Student Number</label>
-                    <input type="text" class="form-control bg-transparent" id="parent_student_number" placeholder="Student Number"
+                    <input type="number" min="0" max="9999999999" oninput="validateNumberInput(this);checkMaxLength(this, 10);" class="form-control bg-transparent " id="parent_student_number" placeholder="Student Number"
                         style="border: 2px solid black;" required>
                 </div>
-            </div>
+            </div> -->
             <div class="col-md-4">
                 <div class="form-group">
                     <!-- <label for="column8">Contact Number</label>
@@ -95,8 +95,10 @@
         <input type="button" class="btn btn-secondary" value="Verify Students">
         <p id="id">
         <div style="display: flex;justify-content: flex-end;margin-top: 10px; ">
-            <button class="btn btn-primary btn-block" onclick="getInputValues()"
-                style="background-color: #773535">Create Account</button>
+             <button class="btn btn-primary btn-block" onclick="getInputValues()"
+                style="background-color: #773535">Create Account</button> 
+                <!-- <button type="button" class="btn btn-primary btn-block" onclick="submitFormParent();getInputValues();"
+                style="background-color: #773535">Create Account</button> -->
         </div>
     </div>
 </form>

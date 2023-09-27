@@ -17,6 +17,15 @@ file_put_contents('UIDContainer.php', $Write);
             width: 100%;
         }
 
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button,
+        input[type="number"]::-webkit-input-speech-button,
+        input[type="number"]::-webkit-clear-button {
+            -webkit-appearance: none;
+            appearance: none;
+            margin: 0;
+        }
+
         .under_sidebar {
             position: relative;
             max-height: 75px;
@@ -383,8 +392,7 @@ file_put_contents('UIDContainer.php', $Write);
     }
 
     function removediv(deleteButton) {
-        // Get the parent div of the clicked delete button and remove it
-        const parentDiv = deleteButton.parentNode.parentNode; // Traverse up to the parent div
+        const parentDiv = deleteButton.parentNode.parentNode;
         parentDiv.remove();
     }
     function getInputValues() {
@@ -432,6 +440,60 @@ file_put_contents('UIDContainer.php', $Write);
     function submitFormStudent() {
         $('#confirmationModal').modal('show');
         document.getElementById("confirmButton").onclick = validationStudent;
+    }
+    function submitFormProf() {
+        document.getElementById("confirmationBody").innerHTML = "Add this Professor Account";
+        document.getElementById("exampleModalLabel").innerHTML = "Add Professor Account";
+        $('#confirmationModal').modal('show');
+        document.getElementById("confirmButton").onclick = validationProf;
+    }
+    function submitFormParent() {
+        document.getElementById("confirmationBody").innerHTML = "Add this Parent Account";
+        document.getElementById("exampleModalLabel").innerHTML = "Add Parent Account";
+        $('#confirmationModal').modal('show');
+        document.getElementById("confirmButton").onclick = validationParent;
+
+    }
+    function validationParent() {
+        //need to add the getinputvalues here
+        const parent_fname = document.getElementById("parent_first_name");
+        const parent_mname = document.getElementById("parent_middle_name");
+        const parent_lname = document.getElementById("parent_last_name");
+        const parent_studid = document.getElementById("parent_student_number");
+        const parent_email = document.getElementById("parent_email");
+        var errorMessage;
+        var modalbodycontent = document.getElementById("Errormodalbody");
+        var parentForm = document.getElementById("parentForm");
+        const convertstudid = parent_studid.value.toString();
+        if (parentForm.checkValidity()) {
+            parentForm.submit();
+        } else {
+            if (!parent_fname.validity.valid) {
+                errorMessage = parent_fname.validationMessage + ("(First Name)");
+            }
+            else if (!parent_mname.validity.valid) {
+                errorMessage = parent_mname.validationMessage + ("(Middle Name)");
+            }
+            else if (!parent_lname.validity.valid) {
+                errorMessage = parent_lname.validationMessage + ("(Last Name)");
+            }
+            else if (convertstudid.length !== 10) {
+                parent_studid.setCustomValidity("Your student id must be 10-digit number");
+                if (!parent_studid.validity.valid) {
+                    errorMessage = parent_studid.validationMessage + ("(Student Number)");
+                }
+            }
+            else if (!parent_email.validity.valid) {
+                errorMessage = parent_email.validationMessage + ("(Email)");
+            }
+            else {
+                parentForm.submit();
+            }
+            modalbodycontent.innerHTML = errorMessage;
+            $('#Errormodal').modal('show');
+            // alert(errorMessage);
+        }
+
 
     }
     function validationStudent() {
@@ -447,6 +509,7 @@ file_put_contents('UIDContainer.php', $Write);
         studid.setCustomValidity(" ");
         myForm = document.getElementById("registrationForm");
         const convert = studid.value.toString();
+        console.log(rfid.validity.valid);
         if (myForm.checkValidity()) {
             myForm.submit();
         } else {
@@ -471,12 +534,19 @@ file_put_contents('UIDContainer.php', $Write);
             else if (!email.validity.valid) {
                 errorMessage = email.validationMessage + ("(Email)");
             }
+            else if (!rfid.value.trim()) {
+                errorMessage = "RFID is required.";
+            }
             else if (!rfid.validity.valid) {
-                errorMessage = "Please Scan a RFID Tag"; //<-- not sure if works, still not tested for rfid scanner
+                errorMessage = "Please input a Correct Rfid Tag";
+            }
+            else {
+                myForm.submit();
             }
             modalbodycontent.innerHTML = errorMessage;
             $('#Errormodal').modal('show');
             // alert(errorMessage);
+
         }
 
     }
@@ -508,19 +578,16 @@ file_put_contents('UIDContainer.php', $Write);
                 prof_section.value = "hahaha";
                 errorMessage = prof_section.validationMessage + ("(Section)");
             }
+            else {
+                prof_Form.submit();
+            }
             modalbodycontent.innerHTML = errorMessage;
             $('#Errormodal').modal('show');
             // alert(errorMessage);
         }
 
     }
-    function submitFormProf() {
-        document.getElementById("confirmationBody").innerHTML = "Add this Professor Account";
-        document.getElementById("exampleModalLabel").innerHTML = "Add Professor Account";
-        $('#confirmationModal').modal('show');
-        document.getElementById("confirmButton").onclick = validationProf;
 
-    }
 </script>
 
 </html>
