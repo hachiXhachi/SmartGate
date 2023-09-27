@@ -3,7 +3,7 @@ include 'includes/session.php';
 $con = $pdo->open();
 
 
-$current_password = $_POST['first_name'];
+$first_name = $_POST['first_name'];
 $middle_name = $_POST['middle_name'];
 $last_name = $_POST['last_name'];
 $name = $first_name . " " . $middle_name . " " . $last_name;
@@ -12,6 +12,8 @@ $password = "password";
 $children = $_POST['children'];
 $wordArray = explode(" ", $children);
 $myArray = $wordArray;
+
+$password = password_hash($password, PASSWORD_DEFAULT);
 
 if ($user == null) {
     header("location:login.php");

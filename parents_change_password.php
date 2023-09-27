@@ -41,13 +41,8 @@ include 'includes/session.php';
     <img src="icons/icon_email.jpg" class="img-fluid" width="70" alt="profile" style="margin-right: 10%;">
     <div class="text-white">
       <?php
-      $con = $pdo->open();
-      $stmt = $con->prepare("SELECT * FROM parent_tbl WHERE parentid=:user_id");
-      $stmt->execute(['user_id' => $user['parentid']]);
-      foreach ($stmt as $row) {
-        echo "<h3>" . $row['name'] . "</h3>";
-        echo "<h6>" . $row['email'] . "</h6>";
-      }
+      echo "<h3>" . $user['name'] . "</h3>";
+      echo "<h6>" . $user['email'] . "</h6>";
       ?>
     </div>
   </div>
@@ -55,13 +50,13 @@ include 'includes/session.php';
     <div class="form-group centered-form-group">
       <label for="current_pass">Current Password</label>
       <input type="password" class="form-control bg-transparent" name="current_pass" id="current_pass"
-        style="width: 50%; border: 2px solid black;">
+        style="width: 50%; border: 2px solid black;" required>
       <label for="new_pass">New Password</label>
       <input type="password" class="form-control bg-transparent text-dark" name="new_pass" id="new_pass"
-        style="width: 50%; border: 2px solid black;">
+        style="width: 50%; border: 2px solid black;" required>
       <label for="retype_pass">Re-type Password</label>
       <input type="password" class="form-control bg-transparent" name="retype_pass" id="retype_pass"
-        style="width: 50%; border: 2px solid black;">
+        style="width: 50%; border: 2px solid black;" required>
       <button class="btn btn-outline-dark" id="button" style="border:3px solid black; color: #A0ABAA;">S A V E</button>
     </div>
   </form>

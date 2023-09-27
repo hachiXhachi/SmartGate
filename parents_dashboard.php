@@ -249,7 +249,7 @@ include 'includes/session.php';
     }
 
     function logoutFunction() {
-        window.location.href = 'login.php';
+        window.location.href = 'logout.php';
     }
     document.getElementById("logout_button").addEventListener("click", logoutFunction);
 
