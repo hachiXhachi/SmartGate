@@ -3,19 +3,9 @@ include 'includes/session.php';
 $con = $pdo->open();
 
 
-$current_password = $_POST['first_name'];
-$middle_name = $_POST['middle_name'];
-$last_name = $_POST['last_name'];
-$name = $first_name . " " . $middle_name . " " . $last_name;
-$email = $_POST['email'];
-$password = "password";
-$children = $_POST['children'];
-$wordArray = explode(" ", $children);
-$myArray = $wordArray;
-
-if ($user == null) {
-    header("location:login.php");
-}
+$current_pass = $_POST['current_pass'];
+$new_pass = $_POST['new_pass'];
+$retype_pass = $_POST['retype_pass'];
 
 $sql = "INSERT INTO parent_tbl(email, name, password) VALUES (?, ?, ?)";
 $data = array($email, $name, $password);
@@ -36,5 +26,5 @@ foreach ($myArray as $item) {
     $stmt->execute($data);
 }
 
-header("location:admin_dashboard.php");
+header("location:parent_dashboard.php");
 ?>

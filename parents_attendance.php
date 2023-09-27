@@ -44,7 +44,6 @@ include 'includes/session.php';
           $stmt1 = $con->prepare("SELECT * FROM childtv LEFT JOIN student_tbl ON student_tbl.studentid=childtv.student_id WHERE parent_id=:user_id");
           $stmt1->execute(['user_id' => $user['parentid']]);
           foreach ($stmt1 as $row1) {
-
             $stmt2 = $con->prepare("SELECT * FROM student_tbl LEFT JOIN attendance_tbl ON student_tbl.studentid=attendance_tbl.student_id WHERE student_id=:user_id");
             $stmt2->execute(['user_id' => $row1['studentid']]);
             foreach ($stmt2 as $row2) {
