@@ -95,10 +95,10 @@
         <input type="button" class="btn btn-secondary" value="Verify Students">
         <p id="id">
         <div style="display: flex;justify-content: flex-end;margin-top: 10px; ">
-             <button class="btn btn-primary btn-block" onclick="getInputValues()"
-                style="background-color: #773535">Create Account</button> 
-                <!-- <button type="button" class="btn btn-primary btn-block" onclick="submitFormParent();getInputValues();"
-                style="background-color: #773535">Create Account</button> -->
+             <!-- <button class="btn btn-primary btn-block" onclick="getInputValues()"
+                style="background-color: #773535">Create Account</button>  -->
+                <button type="button" class="btn btn-primary btn-block" onclick="submitFormParent();"
+                style="background-color: #773535">Create Account</button>
         </div>
     </div>
 </form>

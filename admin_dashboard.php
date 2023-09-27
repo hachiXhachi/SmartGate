@@ -158,6 +158,7 @@ file_put_contents('UIDContainer.php', $Write);
         }
     </style>
 </head>
+<!-- student and prof Modal -->
 <div class="modal fade" id="confirmationModal" tabindex="5" aria-labelledby="exampleModalLabel" aria-hidden="true"
     style="font-family:arial">
     <div class="modal-dialog">
@@ -171,7 +172,26 @@ file_put_contents('UIDContainer.php', $Write);
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary" id="confirmButton">Add Account</button>
+                <button type="submit" class="btn btn-primary" id="confirmButton" >Add Account</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- parent Modal -->
+<div class="modal fade" id="parentModal" tabindex="5" aria-labelledby="exampleModalLabel" aria-hidden="true"
+    style="font-family:arial">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="parentModalLabel">New Parent Account</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="parentConfirmationBody">
+                Create this Parent Account?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary" id="parentconfirmButton" onclick="getInputValues()" >Add Account</button>
             </div>
         </div>
     </div>
@@ -448,10 +468,8 @@ file_put_contents('UIDContainer.php', $Write);
         document.getElementById("confirmButton").onclick = validationProf;
     }
     function submitFormParent() {
-        document.getElementById("confirmationBody").innerHTML = "Add this Parent Account";
-        document.getElementById("exampleModalLabel").innerHTML = "Add Parent Account";
-        $('#confirmationModal').modal('show');
-        document.getElementById("confirmButton").onclick = validationParent;
+        $('#parentModal').modal('show');
+        document.getElementById("parentconfirmButton").onclick = validationParent;
 
     }
     function validationParent() {
@@ -459,12 +477,12 @@ file_put_contents('UIDContainer.php', $Write);
         const parent_fname = document.getElementById("parent_first_name");
         const parent_mname = document.getElementById("parent_middle_name");
         const parent_lname = document.getElementById("parent_last_name");
-        const parent_studid = document.getElementById("parent_student_number");
+   
         const parent_email = document.getElementById("parent_email");
         var errorMessage;
         var modalbodycontent = document.getElementById("Errormodalbody");
         var parentForm = document.getElementById("parentForm");
-        const convertstudid = parent_studid.value.toString();
+ 
         if (parentForm.checkValidity()) {
             parentForm.submit();
         } else {
