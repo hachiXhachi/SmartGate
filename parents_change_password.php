@@ -46,7 +46,7 @@ include 'includes/session.php';
       ?>
     </div>
   </div>
-  <form action="change_password.php" method="post">
+  <form id="changePasswordForm">
     <div class="form-group centered-form-group">
       <label for="current_pass">Current Password</label>
       <input type="password" class="form-control bg-transparent" name="current_pass" id="current_pass"
@@ -57,7 +57,7 @@ include 'includes/session.php';
       <label for="retype_pass">Re-type Password</label>
       <input type="password" class="form-control bg-transparent" name="retype_pass" id="retype_pass"
         style="width: 50%; border: 2px solid black;" required>
-      <button class="btn btn-outline-dark" id="button" style="border:3px solid black; color: #A0ABAA;">S A V E</button>
+      <button type="button" onclick="submitFormParent()" class="btn btn-outline-dark" id="button" style="border:3px solid black; color: #A0ABAA;">S A V E</button>
     </div>
   </form>
 </div>
