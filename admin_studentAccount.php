@@ -41,21 +41,21 @@
             <div class="col-md-4">
                 <div class="form-group">
                     <label for="column1">First Name</label>
-                    <input type="text" class="form-control bg-transparent" name="first_name" id="column1"
+                    <input type="text" class="form-control bg-transparent" name="first_name" required pattern="[A-Za-z ]{2,16}" id="fname"
                         placeholder="First Name" style="border: 2px solid black;">
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="form-group">
                     <label for="column2">Middle Name</label>
-                    <input type="text" class="form-control bg-transparent" name="middle_name" id="column2"
+                    <input type="text" class="form-control bg-transparent" name="middle_name"required pattern="[A-Za-z ]{2,16}" id="mname"
                         placeholder="Middle Name" style="border: 2px solid black;">
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="form-group">
                     <label for="column3">Last Name</label>
-                    <input type="text" class="form-control bg-transparent" name="last_name" id="column3"
+                    <input type="text" class="form-control bg-transparent" name="last_name"required pattern="[A-Za-z ]{2,16}" id="lname"
                         placeholder="Last Name" style="border: 2px solid black;">
                 </div>
             </div>
@@ -63,15 +63,15 @@
             <div class="col-md-4">
                 <div class="form-group">
                     <label for="column4">Student Number</label>
-                    <input type="number" class="form-control bg-transparent" name="studentid" id="column4"
-                        placeholder="Student Number" style="border: 2px solid black;" required>
+                    <input type="number" class="form-control bg-transparent" name="studentid" id="studid"
+                        placeholder="Student Number" min="0" max="9999999999" oninput="validateNumberInput(this);checkMaxLength(this, 10);" style="border: 2px solid black;" required>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="form-group text-white">
                     <label for="sectionSelect">Choose a Section:</label>
-                    <select class="form-control bg-transparent" placeholder="Section" id="sectionSelect"
-                        name="sectionid" onchange="changeFunction()" style="width:100%; border: 2px solid black;">
+                    <select class="form-control bg-transparent" id="sectionSelect"
+                        name="sectionid" onchange="changeFunction()" required style="width:100%; border: 2px solid black;">
                         <option value="" disabled selected hidden>Section</option>
                         <?php
                         include 'includes/session.php';
@@ -96,7 +96,7 @@
             <div class="col-lg-12">
                 <div class="form-group">
                     <label for="column7">Email</label>
-                    <input type="email" class="form-control bg-transparent" name="schoolemail" id="column7"
+                    <input type="email" class="form-control bg-transparent" name="schoolemail" id="email"
                         placeholder="Email" style="width:100%; border: 2px solid black;"required>
                 </div>
             </div>
@@ -104,13 +104,13 @@
             <div class="col-md-4">
                 <div class="form-group">
                     <label for="column6">Rfid Code</label>
-                    <textarea rows="1" name="rfidtag" id="getUID" class="form-control bg-transparent column6"
+                    <textarea required rows="1" name="rfidtag" maxlength="12" id="getUID" class="form-control bg-transparent column6"
                         style="border: 2px solid black; resize:none;" placeholder="Please Tag your Card"
-                        required></textarea>
+                        ></textarea>
                 </div>
             </div>
             <div style="display: flex;justify-content: flex-end;margin-top: 10px; ">
-                <button type="button" class="btn btn-primary btn-block"  style="background-color: #773535" data-bs-toggle="modal" data-bs-target="#confirmationModal">
+                <button type="button" class="btn btn-primary btn-block"  style="background-color: #773535" onclick="submitFormStudent()">
                    Create Account
                 </button>
             </div>

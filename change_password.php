@@ -2,10 +2,11 @@
 include 'includes/session.php';
 $con = $pdo->open();
 
-
 $current_pass = $_POST['current_pass'];
 $new_pass = $_POST['new_pass'];
 $retype_pass = $_POST['retype_pass'];
+
+$response = array();
 
 if (password_verify($current_pass, $user['password'])) {
     if ($new_pass != $current_pass) {
@@ -14,16 +15,21 @@ if (password_verify($current_pass, $user['password'])) {
             $new_pass = password_hash($new_pass, PASSWORD_DEFAULT);
             $stmt->execute(['password' => $new_pass, 'parentid' => $user['parentid']]);
 
-            echo "<script>alert('Password successfully changed.')</script>";
-
-            header("location:parents_dashboard.php");
+            $response['success'] = true;
+            $response['message'] = 'Password successfully changed.';
         } else {
-            echo "<script>alert('Password doesnt match.'); window.location.href = 'parents_dashboard.php';</script>";
+            $response['success'] = false;
+            $response['message'] = 'New Password or Re-type Password doesn\'t match.';
         }
     } else {
-        echo "<script>alert('Current Password and New Password should not be same.'); window.location.href = 'parents_dashboard.php';</script>";
+        $response['success'] = false;
+        $response['message'] = 'Current Password and New Password should not be the same.';
     }
 } else {
-    echo "<script>alert('Invalid Current Password'); window.location.href = 'parents_dashboard.php';</script>";
+    $response['success'] = false;
+    $response['message'] = 'Incorrect current password.';
 }
+
+header('Content-Type: application/json');
+echo json_encode($response);
 ?>

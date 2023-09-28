@@ -17,6 +17,15 @@ file_put_contents('UIDContainer.php', $Write);
             width: 100%;
         }
 
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button,
+        input[type="number"]::-webkit-input-speech-button,
+        input[type="number"]::-webkit-clear-button {
+            -webkit-appearance: none;
+            appearance: none;
+            margin: 0;
+        }
+
         .under_sidebar {
             position: relative;
             max-height: 75px;
@@ -149,23 +158,63 @@ file_put_contents('UIDContainer.php', $Write);
         }
     </style>
 </head>
-<div class="modal fade" id="confirmationModal" tabindex="5" aria-labelledby="exampleModalLabel" aria-hidden="true" style="font-family:arial">
+<!-- student and prof Modal -->
+<div class="modal fade" id="confirmationModal" tabindex="5" aria-labelledby="exampleModalLabel" aria-hidden="true"
+    style="font-family:arial">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <h1 class="modal-title fs-5" id="exampleModalLabel">New Student Account</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" id="confirmationBody">
                 Create this Account?
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary" id="confirmButton" onclick="submitForm()">Add Account</button>
+                <button type="submit" class="btn btn-primary" id="confirmButton" >Add Account</button>
             </div>
         </div>
     </div>
 </div>
+<!-- parent Modal -->
+<div class="modal fade" id="parentModal" tabindex="5" aria-labelledby="exampleModalLabel" aria-hidden="true"
+    style="font-family:arial">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="parentModalLabel">New Parent Account</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="parentConfirmationBody">
+                Create this Parent Account?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary" id="parentconfirmButton" onclick="getInputValues()" >Add Account</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Error Modal -->
+<div class="modal fade" id="Errormodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
+    style="font-family:arial">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Please fill out the fields properly</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id=Errormodalbody>
+                ...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <body id="background-image-dashboard">
     <div class="main-container d-flex" style="font-family: sans-seriff;">
         <div class="sidebar d-mb-none" id="side_nav">
@@ -356,16 +405,16 @@ file_put_contents('UIDContainer.php', $Write);
                 console.error('Error loading view:', error);
             });
     }
+
     function addDiv() {
-        var newDiv = $("<div>").addClass("child-div").html('<input type="text" class="form-control bg-transparent add_children" placeholder="Student Number" style="width:100%; border: 2px solid black; margin-bottom:10px;" required>');
+        var newDiv = $("<div>").addClass("child-div").html('<div style="display:flex;"><input type="text" class="form-control bg-transparent add_children" placeholder="Student Number" style="width:100%; border: 2px solid black; margin-bottom:10px;" required><input type="button" onclick="removediv(this)" class="btn btn-danger" value="x"></div>');
         $("#targetDiv").append(newDiv);
     }
 
-
-
-
-
-
+    function removediv(deleteButton) {
+        const parentDiv = deleteButton.parentNode.parentNode;
+        parentDiv.remove();
+    }
     function getInputValues() {
         var inputValues = [];
         // Iterate through all input elements with type="text"
@@ -398,16 +447,165 @@ file_put_contents('UIDContainer.php', $Write);
         // Send the selected value as POST data
         xhr.send("selectedValue=" + selectedValue);
     }
-   
-    function submitForm() {
-        myForm = document.getElementById("registrationForm");
-        if(myForm.checkValidity()){
-            myForm.submit();    
-        }else{
-            alert("Please fill out all required fields");
-        }
-        
+    function validateNumberInput(inputElement) {
+        const inputValue = inputElement.value;
+        const sanitizedValue = inputValue.replace(/[^0-9]/g, '');
+        inputElement.value = sanitizedValue;
     }
+    function checkMaxLength(input, maxLength) {
+        if (input.value.length > maxLength) {
+            input.value = input.value.slice(0, maxLength); // Truncate the input value
+        }
+    }
+    function submitFormStudent() {
+        $('#confirmationModal').modal('show');
+        document.getElementById("confirmButton").onclick = validationStudent;
+    }
+    function submitFormProf() {
+        document.getElementById("confirmationBody").innerHTML = "Add this Professor Account";
+        document.getElementById("exampleModalLabel").innerHTML = "Add Professor Account";
+        $('#confirmationModal').modal('show');
+        document.getElementById("confirmButton").onclick = validationProf;
+    }
+    function submitFormParent() {
+        $('#parentModal').modal('show');
+        document.getElementById("parentconfirmButton").onclick = validationParent;
+
+    }
+    function validationParent() {
+        //need to add the getinputvalues here
+        const parent_fname = document.getElementById("parent_first_name");
+        const parent_mname = document.getElementById("parent_middle_name");
+        const parent_lname = document.getElementById("parent_last_name");
+   
+        const parent_email = document.getElementById("parent_email");
+        var errorMessage;
+        var modalbodycontent = document.getElementById("Errormodalbody");
+        var parentForm = document.getElementById("parentForm");
+ 
+        if (parentForm.checkValidity()) {
+            parentForm.submit();
+        } else {
+            if (!parent_fname.validity.valid) {
+                errorMessage = parent_fname.validationMessage + ("(First Name)");
+            }
+            else if (!parent_mname.validity.valid) {
+                errorMessage = parent_mname.validationMessage + ("(Middle Name)");
+            }
+            else if (!parent_lname.validity.valid) {
+                errorMessage = parent_lname.validationMessage + ("(Last Name)");
+            }
+            else if (convertstudid.length !== 10) {
+                parent_studid.setCustomValidity("Your student id must be 10-digit number");
+                if (!parent_studid.validity.valid) {
+                    errorMessage = parent_studid.validationMessage + ("(Student Number)");
+                }
+            }
+            else if (!parent_email.validity.valid) {
+                errorMessage = parent_email.validationMessage + ("(Email)");
+            }
+            else {
+                parentForm.submit();
+            }
+            modalbodycontent.innerHTML = errorMessage;
+            $('#Errormodal').modal('show');
+            // alert(errorMessage);
+        }
+
+
+    }
+    function validationStudent() {
+        const fname = document.getElementById("fname");
+        const mname = document.getElementById("mname");
+        const lname = document.getElementById("lname");
+        const studid = document.getElementById("studid");
+        const section = document.getElementById("sectionSelect");
+        const email = document.getElementById("email");
+        const rfid = document.getElementById("getUID");
+        var modalbodycontent = document.getElementById("Errormodalbody");
+        var errorMessage;
+        studid.setCustomValidity(" ");
+        myForm = document.getElementById("registrationForm");
+        const convert = studid.value.toString();
+        console.log(rfid.validity.valid);
+        if (myForm.checkValidity()) {
+            myForm.submit();
+        } else {
+            if (!fname.validity.valid) {
+                errorMessage = fname.validationMessage + ("(First Name)");
+            }
+            else if (!mname.validity.valid) {
+                errorMessage = mname.validationMessage + ("(Middle Name)");
+            }
+            else if (!lname.validity.valid) {
+                errorMessage = lname.validationMessage + ("(Last Name)");
+            }
+            else if (convert.length !== 10) {
+                studid.setCustomValidity("Your student id must be 10-digit number");
+                if (!studid.validity.valid) {
+                    errorMessage = studid.validationMessage + ("(Student Number)");
+                }
+            }
+            else if (!section.validity.valid) {
+                errorMessage = section.validationMessage + ("(Section)");
+            }
+            else if (!email.validity.valid) {
+                errorMessage = email.validationMessage + ("(Email)");
+            }
+            else if (!rfid.value.trim()) {
+                errorMessage = "RFID is required.";
+            }
+            else if (!rfid.validity.valid) {
+                errorMessage = "Please input a Correct Rfid Tag";
+            }
+            else {
+                myForm.submit();
+            }
+            modalbodycontent.innerHTML = errorMessage;
+            $('#Errormodal').modal('show');
+            // alert(errorMessage);
+
+        }
+
+    }
+    function validationProf() {
+        const prof_fname = document.getElementById("prof_fname");
+        const prof_mname = document.getElementById("prof_mname");
+        const prof_lname = document.getElementById("prof_lname");
+        const prof_email = document.getElementById("prof_email");
+        const prof_section = document.getElementById("sectionSelect");
+        const prof_Form = document.getElementById("professorForm");
+        var modalbodycontent = document.getElementById("Errormodalbody");
+        var errorMessage;
+        if (prof_Form.checkValidity()) {
+            prof_Form.submit();
+        } else {
+            if (!prof_fname.validity.valid) {
+                errorMessage = prof_fname.validationMessage + ("(First Name)");
+            }
+            else if (!prof_mname.validity.valid) {
+                errorMessage = prof_mname.validationMessage + ("(Middle Name)");
+            }
+            else if (!prof_lname.validity.valid) {
+                errorMessage = prof_lname.validationMessage + ("(Last Name)");
+            }
+            else if (!prof_email.validity.valid) {
+                errorMessage = prof_email.validationMessage + ("(Email)");
+            }
+            else if (!prof_section.validity.valid) {
+                prof_section.value = "hahaha";
+                errorMessage = prof_section.validationMessage + ("(Section)");
+            }
+            else {
+                prof_Form.submit();
+            }
+            modalbodycontent.innerHTML = errorMessage;
+            $('#Errormodal').modal('show');
+            // alert(errorMessage);
+        }
+
+    }
+
 </script>
 
 </html>
