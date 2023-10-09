@@ -413,7 +413,7 @@ file_put_contents('UIDContainer.php', $Write);
     }
 
     function addDiv() {
-        var newDiv = $("<div>").addClass("child-div").html('<div style="display:flex;"><input type="text" id="parent_studid" class="form-control bg-transparent add_children" placeholder="Student Number" style="width:100%; border: 2px solid black; margin-bottom:10px;" required><input type="button" onclick="removediv(this)" class="btn btn-danger" value="x"></div>');
+        var newDiv = $("<div>").addClass("child-div").html('<div style="display:flex;"><input type="number" id="parent_studid" class="form-control bg-transparent add_children" placeholder="Student Number" style="width:100%; border: 2px solid black; margin-bottom:10px;" min="0" max="9999999999" oninput="validateNumberInput(this);checkMaxLength(this, 10);"required><input type="button" onclick="removediv(this)" class="btn btn-danger" value="x"></div>');
         $("#targetDiv").append(newDiv);
         $("#parent_submit").prop("disabled", false);
     }
