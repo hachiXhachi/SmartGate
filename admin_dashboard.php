@@ -407,13 +407,17 @@ file_put_contents('UIDContainer.php', $Write);
     }
 
     function addDiv() {
-        var newDiv = $("<div>").addClass("child-div").html('<div style="display:flex;"><input type="text" class="form-control bg-transparent add_children" placeholder="Student Number" style="width:100%; border: 2px solid black; margin-bottom:10px;" required><input type="button" onclick="removediv(this)" class="btn btn-danger" value="x"></div>');
+        var newDiv = $("<div>").addClass("child-div").html('<div style="display:flex;"><input type="text" id="parent_studid" class="form-control bg-transparent add_children" placeholder="Student Number" style="width:100%; border: 2px solid black; margin-bottom:10px;" required><input type="button" onclick="removediv(this)" class="btn btn-danger" value="x"></div>');
         $("#targetDiv").append(newDiv);
+        $("#parent_submit").prop("disabled", false);
     }
 
     function removediv(deleteButton) {
         const parentDiv = deleteButton.parentNode.parentNode;
         parentDiv.remove();
+        if ($("#targetDiv .child-div").length === 0) {
+        $("#parent_submit").prop("disabled", true);
+         }
     }
     function getInputValues() {
         var inputValues = [];
@@ -477,12 +481,13 @@ file_put_contents('UIDContainer.php', $Write);
         const parent_fname = document.getElementById("parent_first_name");
         const parent_mname = document.getElementById("parent_middle_name");
         const parent_lname = document.getElementById("parent_last_name");
-   
+        const parent_studid = document.getElementById("parent_studid");
         const parent_email = document.getElementById("parent_email");
+        var convertstudid = parent_studid.value.toString();
+        
         var errorMessage;
         var modalbodycontent = document.getElementById("Errormodalbody");
         var parentForm = document.getElementById("parentForm");
- 
         if (parentForm.checkValidity()) {
             parentForm.submit();
         } else {
