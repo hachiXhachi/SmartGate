@@ -1,3 +1,6 @@
+<?php
+include 'includes/session.php';
+?>
 <!DOCTYPE html>
 <html>
 
@@ -14,28 +17,32 @@
     }
 
     #side_nav {
-      position:fixed;
+      position: fixed;
       height: 100vh;
       min-width: 270px;
       max-width: 300px;
       background-color: #773535;
-      transition: all .2s ease; 
-      z-index:1;
+      transition: all .2s ease;
+      z-index: 1;
     }
-    #side_nav.active{
-        margin-left:0;
-        transition: all .2s ease; 
-      }
-    #side_nav.d-mb-none{
-        margin-left: -270px;
-        position:fixed;
-        min-height:100vh;
-        z-index:1;
-      }
-    hr, .h-color {
+
+    #side_nav.active {
+      margin-left: 0;
+      transition: all .2s ease;
+    }
+
+    #side_nav.d-mb-none {
+      margin-left: -270px;
+      position: fixed;
+      min-height: 100vh;
+      z-index: 1;
+    }
+
+    hr,
+    .h-color {
       background: white;
     }
-    
+
     .sidebar li.active {
       background: black;
       border-radius: 8px;
@@ -49,69 +56,98 @@
     .sidebar li a {
       color: #fff;
     }
-		#container {
-  		width: 100%;
-  		max-width: 500px; 
-  		margin: 0 auto; 
-			padding-top:25px;
-			padding-left:25px;
-			padding-right:25px;
-			padding-bottom:50px; 
-  		background-color: rgb(84,84,84);
-		}
+
+    #container {
+      width: 100%;
+      max-width: 500px;
+      margin: 0 auto;
+      padding-top: 25px;
+      padding-left: 25px;
+      padding-right: 25px;
+      padding-bottom: 50px;
+      background-color: rgb(84, 84, 84);
+    }
+
     #base {
-  		width: 100%;
-  		margin: 0 auto; 
-		}
-    .notification_container{
-            max-height:100%;
-             overflow-y: auto; 
-             max-width:100%;
-             width:auto;
-             height: 400px;
-             background-color: #545454;
-             font-family: sans-serif;
-        }
-        .child-div {
-            background-color: #f0f0f0;
-            border: 1px solid #ddd;
-            border-radius: 25px;
-            padding: 10px;
-            margin: 10px;
-        }
-		#container p {
-  			font-size: 16px;
-  			line-height: 1.6;
-  			color: #333;
-		}
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    .notification_container {
+      max-height: 100%;
+      overflow-y: auto;
+      max-width: 100%;
+      width: auto;
+      height: 400px;
+      background-color: #545454;
+      font-family: sans-serif;
+    }
+
+    .child-div {
+      background-color: #f0f0f0;
+      border: 1px solid #ddd;
+      border-radius: 25px;
+      padding: 10px;
+      margin: 10px;
+    }
+
+    #container p {
+      font-size: 16px;
+      line-height: 1.6;
+      color: #333;
+    }
 
     @media (max-width: 767px) {
-      #side_nav{
+      #side_nav {
         margin-left: -270px;
-        position:fixed;
-        min-height:100vh;
-        z-index:1;
+        position: fixed;
+        min-height: 100vh;
+        z-index: 1;
       }
-      #side_nav.active{
-        margin-left:0;
+
+      #side_nav.active {
+        margin-left: 0;
       }
-      h2{
-				font-size: 20px;
-			}
-			h4{
-				font-size: 15px;
-			}
-      .image{
-				width: 50px;
+
+      h2 {
+        font-size: 20px;
+      }
+
+      h4 {
+        font-size: 15px;
+      }
+
+      .image {
+        width: 50px;
         margin-right: 5px;
-			}
-      .table-container{
+      }
+
+      .table-container {
         max-height: 300px;
       }
     }
-  
   </style>
 </head>
+
+<!-- change pass Modal -->
+<div class="modal fade" id="parentChangepassModal" tabindex="5" aria-labelledby="exampleModalLabel" aria-hidden="true"
+  style="font-family:arial">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="parentChangepassModalLabel">Change Password</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="parentConfirmationPassBody">
+        Create this Parent Account?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" id="PasswordConfirmButton"
+          data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <body id="background-image-dashboard">
   <div class="main-container d-flex" style="font-family: sans-seriff;">
@@ -123,53 +159,62 @@
       </div>
       <hr class="h-color mx-4">
       <ul class="list-unstyled px-5 py-3">
-      <li class="active"><a class="text-decoration-none text-white d-block text-center py-2" onclick="loadView('faculty_home')"><i class="fa-solid fa-house"></i> Home</a></li>
+        <li class="active"><a class="text-decoration-none text-white d-block text-center py-2"
+            onclick="loadView('faculty_home')"><i class="fa-solid fa-house"></i> Home</a></li>
         <hr class="h-color mx-4">
-        <li><a class="text-decoration-none text-white d-block text-center py-2" onclick="loadView('faculty_attendance')"><i class="fa-solid fa-clipboard-user"></i> View Attendance</a></li>
+        <li><a class="text-decoration-none text-white d-block text-center py-2"
+            onclick="loadView('faculty_attendance')"><i class="fa-solid fa-clipboard-user"></i> View Attendance</a></li>
         <hr class="h-color mx-4">
-        <li><a class="text-decoration-none text-white d-block text-center py-2" onclick="loadView('faculty_notification')"><i class="fa-solid fa-bell"></i> Notification Tab</a></li>
+        <li><a class="text-decoration-none text-white d-block text-center py-2"
+            onclick="loadView('faculty_notification')"><i class="fa-solid fa-bell"></i> Notification Tab</a></li>
         <hr class="h-color mx-4">
-        <li><a class="text-decoration-none text-white d-block text-center py-2"  onclick="loadView('faculty_change_password')"><i class="fa-solid fa-key"></i> Change Password</a></li>
+        <li><a class="text-decoration-none text-white d-block text-center py-2"
+            onclick="loadView('faculty_change_password')"><i class="fa-solid fa-key"></i> Change Password</a></li>
       </ul>
       <div class="text-center py-5">
-      <button type="button" class="btn tn btn-outline-secondary text-white px-5" style="border: 2px solid black; border-radius: 5px;">Log-out</button>
+        <button type="button" id="logout_button" class="btn tn btn-outline-secondary text-white px-5"
+          style="border: 2px solid black; border-radius: 5px;">Logout</button>
       </div>
     </div>
     <div class="content">
       <nav class="navbar navbar-expand-lg bg-transparent">
         <div class="container-fluid">
-          <div class="navbar-brand d-flex justify-content-between d-block " style="display: flex;align-items: center;justify-content: center;margin-left:5%;">
-          <button class="btn d-block px-1 py-0 open-btn text-white"><i class="fa-solid fa-bars-staggered"></i></button>&nbsp;&nbsp;&nbsp;&nbsp;
+          <div class="navbar-brand d-flex justify-content-between d-block "
+            style="display: flex;align-items: center;justify-content: center;margin-left:5%;">
+            <button class="btn d-block px-1 py-0 open-btn text-white"><i
+                class="fa-solid fa-bars-staggered"></i></button>&nbsp;&nbsp;&nbsp;&nbsp;
             <div class="image">
-            <img src="icons/bulsu_icon.png" class="image img-fluid" style="width:85px; margin-right: 20px;">
+              <img src="icons/bulsu_icon.png" class="image img-fluid" style="width:85px; margin-right: 20px;">
             </div>
             <div class="text-white">
-              <h2>Bulacan State University 
+              <h2>Bulacan State University
                 <br>
               </h2>
-              <h4>Sarmiento Campus</h4>             
-            </div>
+              <h4>Sarmiento Campus</h4>
             </div>
           </div>
+        </div>
       </nav>
     </div>
 
   </div>
   <div class="base position-absolute top-50 start-50 translate-middle text-white" id="base">
-    <div class="cotainer position-absolute top-50 start-50 translate-middle text-white" id="container" style="font-family:sans-serif;display: flex;align-items: center;justify-content: center;">
+    <div class="cotainer position-absolute top-50 start-50 translate-middle text-white" id="container"
+      style="font-family:sans-serif;display: flex;align-items: center;justify-content: center;">
       <img src="icons/icon_email.jpg" class="img-fluid" width="70" alt="profile" style="margin-right: 10%;">
       <div class="text-white">
-              <h2>Jian Kyle Albaro 
-                <br>
-              </h2>
-              <h5>jiankyle.albaro.d@bulsu.edu.ph</h5>             
-            </div>
+        <?php
+        echo "<h3>" . $user['name'] . "</h3>";
+        echo "<h6>" . $user['email'] . "</h6>";
+        ?>
+      </div>
     </div>
   </div>
-  <nav class="navbar navbar-expand-lg fixed-bottom" style="font-family: sans-seriff;" >
+  <nav class="navbar navbar-expand-lg fixed-bottom" style="font-family: sans-seriff;">
     <div class="container-fluid">
       <a class="navbar-brand text-white" href="#">Contact Us</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
@@ -207,39 +252,85 @@
 <script src="node_modules\bootstrap\dist\js\bootstrap.bundle.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-  
-  $(".sidebar ul li").on('click', function() {
+
+  $(".sidebar ul li").on('click', function () {
     $(".sidebar ul li.active").removeClass('active');
     $(this).addClass('active');
 
   });
-  $('.open-btn').on('click', function(){
+  $('.open-btn').on('click', function () {
     $('.sidebar').addClass('active');
     $('.sidebar').removeClass('d-mb-none');
-    
-   
+
+
 
   });
-  $('.close-btn').on('click', function(){
+  $('.close-btn').on('click', function () {
     $('.sidebar').removeClass('active');
     $('.sidebar').addClass('d-mb-none');
     ;
   });
 
   function loadView(viewName) {
-        fetch(`${viewName}.php`) 
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('base').innerHTML = data;
-            })
-            .catch(error => {
-                console.error('Error loading view:', error);
-            });
+    fetch(`${viewName}.php`)
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById('base').innerHTML = data;
+      })
+      .catch(error => {
+        console.error('Error loading view:', error);
+      });
+  }
+  function myFunction() {
+    var newDiv = $("<div>").addClass("child-div").text("Student enter the school premises");
+    $("#targetDiv").append(newDiv);
+  }
+
+  function logoutFunction() {
+    window.location.href = 'logout.php';
+  }
+  document.getElementById("logout_button").addEventListener("click", logoutFunction);
+
+  function submitFormFaculty() {
+    var currentPass = $('#current_pass').val();
+    var newPass = $('#new_pass').val();
+    var retypePass = $('#retype_pass').val();
+    var PasswordForm = document.getElementById("changePasswordForm");
+    var modalbodycontentPass = document.getElementById("parentConfirmationPassBody");
+    var PasswordConfirmButton = document.getElementById("PasswordConfirmButton");
+    if (PasswordForm.checkValidity()) {
+      $.ajax({
+        type: 'POST',
+        url: 'change_password.php',
+        data: {
+          current_pass: currentPass,
+          new_pass: newPass,
+          retype_pass: retypePass
+        },
+        dataType: 'json',
+        success: function (response) {
+          if (response.success) {
+            // alert(response.message);
+            // window.location.href = 'parents_dashboard.php';
+            modalbodycontentPass.innerHTML = response.message;
+            $('#parentChangepassModal').modal('show');
+            PasswordConfirmButton.value = "Confirm";
+            $('#current_pass').val('');
+            $('#new_pass').val('');
+            $('#retype_pass').val('');
+          } else {
+            modalbodycontentPass.innerHTML = response.message;
+            $('#parentChangepassModal').modal('show');
+          }
+        }
+      });
+    } else {
+      modalbodycontentPass.innerHTML = "Please fill out the fields properly";
+      $('#parentChangepassModal').modal('show');
     }
-    function myFunction() {
-      var newDiv = $("<div>").addClass("child-div").text("Student enter the school premises");
-      $("#targetDiv").append(newDiv);
-    }
+
+
+  }
 
 </script>
 
