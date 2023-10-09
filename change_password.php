@@ -11,9 +11,15 @@ $response = array();
 if (password_verify($current_pass, $user['password'])) {
     if ($new_pass != $current_pass) {
         if ($new_pass == $retype_pass) {
-            $stmt = $con->prepare("UPDATE parent_tbl SET password=:password WHERE parentid=:parentid");
-            $new_pass = password_hash($new_pass, PASSWORD_DEFAULT);
-            $stmt->execute(['password' => $new_pass, 'parentid' => $user['parentid']]);
+            if ($_SESSION['mode'] == "parent") {
+                $stmt = $con->prepare("UPDATE parent_tbl SET password=:password WHERE parentid=:parentid");
+                $new_pass = password_hash($new_pass, PASSWORD_DEFAULT);
+                $stmt->execute(['password' => $new_pass, 'parentid' => $user['parentid']]);
+            } else if ($_SESSION['mode'] == "faculty") {
+                $stmt = $con->prepare("UPDATE faculty_tbl SET password=:password WHERE id=:id");
+                $new_pass = password_hash($new_pass, PASSWORD_DEFAULT);
+                $stmt->execute(['password' => $new_pass, 'id' => $user['id']]);
+            }
 
             $response['success'] = true;
             $response['message'] = 'Password successfully changed.';

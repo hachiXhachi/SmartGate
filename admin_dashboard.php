@@ -172,7 +172,7 @@ file_put_contents('UIDContainer.php', $Write);
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary" id="confirmButton" >Add Account</button>
+                <button type="submit" class="btn btn-primary" id="confirmButton">Add Account</button>
             </div>
         </div>
     </div>
@@ -191,7 +191,8 @@ file_put_contents('UIDContainer.php', $Write);
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary" id="parentconfirmButton" onclick="getInputValues()" >Add Account</button>
+                <button type="submit" class="btn btn-primary" id="parentconfirmButton" onclick="getInputValues()">Add
+                    Account</button>
             </div>
         </div>
     </div>
@@ -277,8 +278,8 @@ file_put_contents('UIDContainer.php', $Write);
                 <hr class="h-color mx-4">
             </ul>
             <div class="text-center">
-                <button type="button" class="btn tn btn-outline-secondary text-white px-5"
-                    style="border: 2px solid black; border-radius: 5px;">Log-out</button>
+                <button type="button" id="logout_button" class="btn tn btn-outline-secondary text-white px-5"
+                    style="border: 2px solid black; border-radius: 5px;">Logout</button>
             </div>
         </div>
         <div class="content">
@@ -361,6 +362,11 @@ file_put_contents('UIDContainer.php', $Write);
 <script src="node_modules\bootstrap\dist\js\bootstrap.bundle.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
+
+    function logoutFunction() {
+        window.location.href = 'logout.php';
+    }
+    document.getElementById("logout_button").addEventListener("click", logoutFunction);
 
     $(document).ready(function () {
         $("#getUID").load("UIDContainer.php");
@@ -477,12 +483,12 @@ file_put_contents('UIDContainer.php', $Write);
         const parent_fname = document.getElementById("parent_first_name");
         const parent_mname = document.getElementById("parent_middle_name");
         const parent_lname = document.getElementById("parent_last_name");
-   
+
         const parent_email = document.getElementById("parent_email");
         var errorMessage;
         var modalbodycontent = document.getElementById("Errormodalbody");
         var parentForm = document.getElementById("parentForm");
- 
+
         if (parentForm.checkValidity()) {
             parentForm.submit();
         } else {
