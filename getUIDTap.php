@@ -21,6 +21,8 @@
 include 'includes/session.php';
 $con = $pdo->open();
 $codeGranted = '';
+$studentData = array();
+
 // Receive the RFID code from the NodeMCU
 $rfidCode = isset($_POST['UIDresult']) ? $_POST['UIDresult'] : '';
 date_default_timezone_set('Singapore');
@@ -33,13 +35,44 @@ $row = $stmt->fetch();
 $sql = "INSERT INTO attendance_tbl(student_id, date, time_in) VALUES (?, ?, ?)";
 $data = array($row['studentid'], $dateToday, $timeToday);
 if ($row['numrows'] > 0) {
-    $codeGranted = '1';
+    echo 'Granted';
+    $studentData = array(
+        'studentid' => isset($row['studentid']) ? $row['studentid'] : '',
+        'name' => isset($row['name']) ? $row['name'] : '',
+        'sectionid' => isset($row['sectionid']) ? $row['sectionid'] : '',
+        'department' => isset($row['department']) ? $row['department'] : '',
+        // Add more fields as needed
+    );
+    
+    // Encode the array as JSON
+    $jsonData = json_encode($studentData);
+    
+    // Create the content for 'security_dashboard.php'
+    $phpContent = $jsonData;
+    
+    // Write the content to 'security_dashboard.php'
+    file_put_contents('getstudentData.php', $phpContent);
+    
     $stmt = $con->prepare($sql);
     $stmt->execute($data);
 }
 else{
-    $codeGranted = '0';
+     echo '0';
+     $studentData = array(
+        'studentid' =>"Not Exist" ,
+        'name' =>"Not Exist",
+        'sectionid' => "Not Exist",
+        'department' => "Not Exist",
+    
+    );
+    $jsonData = json_encode($studentData);
+    
+    // Create the content for 'security_dashboard.php'
+    $phpContent = $jsonData;
+    
+    // Write the content to 'security_dashboard.php'
+    file_put_contents('getstudentData.php', $phpContent);
 }
 
-echo $codeGranted;
+
 ?>

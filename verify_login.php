@@ -20,6 +20,11 @@ $stmt3->bindParam(':email', $email);
 $stmt3->execute();
 $row3 = $stmt3->fetch();
 
+$stmt4 = $con->prepare("SELECT *, COUNT(*) AS numrows FROM security_tbl WHERE email = :email");
+$stmt4->bindParam(':email', $email);
+$stmt4->execute();
+$row4 = $stmt4->fetch();
+
 if ($row1['numrows'] > 0) {
     if (password_verify($password, $row1['password'])) {
         $_SESSION['user'] = $row1['parentid'];
@@ -50,7 +55,18 @@ if ($row1['numrows'] > 0) {
         window.location.href = 'index.php';
     </script>";
     }
-} else {
+}else if ($row4['numrows'] > 0) {
+    if (password_verify($password, $row4['password'])) {
+        $_SESSION['user'] = $row4['id'];
+        $_SESSION['mode'] = "security";
+        header('location: security_dashboard.php');
+    } else {
+        echo "<script>alert('Invalid email or password');
+        window.location.href = 'index.php';
+    </script>";
+    }
+} 
+ else {
     echo "<script>alert('Invalid email or password');
         window.location.href = 'index.php';
     </script>";
