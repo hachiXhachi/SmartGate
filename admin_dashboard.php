@@ -413,7 +413,7 @@ file_put_contents('UIDContainer.php', $Write);
     }
 
     function addDiv() {
-        var newDiv = $("<div>").addClass("child-div").html('<div style="display:flex;"><input type="number" id="parent_studid" class="form-control bg-transparent add_children" placeholder="Student Number" style="width:100%; border: 2px solid black; margin-bottom:10px;" min="0" max="9999999999" oninput="validateNumberInput(this);checkMaxLength(this, 10);"required><input type="button" onclick="removediv(this)" class="btn btn-danger" value="x"></div>');
+        var newDiv = $("<div>").addClass("child-div").html('<div id="child-div" style="display:flex;"><input type="number" id="parent_studid" class="form-control bg-transparent add_children" placeholder="Student Number" style="width:100%; border: 2px solid black; margin-bottom:10px;" min="0" max="9999999999" oninput="validateNumberInput(this);checkMaxLength(this, 10);"><input type="button" onclick="removediv(this)" class="btn btn-danger" value="x"></div>');
         $("#targetDiv").append(newDiv);
         $("#parent_submit").prop("disabled", false);
     }
@@ -483,7 +483,8 @@ file_put_contents('UIDContainer.php', $Write);
 
     }
     function validationParent() {
-        console.log("1st flag"); const parent_fname = document.getElementById("parent_first_name");
+        $('#parentModal').modal('hide');
+        const parent_fname = document.getElementById("parent_first_name");
         const parent_mname = document.getElementById("parent_middle_name");
         const parent_lname = document.getElementById("parent_last_name");
         const parent_studid = document.getElementById("parent_studid");
@@ -493,7 +494,7 @@ file_put_contents('UIDContainer.php', $Write);
         var modalbodycontent = document.getElementById("Errormodalbody");
         var parentForm = document.getElementById("parentForm");
         if (parent_fname.validity.valid && parent_mname.validity.valid && parent_lname.validity.valid && parent_email.validity.valid) {
-            if (convertstudid.length === 10 && parent_studid.validity.valid) {
+            if (convertstudid.length === 10) {
                 const formData = new FormData(parentForm);
                 fetch("add_parent.php", {
                     method: "POST",
@@ -506,6 +507,8 @@ file_put_contents('UIDContainer.php', $Write);
                             modalbodycontent.innerHTML = "This Account is successfully added!";
                             $('#Errormodal').modal('show');
                             parentForm.reset();
+                            const divRemover = document.getElementById('child-div');
+                            divRemover.remove();
                             // Close modal or show success message
                         } else {
                             // Handle errors
@@ -541,6 +544,7 @@ file_put_contents('UIDContainer.php', $Write);
 
     }
     function validationStudent() {
+        $('#confirmationModal').modal('hide');
         const fname = document.getElementById("fname");
         const mname = document.getElementById("mname");
         const lname = document.getElementById("lname");
@@ -615,6 +619,7 @@ file_put_contents('UIDContainer.php', $Write);
 
     }
     function validationProf() {
+        $('#confirmationModal').modal('hide');
         const prof_fname = document.getElementById("prof_fname");
         const prof_mname = document.getElementById("prof_mname");
         const prof_lname = document.getElementById("prof_lname");
