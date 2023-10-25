@@ -665,35 +665,6 @@ file_put_contents('UIDContainer.php', $Write);
         $('#Errormodal').modal('show');
 
 
-
-
-        // if (prof_Form.checkValidity()) {
-        //     prof_Form.submit();
-        // } else {
-        //     if (!prof_fname.validity.valid) {
-        //         errorMessage = prof_fname.validationMessage + ("(First Name)");
-        //     }
-        //     else if (!prof_mname.validity.valid) {
-        //         errorMessage = prof_mname.validationMessage + ("(Middle Name)");
-        //     }
-        //     else if (!prof_lname.validity.valid) {
-        //         errorMessage = prof_lname.validationMessage + ("(Last Name)");
-        //     }
-        //     else if (!prof_email.validity.valid) {
-        //         errorMessage = prof_email.validationMessage + ("(Email)");
-        //     }
-        //     else if (!prof_section.validity.valid) {
-        //         prof_section.value = "hahaha";
-        //         errorMessage = prof_section.validationMessage + ("(Section)");
-        //     }
-        //     else {
-        //         prof_Form.submit();
-        //     }
-        //     modalbodycontent.innerHTML = errorMessage;
-        //     $('#Errormodal').modal('show');
-        //     // alert(errorMessage);
-        // }
-
     }
 
 </script>
