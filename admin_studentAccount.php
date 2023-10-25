@@ -34,7 +34,7 @@
         }
     }
 </style>
-<form action="add_student.php" method="post" id="registrationForm">
+<form method="post" id="registrationForm">
     <div class="container" id="container_pass">
         CREATE ACCOUNT FOR STUDENTS
         <div class="row">
@@ -71,7 +71,7 @@
                 <div class="form-group text-white">
                     <label for="sectionSelect">Choose a Section:</label>
                     <select class="form-control bg-transparent" id="sectionSelect"
-                        name="sectionid" onchange="changeFunction()" required style="width:100%; border: 2px solid black;">
+                        name="sectionid" onchange="changeFunction()" style="width:100%; border: 2px solid black;">
                         <option value="" disabled selected hidden>Section</option>
                         <?php
                         include 'includes/session.php';
@@ -104,7 +104,7 @@
             <div class="col-md-4">
                 <div class="form-group">
                     <label for="column6">Rfid Code</label>
-                    <textarea required rows="1" name="rfidtag" maxlength="12" id="getUID" class="form-control bg-transparent column6"
+                    <textarea  rows="1" name="rfidtag" maxlength="12" id="getUID" class="form-control bg-transparent column6"
                         style="border: 2px solid black; resize:none;" placeholder="Please Tag your Card"
                         ></textarea>
                 </div>

@@ -33,7 +33,7 @@
         }
     }
 </style>
-<form action="add_parent.php" method="post" id="parentForm">
+<form method="post" id="parentForm">
     <div class="container" id="container_pass">
         CREATE ACCOUNT FOR PARENTS
         <div class="row">

@@ -32,7 +32,7 @@
         }
     }
 </style>
-<form action="add_faculty.php" method="post" id ="professorForm">
+<form  method="post" id ="professorForm">
     <div class="container" id="container_pass">
         CREATE ACCOUNT FOR PROFESSOR
         <div class="row">

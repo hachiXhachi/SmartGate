@@ -2,41 +2,46 @@
 include 'includes/session.php';
 $con = $pdo->open();
 
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $first_name = $_POST['first_name'];
+    $middle_name = $_POST['middle_name'];
+    $last_name = $_POST['last_name'];
+    $name = $first_name . " " . $middle_name . " " . $last_name;
+    $email = $_POST['email'];
+    $password = "password"; // You might want to generate a secure password
 
-$first_name = $_POST['first_name'];
-$middle_name = $_POST['middle_name'];
-$last_name = $_POST['last_name'];
-$name = $first_name . " " . $middle_name . " " . $last_name;
-$email = $_POST['email'];
-$password = "password";
-$children = $_POST['children'];
-$wordArray = explode(" ", $children);
-$myArray = $wordArray;
+    $children = $_POST['parent_studid'];
+    $wordArray = explode(" ", $children);
+    $myArray = $wordArray;
 
-$password = password_hash($password, PASSWORD_DEFAULT);
+    $password = password_hash($password, PASSWORD_DEFAULT);
 
-if ($user == null) {
-    header("location:login.php");
-}
+    // Your user authentication logic (if needed)
 
-$sql = "INSERT INTO parent_tbl(email, name, password) VALUES (?, ?, ?)";
-$data = array($email, $name, $password);
-
-$stmt = $con->prepare($sql);
-$stmt->execute($data);
-
-$stmt = $con->prepare("SELECT * FROM parent_tbl WHERE email=:email");
-$stmt->bindParam(':email', $email);
-$stmt->execute();
-$row = $stmt->fetch();
-
-foreach ($myArray as $item) {
-    $sql = "INSERT INTO childtv(parent_id, student_id) VALUES (?, ?)";
-    $data = array($row['parentid'], $item);
+    $sql = "INSERT INTO parent_tbl(email, name, password) VALUES (?, ?, ?)";
+    $data = array($email, $name, $password);
 
     $stmt = $con->prepare($sql);
-    $stmt->execute($data);
-}
+    if ($stmt->execute($data)) {
+        $lastInsertId = $con->lastInsertId(); // Get the last inserted parent ID
 
-header("location:admin_dashboard.php");
+        // Insert child data
+        foreach ($myArray as $item) {
+            $sql = "INSERT INTO childtv(parent_id, student_id) VALUES (?, ?)";
+            $data = array($lastInsertId, $item);
+
+            $stmt = $con->prepare($sql);
+            $stmt->execute($data);
+        }
+
+        // Send a JSON success response to the client
+        echo json_encode(array("success" => "Form submitted successfully"));
+    } else {
+        // Send a JSON error response to the client
+        echo json_encode(array("error" => "Form submission failed"));
+    }
+} else {
+    // Handle cases where the request is not a POST request
+    echo json_encode(array("error" => "Invalid request"));
+}
 ?>

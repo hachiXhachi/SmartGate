@@ -1,6 +1,19 @@
 <?php
 include 'includes/session.php';
+$studentData = array(
+  'studentid' =>"Not Exist" ,
+  'name' =>"Not Exist",
+  'sectionid' => "Not Exist",
+  'department' => "Not Exist",
 
+);
+$jsonData = json_encode($studentData);
+
+// Create the content for 'security_dashboard.php'
+$phpContent = $jsonData;
+
+// Write the content to 'security_dashboard.php'
+file_put_contents('getstudentData.php', $phpContent);
 ?>
 <!DOCTYPE html>
 <html>
