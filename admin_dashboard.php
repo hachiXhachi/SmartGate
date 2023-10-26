@@ -491,6 +491,7 @@ file_put_contents('UIDContainer.php', $Write);
         const parent_email = document.getElementById("parent_email");
         var convertstudid = parent_studid.value.toString();
         var errorMessage;
+        var emailGet =parent_email.value;
         var modalbodycontent = document.getElementById("Errormodalbody");
         var parentForm = document.getElementById("parentForm");
         if (parent_fname.validity.valid && parent_mname.validity.valid && parent_lname.validity.valid && parent_email.validity.valid) {
@@ -506,10 +507,25 @@ file_put_contents('UIDContainer.php', $Write);
                             console.log("Form submitted successfully.");
                             modalbodycontent.innerHTML = "This Account is successfully added!";
                             $('#Errormodal').modal('show');
-                            parentForm.reset();
-                            const divRemover = document.getElementById('child-div');
-                            divRemover.remove();
+
                             // Close modal or show success message
+                            var subject = 'Email';
+                            var message = 'Test Message';
+                            var data = 'email=' + emailGet + '&subject=' + subject + '&message=' + message;
+                            console.log(data)
+                            $.ajax({
+                                type: 'POST',
+                                url: 'sample_send_email.php',
+                                data: data,
+                                success: function (response) {
+                                    console.log(response);
+                                    if (response === 'success') {
+                                        // Assuming you have modalContent and modalLabel defined in your HTML
+                                    } else {
+
+                                    }
+                                }
+                            });
                         } else {
                             // Handle errors
                             console.error("Form submission failed.");
@@ -519,25 +535,29 @@ file_put_contents('UIDContainer.php', $Write);
                     .catch(error => {
                         console.error("An error occurred:", error);
                         // Handle any network or request errors
-                    });
+                    }); parentForm.reset();
+                const divRemover = document.getElementById('child-div');
+                divRemover.remove();
             } else if (convertstudid.length !== 10) {
                 parent_studid.setCustomValidity("Your student id must be a 10-digit number");
                 errorMessage = "Invalid student ID.";
             } else {
                 errorMessage = "Please fill in all required fields.";
             }
-        } else if (!parent_fname.validity.valid) {
-            errorMessage = parent_fname.validationMessage + " (First Name)";
-        } else if (!parent_mname.validity.valid) {
-            errorMessage = parent_mname.validationMessage + " (Middle Name)";
-        } else if (!parent_lname.validity.valid) {
-            errorMessage = parent_lname.validationMessage + " (Last Name)";
-        } else if (!parent_email.validity.valid) {
-            errorMessage = parent_email.validationMessage + " (Email)";
-        }
+        } else {
+            if (!parent_fname.validity.valid) {
+                errorMessage = parent_fname.validationMessage + " (First Name)";
+            } else if (!parent_mname.validity.valid) {
+                errorMessage = parent_mname.validationMessage + " (Middle Name)";
+            } else if (!parent_lname.validity.valid) {
+                errorMessage = parent_lname.validationMessage + " (Last Name)";
+            } else if (!parent_email.validity.valid) {
+                errorMessage = parent_email.validationMessage + " (Email)";
+            }
 
-        modalbodycontent.innerHTML = errorMessage;
-        $('#Errormodal').modal('show');
+            modalbodycontent.innerHTML = errorMessage;
+            $('#Errormodal').modal('show');
+        }
 
 
 
@@ -587,32 +607,34 @@ file_put_contents('UIDContainer.php', $Write);
             } else {
                 errorMessage = "Please fill in all required fields.";
             }
-        } else if (!fname.validity.valid) {
-            errorMessage = fname.validationMessage + ("(First Name)");
-        }
-        else if (!mname.validity.valid) {
-            errorMessage = mname.validationMessage + ("(Middle Name)");
-        }
-        else if (!lname.validity.valid) {
-            errorMessage = lname.validationMessage + ("(Last Name)");
-        }
-        else if (!studid.validity.valid) {
-            errorMessage = studid.validationMessage + ("(Student )");
-        }
-        else if (!section.validity.valid) {
-            errorMessage = section.validationMessage + ("(Section)");
-        }
-        else if (!email.validity.valid) {
-            errorMessage = email.validationMessage + ("(Email)");
-        }
-        else if (!rfid.value.trim()) {
-            errorMessage = "RFID is required.";
-        }
-        else {
+        } else {
+            if (!fname.validity.valid) {
+                errorMessage = fname.validationMessage + ("(First Name)");
+            }
+            else if (!mname.validity.valid) {
+                errorMessage = mname.validationMessage + ("(Middle Name)");
+            }
+            else if (!lname.validity.valid) {
+                errorMessage = lname.validationMessage + ("(Last Name)");
+            }
+            else if (!studid.validity.valid) {
+                errorMessage = studid.validationMessage + ("(Student )");
+            }
+            else if (!section.validity.valid) {
+                errorMessage = section.validationMessage + ("(Section)");
+            }
+            else if (!email.validity.valid) {
+                errorMessage = email.validationMessage + ("(Email)");
+            }
+            else if (!rfid.value.trim()) {
+                errorMessage = "RFID is required.";
+            }
+            else {
 
+            }
+            modalbodycontent.innerHTML = errorMessage;
+            $('#Errormodal').modal('show');
         }
-        modalbodycontent.innerHTML = errorMessage;
-        $('#Errormodal').modal('show');
 
 
 
@@ -627,6 +649,7 @@ file_put_contents('UIDContainer.php', $Write);
         const prof_Form = document.getElementById("professorForm");
         var modalbodycontent = document.getElementById("Errormodalbody");
         var errorMessage;
+        var emailGet = prof_email.value;
         if (prof_fname.validity.valid && prof_mname.validity.valid && prof_lname.validity.valid && prof_email.validity.valid) {
             const formData = new FormData(prof_Form);
             fetch("add_faculty.php", {
@@ -639,8 +662,23 @@ file_put_contents('UIDContainer.php', $Write);
                         console.log("Form submitted successfully.");
                         modalbodycontent.innerHTML = "This Account is successfully added!";
                         $('#Errormodal').modal('show');
-                        prof_Form.reset();
-                        // Close modal or show success message
+
+                        var subject = 'Email';
+                        var message = 'Test Message';
+                        var data = 'email=' + emailGet + '&subject=' + subject + '&message=' + message;
+                        $.ajax({
+                            type: 'POST',
+                            url: 'sample_send_email.php',
+                            data: data,
+                            success: function (response) {
+                                console.log(response);
+                                if (response === 'success') {
+                                    // Assuming you have modalContent and modalLabel defined in your HTML
+                                } else {
+
+                                }
+                            }
+                        });
                     } else {
                         // Handle errors
                         console.error("Form submission failed.");
@@ -650,8 +688,7 @@ file_put_contents('UIDContainer.php', $Write);
                 .catch(error => {
                     console.error("An error occurred:", error);
                     // Handle any network or request errors
-                });
-
+                }); prof_Form.reset();
         }
         else if (!prof_fname.validity.valid) {
             errorMessage = prof_fname.validationMessage + " (First Name)";
@@ -668,10 +705,7 @@ file_put_contents('UIDContainer.php', $Write);
 
         modalbodycontent.innerHTML = errorMessage;
         $('#Errormodal').modal('show');
-
-
     }
-
 </script>
 
 </html>

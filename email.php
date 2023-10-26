@@ -107,6 +107,7 @@
     $('#emailForm button[type="button"]').prop('disabled', true);
     $('.lds-dual-ring').show();
     var formData = $('#emailForm').serialize();
+    console.log(formData);
     $.ajax({
       type: 'POST',
       url: 'sample_send_email.php',
