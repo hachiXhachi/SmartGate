@@ -73,6 +73,24 @@ if (isset($_SESSION['mode'])) {
 </head>
 
 <body id="background-image-container">
+	<!-- error modal -->
+	<div class="modal fade" id="Errormodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
+		style="font-family:arial">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h1 class="modal-title fs-5" id="exampleModalLabel">Please fill out the fields properly</h1>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body" id=Errormodalbody>
+
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
 	<nav class="navbar" href="#" id="navbar">
 		<div class="navbar-brand" style="display: flex;align-items: center;justify-content: center;margin-left:5%;">
 			<div class="image">
@@ -86,7 +104,7 @@ if (isset($_SESSION['mode'])) {
 		</div>
 
 	</nav>
-	<form action="verify_login.php" method="post">
+	<form method="post" id="loginForm">
 		<div class="container position-absolute top-50 start-50 translate-middle text-white" id="container">
 			<img src="icons/logo_sarmiento.png" class="img-thumbnail bg-transparent"
 				style="border:none ; width:20%; display: block; margin-left: auto; margin-right: auto;"
@@ -166,7 +184,45 @@ if (isset($_SESSION['mode'])) {
 	</nav>
 
 </body>
-<script src="node_modules\bootstrap\dist\js\bootstrap.bundle.min.js">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="node_modules\bootstrap\dist\js\bootstrap.bundle.min.js"></script>
+
+<script>
+	$(document).ready(function () {
+		$('#loginForm').submit(function (event) {
+			event.preventDefault(); // Prevent the form from submitting normally
+
+			// Get the form data
+			var formData = $(this).serialize();
+
+			// Send an AJAX request
+			$.ajax({
+				type: 'POST',
+				url: 'verify_login.php',
+				data: formData,
+				dataType: 'json', // Expect JSON response
+
+				success: function (data) {
+					console.log(data);
+					if (data.status === 'success') {
+						if (data.mode === 'parent') {
+							window.location.href = 'parents_dashboard.php';
+						} else if (data.mode === 'admin') {
+							window.location.href = 'admin_dashboard.php';
+						} else if (data.mode === 'faculty') {
+							window.location.href = 'faculty_dashboard.php';
+						} else if (data.mode === 'security') {
+							window.location.href = 'security_dashboard.php';
+						}
+					} else {
+						document.getElementById('Errormodalbody').innerHTML = data.error_message;
+						$('#Errormodal').modal('show');
+					}
+				}
+			});
+		});
+	});
+
 
 </script>
 
