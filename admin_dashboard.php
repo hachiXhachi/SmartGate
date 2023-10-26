@@ -689,8 +689,8 @@ file_put_contents('UIDContainer.php', $Write);
                     console.error("An error occurred:", error);
                     // Handle any network or request errors
                 }); prof_Form.reset();
-        }
-        else if (!prof_fname.validity.valid) {
+        }else{
+            if (!prof_fname.validity.valid) {
             errorMessage = prof_fname.validationMessage + " (First Name)";
         } else if (!prof_mname.validity.valid) {
             errorMessage = prof_mname.validationMessage + " (Middle Name)";
@@ -702,6 +702,8 @@ file_put_contents('UIDContainer.php', $Write);
         else {
             errorMessage = "Please fill in all required fields.";
         }
+        }
+        
 
         modalbodycontent.innerHTML = errorMessage;
         $('#Errormodal').modal('show');
