@@ -689,7 +689,7 @@ file_put_contents('UIDContainer.php', $Write);
                     console.error("An error occurred:", error);
                     // Handle any network or request errors
                 }); prof_Form.reset();
-        }else{
+        }else {
             if (!prof_fname.validity.valid) {
             errorMessage = prof_fname.validationMessage + " (First Name)";
         } else if (!prof_mname.validity.valid) {
@@ -702,11 +702,12 @@ file_put_contents('UIDContainer.php', $Write);
         else {
             errorMessage = "Please fill in all required fields.";
         }
+        modalbodycontent.innerHTML = errorMessage;
+        $('#Errormodal').modal('show');
         }
         
 
-        modalbodycontent.innerHTML = errorMessage;
-        $('#Errormodal').modal('show');
+        
     }
 </script>
 
