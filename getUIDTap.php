@@ -35,7 +35,7 @@ $row = $stmt->fetch();
 $sql = "INSERT INTO attendance_tbl(student_id, date, time_in) VALUES (?, ?, ?)";
 $data = array($row['studentid'], $dateToday, $timeToday);
 if ($row['numrows'] > 0) {
-    echo 'Granted';
+    echo '1';
     $studentData = array(
         'studentid' => isset($row['studentid']) ? $row['studentid'] : '',
         'name' => isset($row['name']) ? $row['name'] : '',
