@@ -1,20 +1,5 @@
+
 <div class="container" style="font-family:sans-seriff; width: 100%;">
-  <style>
-    tr,table,td,th {
-      border: 2px solid black;
-    }
-    #tball{
-      max-height:400px; 
-      overflow-y: auto; 
-      max-width:100%;
-      width:auto;
-    }
-    @media (max-width: 767px){
-      #tball{
-        height: 300px;
-      }
-    }
-  </style>
   <div class="table-container" id="tball">
     <table class="table table-hover text-center">
       <thead>
@@ -55,49 +40,6 @@
           <td>Mark</td>
           <td>Otto</td>
         </tr>
-        <tr>
-          <th scope="row">1</th>
-          <td>Mark</td>
-          <td>Otto</td>
-          <td>Mark</td>
-          <td>Otto</td>
-        </tr>
-        <tr>
-          <th scope="row">2</th>
-          <td>Jacob</td>
-          <td>Thornton</td>
-          <td>Mark</td>
-          <td>Otto</td>
-        </tr>
-        <tr>
-          <th scope="row">1</th>
-          <td>Mark</td>
-          <td>Otto</td>
-          <td>Mark</td>
-          <td>Otto</td>
-        </tr>
-        <tr>
-          <th scope="row">2</th>
-          <td>Jacob</td>
-          <td>Thornton</td>
-          <td>Mark</td>
-          <td>Otto</td>
-        </tr>
-        <tr>
-          <th scope="row">1</th>
-          <td>Mark</td>
-          <td>Otto</td>
-          <td>Mark</td>
-          <td>Otto</td>
-        </tr>
-        <tr>
-          <th scope="row">2</th>
-          <td>Jacob</td>
-          <td>Thornton</td>
-          <td>Mark</td>
-          <td>Otto</td>
-        </tr>
-
       </tbody>
     </table>
   </div>

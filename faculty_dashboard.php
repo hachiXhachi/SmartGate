@@ -9,7 +9,15 @@ include 'includes/session.php';
   <title>Faculty</title>
   <meta name='viewport' content='width=device-width, initial-scale=1'>
   <link rel='stylesheet' href='src/main.css'>
+  <script src="node_modules\bootstrap\dist\js\bootstrap.bundle.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.13.3/css/selectize.bootstrap4.min.css"
+    rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.13.3/js/standalone/selectize.min.js"></script>
   <script src="https://kit.fontawesome.com/613bb0837d.js" crossorigin="anonymous"></script>
+
+
   <style>
     .content {
       min-height: 100vh;
@@ -55,6 +63,10 @@ include 'includes/session.php';
 
     .sidebar li a {
       color: #fff;
+    }
+
+    #selectSection {
+      display: none;
     }
 
     #container {
@@ -126,8 +138,31 @@ include 'includes/session.php';
         max-height: 300px;
       }
     }
+
+    tr,
+    table,
+    td,
+    th {
+      border: 2px solid black;
+    }
+
+    #tball {
+      max-height: 300px;
+      overflow-y: auto;
+      max-width: 100%;
+      width: auto;
+    }
+
+    @media (max-width: 767px) {
+      #tball {
+        height: 300px;
+      }
+    }
   </style>
+
 </head>
+
+
 
 <!-- change pass Modal -->
 <div class="modal fade" id="parentChangepassModal" tabindex="5" aria-labelledby="exampleModalLabel" aria-hidden="true"
@@ -154,28 +189,33 @@ include 'includes/session.php';
     <div class="sidebar d-mb-none" id="side_nav">
       <div class="header-box px-3 pt-3 pb-4 py-2 d-flex justify-content-between">
         <img src="icons/logo_sarmiento.png" width="40" class="img-fluid"> &nbsp;
-        <h5 class="text-white py-1 px-2">Parents Dashboard</h5>
+        <h5 class="text-white py-1 px-2">Faculty Dashboard</h5>
         <button class="btn d-block px-1 py-0 close-btn text-white"><i class="fa-solid fa-bars-staggered"></i></button>
       </div>
       <hr class="h-color mx-4">
       <ul class="list-unstyled px-5 py-3">
         <li class="active"><a class="text-decoration-none text-white d-block text-center py-2"
-            onclick="loadView('faculty_home')"><i class="fa-solid fa-house"></i> Home</a></li>
+            onclick="loadView('faculty_home');hideSelect()"><i class="fa-solid fa-house"></i> Home</a></li>
         <hr class="h-color mx-4">
         <li><a class="text-decoration-none text-white d-block text-center py-2"
-            onclick="loadView('faculty_attendance')"><i class="fa-solid fa-clipboard-user"></i> View Attendance</a></li>
+            onclick="loadView('faculty_attendance');showSelect()"><i class="fa-solid fa-clipboard-user"></i> View
+            Attendance</a></li>
         <hr class="h-color mx-4">
         <li><a class="text-decoration-none text-white d-block text-center py-2"
-            onclick="loadView('faculty_notification')"><i class="fa-solid fa-bell"></i> Notification Tab</a></li>
+            onclick="loadView('faculty_notification');hideSelect()"><i class="fa-solid fa-bell"></i> Notification Tab</a></li>
         <hr class="h-color mx-4">
         <li><a class="text-decoration-none text-white d-block text-center py-2"
-            onclick="loadView('faculty_change_password')"><i class="fa-solid fa-key"></i> Change Password</a></li>
+            onclick="loadView('faculty_change_password');hideSelect()"><i class="fa-solid fa-key"></i> Change Password</a></li>
       </ul>
       <div class="text-center py-5">
         <button type="button" id="logout_button" class="btn tn btn-outline-secondary text-white px-5"
           style="border: 2px solid black; border-radius: 5px;">Logout</button>
       </div>
     </div>
+    <div>
+
+    </div>
+
     <div class="content">
       <nav class="navbar navbar-expand-lg bg-transparent">
         <div class="container-fluid">
@@ -196,11 +236,18 @@ include 'includes/session.php';
         </div>
       </nav>
     </div>
-
+    <div class="container mt-4"  id="selectSection">
+      <div class="form-group" id="insideDiv" style="position:relative; left:10%;width:60%;">
+        <select id="dropdown"></select>
+      </div>
+    </div>
   </div>
+
+
   <div class="base position-absolute top-50 start-50 translate-middle text-white" id="base">
     <div class="cotainer position-absolute top-50 start-50 translate-middle text-white" id="container"
       style="font-family:sans-serif;display: flex;align-items: center;justify-content: center;">
+
       <img src="icons/icon_email.jpg" class="img-fluid" width="70" alt="profile" style="margin-right: 10%;">
       <div class="text-white">
         <?php
@@ -210,6 +257,8 @@ include 'includes/session.php';
       </div>
     </div>
   </div>
+
+
   <nav class="navbar navbar-expand-lg fixed-bottom" style="font-family: sans-seriff;">
     <div class="container-fluid">
       <a class="navbar-brand text-white" href="#">Contact Us</a>
@@ -249,10 +298,9 @@ include 'includes/session.php';
 
 
 </body>
-<script src="node_modules\bootstrap\dist\js\bootstrap.bundle.min.js"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
 
+
+<script>
   $(".sidebar ul li").on('click', function () {
     $(".sidebar ul li.active").removeClass('active');
     $(this).addClass('active');
@@ -261,16 +309,17 @@ include 'includes/session.php';
   $('.open-btn').on('click', function () {
     $('.sidebar').addClass('active');
     $('.sidebar').removeClass('d-mb-none');
-
-
-
   });
   $('.close-btn').on('click', function () {
     $('.sidebar').removeClass('active');
     $('.sidebar').addClass('d-mb-none');
     ;
   });
-
+  $('.close-btn').on('click', function () {
+    $('.sidebar').removeClass('active');
+    $('.sidebar').addClass('d-mb-none');
+    ;
+  });
   function loadView(viewName) {
     fetch(`${viewName}.php`)
       .then(response => response.text())
@@ -281,11 +330,34 @@ include 'includes/session.php';
         console.error('Error loading view:', error);
       });
   }
+  $(document).ready(function () {
+    $('#dropdown').selectize({
+      create: false,
+      sortField: 'text',
+      placeholder: 'Section'
+    });
+
+    // Add options to the Selectize dropdown
+    const selectize = $('#dropdown')[0].selectize;
+    selectize.addOption([
+      { value: 'Option 1', text: 'Option 1' },
+      { value: 'Option 2', text: 'Option 2' },
+      { value: 'Option 3', text: 'Option 3' },
+      { value: 'Option 4', text: 'Option 4' },
+      { value: 'Option 5', text: 'Option 5' },
+      { value: 'Option 6', text: 'Option 6' },
+    ]);
+  });
   function myFunction() {
     var newDiv = $("<div>").addClass("child-div").text("Student enter the school premises");
     $("#targetDiv").append(newDiv);
   }
-
+  function showSelect() {
+    document.getElementById("selectSection").style.display = "block";
+  }
+  function hideSelect() {
+    document.getElementById("selectSection").style.display = "none";
+  }
   function logoutFunction() {
     window.location.href = 'logout.php';
   }
@@ -331,7 +403,6 @@ include 'includes/session.php';
 
 
   }
-
 </script>
 
 </html>

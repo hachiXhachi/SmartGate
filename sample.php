@@ -5,17 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Typeable Dropdown with Search</title>
 
-    <!-- Include Bootstrap CSS -->
+  
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    
-    <!-- Include jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-    <!-- Include Selectize.js CSS and JS -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.13.3/css/selectize.bootstrap4.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.13.3/js/standalone/selectize.min.js"></script>
 </head>
-<body>
+<body style="background-color:black;">
     <div class="container mt-4">
         <h2>Typeable Dropdown with Search</h2>
         <div class="form-group">
@@ -24,11 +20,9 @@
     </div>
 
     <script>
-        // Ensure that the DOM is ready before executing jQuery code
         $(document).ready(function () {
-            // Initialize Selectize on the select element
             $('#dropdown').selectize({
-                create: false, // Disable creating new options
+                create: false, 
                 sortField: 'text',
                 placeholder: 'Type to search or select...'
             });
