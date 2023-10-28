@@ -202,10 +202,12 @@ include 'includes/session.php';
             Attendance</a></li>
         <hr class="h-color mx-4">
         <li><a class="text-decoration-none text-white d-block text-center py-2"
-            onclick="loadView('faculty_notification');hideSelect()"><i class="fa-solid fa-bell"></i> Notification Tab</a></li>
+            onclick="loadView('faculty_notification');hideSelect()"><i class="fa-solid fa-bell"></i> Notification
+            Tab</a></li>
         <hr class="h-color mx-4">
         <li><a class="text-decoration-none text-white d-block text-center py-2"
-            onclick="loadView('faculty_change_password');hideSelect()"><i class="fa-solid fa-key"></i> Change Password</a></li>
+            onclick="loadView('faculty_change_password');hideSelect()"><i class="fa-solid fa-key"></i> Change
+            Password</a></li>
       </ul>
       <div class="text-center py-5">
         <button type="button" id="logout_button" class="btn tn btn-outline-secondary text-white px-5"
@@ -236,7 +238,7 @@ include 'includes/session.php';
         </div>
       </nav>
     </div>
-    <div class="container mt-4"  id="selectSection">
+    <div class="container mt-4" id="selectSection">
       <div class="form-group" id="insideDiv" style="position:relative; left:10%;width:60%;">
         <select id="dropdown"></select>
       </div>
@@ -337,16 +339,30 @@ include 'includes/session.php';
       placeholder: 'Section'
     });
 
-    // Add options to the Selectize dropdown
-    const selectize = $('#dropdown')[0].selectize;
-    selectize.addOption([
-      { value: 'Option 1', text: 'Option 1' },
-      { value: 'Option 2', text: 'Option 2' },
-      { value: 'Option 3', text: 'Option 3' },
-      { value: 'Option 4', text: 'Option 4' },
-      { value: 'Option 5', text: 'Option 5' },
-      { value: 'Option 6', text: 'Option 6' },
-    ]);
+    // Function to fetch data from the database using PHP with a POST request
+    function fetchDataFromDatabase() {
+      $.ajax({
+        url: 'searchSection.php', // Replace with the actual PHP script URL
+        method: 'POST', // Use POST method
+        dataType: 'json',
+        success: function (data) {
+          // Update the options in the Selectize dropdown
+          console.log(data);
+          const selectize = $('#dropdown')[0].selectize;
+          selectize.clearOptions();
+          data.forEach(function (item) {
+          selectize.addOption({ value: item.value, text: item.value });
+        });
+          selectize.refreshOptions();
+        },
+        error: function (error) {
+          console.error('Error fetching data: ', error);
+        }
+      });
+    }
+
+    // Call the function to fetch data from the database
+    fetchDataFromDatabase();
   });
   function myFunction() {
     var newDiv = $("<div>").addClass("child-div").text("Student enter the school premises");
