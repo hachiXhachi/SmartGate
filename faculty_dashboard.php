@@ -240,7 +240,9 @@ include 'includes/session.php';
     </div>
     <div class="container mt-4" id="selectSection">
       <div class="form-group" id="insideDiv" style="position:relative; left:10%;width:60%;">
-        <select id="dropdown"></select>
+        <select id="dropdown">
+          <option id="allQuery">All</option>
+        </select>
       </div>
     </div>
   </div>
@@ -303,6 +305,7 @@ include 'includes/session.php';
 
 
 <script>
+
   $(".sidebar ul li").on('click', function () {
     $(".sidebar ul li.active").removeClass('active');
     $(this).addClass('active');
@@ -333,10 +336,13 @@ include 'includes/session.php';
       });
   }
   $(document).ready(function () {
-    $('#dropdown').selectize({
+    var selectizeControl = $('#dropdown').selectize({
       create: false,
       sortField: 'text',
-      placeholder: 'Section'
+      placeholder: 'Section',
+      onChange: function (value) {
+        changeFunction(value);
+      }
     });
 
     // Function to fetch data from the database using PHP with a POST request
@@ -347,12 +353,11 @@ include 'includes/session.php';
         dataType: 'json',
         success: function (data) {
           // Update the options in the Selectize dropdown
-          console.log(data);
-          const selectize = $('#dropdown')[0].selectize;
+          var selectize = selectizeControl[0].selectize;
           selectize.clearOptions();
           data.forEach(function (item) {
-          selectize.addOption({ value: item.value, text: item.value });
-        });
+            selectize.addOption({ value: item.value, text: item.value });
+          });
           selectize.refreshOptions();
         },
         error: function (error) {
@@ -363,6 +368,26 @@ include 'includes/session.php';
 
     // Call the function to fetch data from the database
     fetchDataFromDatabase();
+
+    // Function to process the selected value
+    function changeFunction(selectedValue) {
+      if (selectedValue) {
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "attendance_database.php", true);
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+        xhr.onreadystatechange = function () {
+          if (xhr.readyState == 4 && xhr.status == 200) {
+            // Display the response from the PHP script in the result container
+            var response = xhr.responseText;
+            document.getElementById("attendance_list").innerHTML = response;
+          }
+        };
+
+        // Send the selected value as POST data
+        xhr.send("selectedValue=" + selectedValue);
+      } 
+    }
   });
   function myFunction() {
     var newDiv = $("<div>").addClass("child-div").text("Student enter the school premises");
