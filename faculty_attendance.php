@@ -28,7 +28,7 @@ include 'includes/session.php';
               echo "<td>" . $row2['time_in'] . "</td>";
               echo "<td>" . $row2['time_out'] . "</td>";
               echo "<td>" . $row2['name'] . "</td>";
-              echo "<td>" . $row2['section'] . "</td>";
+              echo "<td>" . $row2['sectionid'] . "</td>";
               echo "</tr>";
             }
           }
