@@ -11,13 +11,10 @@ include 'includes/session.php';
   <link rel='stylesheet' href='src/main.css'>
   <script src="node_modules\bootstrap\dist\js\bootstrap.bundle.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
   <link href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.13.3/css/selectize.bootstrap4.min.css"
     rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.13.3/js/standalone/selectize.min.js"></script>
   <script src="https://kit.fontawesome.com/613bb0837d.js" crossorigin="anonymous"></script>
-
-
   <style>
     .content {
       min-height: 100vh;
@@ -33,6 +30,7 @@ include 'includes/session.php';
       transition: all .2s ease;
       z-index: 1;
     }
+
     #side_nav.active {
       margin-left: 0;
       transition: all .2s ease;
@@ -158,26 +156,30 @@ include 'includes/session.php';
       }
     }
   </style>
-<script>
-      function searchFilter(page_num) {
-    page_num = page_num?page_num:0;
-    var keywords = $('#keywords').val();
-  
-    $.ajax({
+  <script>
+    function searchFilter(page_num) {
+      page_num = page_num ? page_num : 0;
+      var sectionSearch = $('#dropdown').val(); // Get the selected section value
+      $.ajax({
         type: 'POST',
         url: 'getData.php',
-        data:'page='+page_num+'&keywords='+keywords,
+        data: {
+          page: page_num,
+          sectionSearch: sectionSearch
+        },
         beforeSend: function () {
-            $('.loading-overlay').show();
+          $('.loading-overlay').show();
         },
         success: function (html) {
-            $('#dataContainer').html(html);
-            $('.loading-overlay').fadeOut("slow");
+          $('#dataContainer').html(html);
+          $('.loading-overlay').fadeOut("slow");
         }
-    });
+      });
 
-  }
-</script>
+
+
+    }
+  </script>
 </head>
 
 
@@ -213,18 +215,18 @@ include 'includes/session.php';
       <hr class="h-color mx-4">
       <ul class="list-unstyled px-5 py-3">
         <li class="active"><a class="text-decoration-none text-white d-block text-center py-2"
-            onclick="loadView('faculty_home');hideSelect()"><i class="fa-solid fa-house"></i> Home</a></li>
+            onclick="loadView('faculty_home');hideSelect()" id="home"><i class="fa-solid fa-house"></i> Home</a></li>
         <hr class="h-color mx-4">
         <li><a class="text-decoration-none text-white d-block text-center py-2"
-            onclick="loadView('faculty_attendance');showSelect()"><i class="fa-solid fa-clipboard-user"></i> View
+            onclick="loadView('faculty_attendance');showSelect()" id="attend"><i class="fa-solid fa-clipboard-user"></i> View
             Attendance</a></li>
         <hr class="h-color mx-4">
         <li><a class="text-decoration-none text-white d-block text-center py-2"
-            onclick="loadView('faculty_notification');hideSelect()"><i class="fa-solid fa-bell"></i> Notification
+            onclick="loadView('faculty_notification');hideSelect()" id="notif"><i class="fa-solid fa-bell"></i> Notification
             Tab</a></li>
         <hr class="h-color mx-4">
         <li><a class="text-decoration-none text-white d-block text-center py-2"
-            onclick="loadView('faculty_change_password');hideSelect()"><i class="fa-solid fa-key"></i> Change
+            onclick="loadView('faculty_change_password');hideSelect()" id="pass"><i class="fa-solid fa-key"></i> Change
             Password</a></li>
       </ul>
       <div class="text-center py-5">
@@ -258,7 +260,7 @@ include 'includes/session.php';
     </div>
     <div class="container mt-4" id="selectSection">
       <div class="form-group" id="insideDiv" style="position:relative; left:10%;width:60%;">
-        <select id="dropdown" onChange="searchFilter();">
+        <select id="dropdown" value="All" onChange="searchFilter();">
           <option id="allQuery">All</option>
         </select>
       </div>
@@ -344,22 +346,25 @@ include 'includes/session.php';
     ;
   });
   function loadView(viewName) {
+    document.getElementById('dropdown').value = "All";
     fetch(`${viewName}.php`)
       .then(response => response.text())
       .then(data => {
         document.getElementById('base').innerHTML = data;
+
       })
       .catch(error => {
         console.error('Error loading view:', error);
       });
   }
+
   $(document).ready(function () {
     var selectizeControl = $('#dropdown').selectize({
       create: false,
       sortField: 'text',
-      placeholder: 'Section',
+      value: 'All',
     });
-    
+
     // Function to fetch data from the database using PHP with a POST request
     function fetchDataFromDatabase() {
       $.ajax({
@@ -373,6 +378,22 @@ include 'includes/session.php';
           data.forEach(function (item) {
             selectize.addOption({ value: item.value, text: item.value });
           });
+          $('#home').click(function () {
+            // Set the value of the Selectize input to "all"
+            selectize.setValue('All');
+          });
+          $('#attend').click(function () {
+            // Set the value of the Selectize input to "all"
+            selectize.setValue('All');
+          });
+          $('#notif').click(function () {
+            // Set the value of the Selectize input to "all"
+            selectize.setValue('All');
+          });
+          $('#pass').click(function () {
+            // Set the value of the Selectize input to "all"
+            selectize.setValue('All');
+          });
           selectize.refreshOptions();
         },
         error: function (error) {
@@ -385,6 +406,7 @@ include 'includes/session.php';
     fetchDataFromDatabase();
 
   });
+
   function myFunction() {
     var newDiv = $("<div>").addClass("child-div").text("Student enter the school premises");
     $("#targetDiv").append(newDiv);
@@ -438,7 +460,7 @@ include 'includes/session.php';
       $('#parentChangepassModal').modal('show');
     }
 
-}
+  }
 </script>
 
 </html>
