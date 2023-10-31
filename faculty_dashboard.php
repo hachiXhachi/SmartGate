@@ -33,7 +33,6 @@ include 'includes/session.php';
       transition: all .2s ease;
       z-index: 1;
     }
-
     #side_nav.active {
       margin-left: 0;
       transition: all .2s ease;
@@ -159,7 +158,26 @@ include 'includes/session.php';
       }
     }
   </style>
+<script>
+      function searchFilter(page_num) {
+    page_num = page_num?page_num:0;
+    var keywords = $('#keywords').val();
+  
+    $.ajax({
+        type: 'POST',
+        url: 'getData.php',
+        data:'page='+page_num+'&keywords='+keywords,
+        beforeSend: function () {
+            $('.loading-overlay').show();
+        },
+        success: function (html) {
+            $('#dataContainer').html(html);
+            $('.loading-overlay').fadeOut("slow");
+        }
+    });
 
+  }
+</script>
 </head>
 
 
@@ -240,7 +258,7 @@ include 'includes/session.php';
     </div>
     <div class="container mt-4" id="selectSection">
       <div class="form-group" id="insideDiv" style="position:relative; left:10%;width:60%;">
-        <select id="dropdown">
+        <select id="dropdown" onChange="searchFilter();">
           <option id="allQuery">All</option>
         </select>
       </div>
@@ -340,11 +358,8 @@ include 'includes/session.php';
       create: false,
       sortField: 'text',
       placeholder: 'Section',
-      onChange: function (value) {
-        changeFunction(value);
-      }
     });
-
+    
     // Function to fetch data from the database using PHP with a POST request
     function fetchDataFromDatabase() {
       $.ajax({
@@ -369,25 +384,6 @@ include 'includes/session.php';
     // Call the function to fetch data from the database
     fetchDataFromDatabase();
 
-    // Function to process the selected value
-    function changeFunction(selectedValue) {
-      if (selectedValue) {
-        var xhr = new XMLHttpRequest();
-        xhr.open("POST", "attendance_database.php", true);
-        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-
-        xhr.onreadystatechange = function () {
-          if (xhr.readyState == 4 && xhr.status == 200) {
-            // Display the response from the PHP script in the result container
-            var response = xhr.responseText;
-            document.getElementById("attendance_list").innerHTML = response;
-          }
-        };
-
-        // Send the selected value as POST data
-        xhr.send("selectedValue=" + selectedValue);
-      } 
-    }
   });
   function myFunction() {
     var newDiv = $("<div>").addClass("child-div").text("Student enter the school premises");
@@ -442,8 +438,7 @@ include 'includes/session.php';
       $('#parentChangepassModal').modal('show');
     }
 
-
-  }
+}
 </script>
 
 </html>
