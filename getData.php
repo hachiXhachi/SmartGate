@@ -17,7 +17,7 @@ if (isset($_POST['page'])) {
       $whereSQL = " WHERE (sectionid LIKE '%" . $_POST['sectionSearch'] . "%')"; 
   }
     // Count of all records 
-    $query = $con->query("SELECT COUNT(*) as rowNum FROM student_tbl LEFT JOIN attendance_tbl ON student_tbl.studentid=attendance_tbl.student_id " . $whereSQL);
+    $query = $con->query("SELECT COUNT(*) as rowNum FROM attendance_tbl LEFT JOIN student_tbl ON attendance_tbl.student_id=student_tbl.studentid" . $whereSQL);
     $result = $query->fetch(PDO::FETCH_ASSOC);
     $rowCount = $result['rowNum'];
 
@@ -33,7 +33,7 @@ if (isset($_POST['page'])) {
     $pagination = new Pagination($pagConfig);
 
     // Fetch records based on the offset and limit 
-    $query = $con->query("SELECT * FROM student_tbl LEFT JOIN attendance_tbl ON student_tbl.studentid=attendance_tbl.student_id " . $whereSQL . " ORDER BY id DESC LIMIT $offset,$limit");
+    $query = $con->query("SELECT * FROM attendance_tbl LEFT JOIN student_tbl ON attendance_tbl.student_id=student_tbl.studentid" . $whereSQL . " ORDER BY id DESC LIMIT $offset,$limit");
     ?>
     <!-- Data list container --><div>
         <table class="table table-hover text-center">

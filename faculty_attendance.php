@@ -26,7 +26,7 @@ $pagConfig = array(
 $pagination = new Pagination($pagConfig);
 
 // Fetch records based on the limit 
-$query = $con->query("SELECT * FROM student_tbl LEFT JOIN attendance_tbl ON student_tbl.studentid=attendance_tbl.student_id ORDER BY id DESC LIMIT $limit");
+$query = $con->query("SELECT * FROM attendance_tbl LEFT JOIN student_tbl ON attendance_tbl.student_id=student_tbl.studentid ORDER BY id DESC LIMIT $limit");
 ?>
 <!-- <link rel='stylesheet' href='src/main.css'>
 <script src="node_modules\bootstrap\dist\js\bootstrap.bundle.min.js"></script>
