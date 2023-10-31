@@ -147,7 +147,6 @@ include 'includes/session.php';
 
     #tball {
       max-height: 300px;
-      overflow-y: auto;
       max-width: 100%;
       width: auto;
     }
@@ -160,13 +159,15 @@ include 'includes/session.php';
   </style>
 <script>
       function searchFilter(page_num) {
-    page_num = page_num?page_num:0;
-    var keywords = $('#keywords').val();
-  
+        page_num = page_num?page_num:0;
+    var sectionSearch = $('#dropdown').val(); // Get the selected section value
     $.ajax({
         type: 'POST',
         url: 'getData.php',
-        data:'page='+page_num+'&keywords='+keywords,
+        data: {
+            page: page_num,
+            sectionSearch: sectionSearch
+        },
         beforeSend: function () {
             $('.loading-overlay').show();
         },
@@ -175,6 +176,8 @@ include 'includes/session.php';
             $('.loading-overlay').fadeOut("slow");
         }
     });
+
+   
 
   }
 </script>
@@ -203,7 +206,8 @@ include 'includes/session.php';
 </div>
 
 <body id="background-image-dashboard">
-  <div class="main-container d-flex" style="font-family: sans-seriff;">
+  <div>
+    <div class="main-container d-flex" style="font-family: sans-seriff;">
     <div class="sidebar d-mb-none" id="side_nav">
       <div class="header-box px-3 pt-3 pb-4 py-2 d-flex justify-content-between">
         <img src="icons/logo_sarmiento.png" width="40" class="img-fluid"> &nbsp;
@@ -258,7 +262,7 @@ include 'includes/session.php';
     </div>
     <div class="container mt-4" id="selectSection">
       <div class="form-group" id="insideDiv" style="position:relative; left:10%;width:60%;">
-        <select id="dropdown" onChange="searchFilter();">
+        <select id="dropdown" onChange="searchFilter();" name="sectionSearch">
           <option id="allQuery">All</option>
         </select>
       </div>
@@ -317,7 +321,8 @@ include 'includes/session.php';
       </div>
     </div>
   </nav>
-
+  </div>
+ 
 
 </body>
 

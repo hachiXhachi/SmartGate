@@ -49,9 +49,9 @@ $query = $con->query("SELECT * FROM student_tbl LEFT JOIN attendance_tbl ON stud
 </div> -->
 <div class="datalist-wrapper">
     <!-- Loading overlay -->
-    <div class="loading-overlay">
+    <!-- <div class="loading-overlay">
         <div class="overlay-content">Loading...</div>
-    </div>
+    </div> -->
 
     <!-- Data list container -->
     <div id="dataContainer" class="container" style="font-family:sans-seriff; width: 100%;">
@@ -101,6 +101,6 @@ $query = $con->query("SELECT * FROM student_tbl LEFT JOIN attendance_tbl ON stud
             </tbody>
     </table>
         <!-- Display pagination links -->
-        <?php echo $pagination->createLinks(); ?>
+       <p> <?php echo $pagination->createLinks(); ?>
     </div>
 </div>

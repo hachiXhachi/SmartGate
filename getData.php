@@ -12,16 +12,12 @@ if (isset($_POST['page'])) {
     $limit = 5;
 
    
-    // $whereSQL = ''; 
-    // if(!empty($_POST['keywords'])){ 
-    //     $whereSQL = " WHERE (first_name LIKE '%".$_POST['keywords']."%' OR last_name LIKE '%".$_POST['keywords']."%' OR email LIKE '%".$_POST['keywords']."%' OR country LIKE '%".$_POST['keywords']."%') "; 
-    // } 
-    // if(isset($_POST['filterBy']) && $_POST['filterBy'] != ''){ 
-    //     $whereSQL .= (strpos($whereSQL, 'WHERE') !== false)?" AND ":" WHERE "; 
-    //     $whereSQL .= " status = ".$_POST['filterBy']; 
-    // } 
+    $whereSQL = ''; 
+    if (!empty($_POST['sectionSearch']) && $_POST['sectionSearch'] !== "All") { 
+      $whereSQL = " WHERE (sectionid LIKE '%" . $_POST['sectionSearch'] . "%')"; 
+  }
     // Count of all records 
-    $query = $con->query("SELECT COUNT(*) as rowNum FROM attendance_tbl ");
+    $query = $con->query("SELECT COUNT(*) as rowNum FROM student_tbl LEFT JOIN attendance_tbl ON student_tbl.studentid=attendance_tbl.student_id " . $whereSQL);
     $result = $query->fetch(PDO::FETCH_ASSOC);
     $rowCount = $result['rowNum'];
 
@@ -37,19 +33,19 @@ if (isset($_POST['page'])) {
     $pagination = new Pagination($pagConfig);
 
     // Fetch records based on the offset and limit 
-    $query = $con->query("SELECT * FROM student_tbl LEFT JOIN attendance_tbl ON student_tbl.studentid=attendance_tbl.student_id  ORDER BY id DESC LIMIT $offset,$limit");
+    $query = $con->query("SELECT * FROM student_tbl LEFT JOIN attendance_tbl ON student_tbl.studentid=attendance_tbl.student_id " . $whereSQL . " ORDER BY id DESC LIMIT $offset,$limit");
     ?>
     <!-- Data list container --><div>
         <table class="table table-hover text-center">
-    <thead>
-          <tr>
-            <th>Date</th>
-            <th>Time-in</th>
-            <th>Time-out</th>
-            <th>Student Name</th>
-            <th>Section</th>
-          </tr>
-        </thead>
+        <thead>
+        <tr class="table-secondary">
+          <th>Date</th>
+          <th>Time-in</th>
+          <th>Time-out</th>
+          <th>Student Name</th>
+          <th>Section</th>
+        </tr>
+      </thead>
         <tbody id="attendance_list">
           <?php
           if ($query->rowCount() > 0) {
