@@ -41,9 +41,9 @@ if ($row['numrows'] > 0) {
         'name' => isset($row['name']) ? $row['name'] : '',
         'sectionid' => isset($row['sectionid']) ? $row['sectionid'] : '',
         'department' => isset($row['department']) ? $row['department'] : '',
-        // Add more fields as needed
     );
-    
+    //TRIGGER NOTIF HERE 
+    //pag nag login ung user kailangan iaccept nya ung notif confirmation para magka user_id 
     // Encode the array as JSON
     $jsonData = json_encode($studentData);
     

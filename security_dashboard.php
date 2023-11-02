@@ -256,11 +256,6 @@ file_put_contents('getstudentData.php', $phpContent);
             document.getElementById("section").innerHTML = "Section ID: " + sectionId;
             document.getElementById("dpartment").innerHTML = "Department: " + department;
 
-            // Use the data as needed
-            console.log("Student ID: " + studentId);
-            console.log("Name: " + name);
-            console.log("Section ID: " + sectionId);
-            console.log("Department: " + department);
         });
     }
 
