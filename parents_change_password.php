@@ -38,7 +38,7 @@ include 'includes/session.php';
 </style>
 <div class="container" id="container_pass">
   <div style="display: flex;align-items: center;justify-content: center; margin-bottom:10px;">
-    <img src="icons/icon_email.jpg" class="img-fluid" width="70" alt="profile" style="margin-right: 10%;">
+    <img src="assets/icon_email.jpg" class="img-fluid" width="70" alt="profile" style="margin-right: 10%;">
     <div class="text-white">
       <?php
       echo "<h3>" . $user['name'] . "</h3>";

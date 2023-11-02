@@ -161,7 +161,7 @@ file_put_contents('getstudentData.php', $phpContent);
           <button class="btn d-block px-1 py-0 open-btn text-white" id="logout_button"><i
               class="fa-solid fa-bars-staggered"></i></button>&nbsp;&nbsp;&nbsp;&nbsp;
           <div class="image">
-            <img src="icons/bulsu_icon.png" class="image img-fluid" style="width:85px; margin-right: 20px;">
+            <img src="assets/bulsu_icon.png" class="image img-fluid" style="width:85px; margin-right: 20px;">
           </div>
           <div class="text-white">
             <h2>Bulacan State University
@@ -178,7 +178,7 @@ file_put_contents('getstudentData.php', $phpContent);
   <div class="base position-absolute top-50 start-50 translate-middle text-white" id="base">
     <div class="container position-absolute top-50 start-50 translate-middle text-white" id="container"
       style="font-family:sans-serif;display: flex;align-items: center;justify-content: center;">
-      <img src="icons/icon_email.jpg" class="img-fluid" width="100" alt="profile">
+      <img src="assets/icon_email.jpg" class="img-fluid" width="100" alt="profile">
       <div class="text-white">
       </div>
       <div id="side_form">
@@ -201,7 +201,7 @@ file_put_contents('getstudentData.php', $phpContent);
           <li class="nav-item">
             <div class="container-fluid">
               <a class="navbar-brand text-white" href="#">
-                <img src="icons/Kaypian.png" alt="Logo" width="30" class="d-inline-block align-text-center">
+                <img src="assets/Kaypian.png" alt="Logo" width="30" class="d-inline-block align-text-center">
                 Kaypian, San Jose Del Monte Bulacan
               </a>
             </div>
@@ -209,7 +209,7 @@ file_put_contents('getstudentData.php', $phpContent);
           <li class="nav-item">
             <div class="container-fluid">
               <a class="navbar-brand text-white" href="#">
-                <img src="icons/contact.png" alt="Logo" width="30" class="d-inline-block align-text-center">
+                <img src="assets/contact.png" alt="Logo" width="30" class="d-inline-block align-text-center">
                 912-123-1234
               </a>
             </div>
@@ -217,7 +217,7 @@ file_put_contents('getstudentData.php', $phpContent);
           <li class="nav-item">
             <div class="container-fluid">
               <a class="navbar-brand text-white" href="#">
-                <img src="icons/email.png" alt="Logo" width="30" class="d-inline-block align-text-center">
+                <img src="assets/email.png" alt="Logo" width="30" class="d-inline-block align-text-center">
                 officebulsusarmiento@bulsu.edu.ph
               </a>
             </div>

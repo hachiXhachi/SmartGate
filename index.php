@@ -94,7 +94,7 @@ if (isset($_SESSION['mode'])) {
 	<nav class="navbar" href="#" id="navbar">
 		<div class="navbar-brand" style="display: flex;align-items: center;justify-content: center;margin-left:5%;">
 			<div class="image">
-				<img src="icons/bulsu_icon.png" class="img-fluid" style="width:85px; margin-right: 20px;">
+				<img src="assets/bulsu_icon.png" class="img-fluid" style="width:85px; margin-right: 20px;">
 			</div>
 			<div class="text-white">
 				<h2>Bulacan State University<br></h2>
@@ -106,12 +106,12 @@ if (isset($_SESSION['mode'])) {
 	</nav>
 	<form method="post" id="loginForm">
 		<div class="container position-absolute top-50 start-50 translate-middle text-white" id="container">
-			<img src="icons/logo_sarmiento.png" class="img-thumbnail bg-transparent"
+			<img src="assets/logo_sarmiento.png" class="img-thumbnail bg-transparent"
 				style="border:none ; width:20%; display: block; margin-left: auto; margin-right: auto;"
 				alt="Bulsu sarmiento campus">
 			<div class="input-group mb-3 bg-transparent">
 				<span class="input-group-text bg-transparent" style="border:2px solid black; border-right: none;">
-					<img src="icons/icon_email.jpg" class="img-thumbnail bg-transparent"
+					<img src="assets/icon_email.jpg" class="img-thumbnail bg-transparent"
 						style="border:none; width:30px;" alt="emailicon">
 				</span>
 				<input type="text" name="email" class="form-control bg-transparent text-white "
@@ -119,7 +119,7 @@ if (isset($_SESSION['mode'])) {
 			</div>
 			<div class="input-group mb-3 bg-transparent">
 				<span class="input-group-text bg-transparent" style="border:2px solid black; border-right: none;">
-					<img src="icons/icon_password.jpg" class="img-thumbnail bg-transparent"
+					<img src="assets/icon_password.jpg" class="img-thumbnail bg-transparent"
 						style="border:none; width:30px;" alt="passicon">
 				</span>
 				<input type="password" name="password" class="form-control bg-transparent text-white "
@@ -155,7 +155,7 @@ if (isset($_SESSION['mode'])) {
 					<li class="nav-item">
 						<div class="container-fluid">
 							<a class="navbar-brand text-white" href="#">
-								<img src="icons/Kaypian.png" alt="Logo" width="30"
+								<img src="assets/Kaypian.png" alt="Logo" width="30"
 									class="d-inline-block align-text-center">
 								Kaypian, San Jose Del Monte Bulacan
 							</a>
@@ -164,7 +164,7 @@ if (isset($_SESSION['mode'])) {
 					<li class="nav-item">
 						<div class="container-fluid">
 							<a class="navbar-brand text-white" href="#">
-								<img src="icons/contact.png" alt="Logo" width="30"
+								<img src="assets/contact.png" alt="Logo" width="30"
 									class="d-inline-block align-text-center">
 								912-123-1234
 							</a>
@@ -173,7 +173,7 @@ if (isset($_SESSION['mode'])) {
 					<li class="nav-item">
 						<div class="container-fluid">
 							<a class="navbar-brand text-white" href="#">
-								<img src="icons/email.png" alt="Logo" width="30"
+								<img src="assets/email.png" alt="Logo" width="30"
 									class="d-inline-block align-text-center">
 								officebulsusarmiento@bulsu.edu.ph
 							</a>

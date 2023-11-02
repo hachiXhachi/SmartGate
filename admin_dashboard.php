@@ -220,7 +220,7 @@ file_put_contents('UIDContainer.php', $Write);
     <div class="main-container d-flex" style="font-family: sans-seriff;">
         <div class="sidebar d-mb-none" id="side_nav">
             <div class="header-box px-3 pt-3 pb-4 py-2 d-flex justify-content-between">
-                <img src="icons/logo_sarmiento.png" width="40" class="img-fluid"> &nbsp;
+                <img src="assets/logo_sarmiento.png" width="40" class="img-fluid"> &nbsp;
                 <h5 class="text-white py-1 px-2">Admin Dashboard</h5>
                 <button class="btn d-block px-1 py-0 close-btn text-white"><i
                         class="fa-solid fa-bars-staggered"></i></button>
@@ -290,7 +290,7 @@ file_put_contents('UIDContainer.php', $Write);
                         <button class="btn d-block px-1 py-0 open-btn text-white"><i
                                 class="fa-solid fa-bars-staggered"></i></button>&nbsp;&nbsp;&nbsp;&nbsp;
                         <div class="image">
-                            <img src="icons/bulsu_icon.png" class="image img-fluid"
+                            <img src="assets/bulsu_icon.png" class="image img-fluid"
                                 style="width:85px; margin-right: 20px;">
                         </div>
                         <div class="text-white">
@@ -309,7 +309,7 @@ file_put_contents('UIDContainer.php', $Write);
     <div class="base position-absolute top-50 start-50 translate-middle text-white" id="base">
         <div class="cotainer position-absolute top-50 start-50 translate-middle text-white" id="container"
             style="font-family:sans-serif;display: flex;align-items: center;justify-content: center;">
-            <img src="icons/icon_email.jpg" class="img-fluid" width="70" alt="profile" style="margin-right: 10%;">
+            <img src="assets/icon_email.jpg" class="img-fluid" width="70" alt="profile" style="margin-right: 10%;">
             <div class="text-white">
                 <h2>Jian Kyle Albaro
                     <br>
@@ -329,7 +329,7 @@ file_put_contents('UIDContainer.php', $Write);
                     <li class="nav-item">
                         <div class="container-fluid">
                             <a class="navbar-brand text-white" href="#">
-                                <img src="icons/Kaypian.png" alt="Logo" width="30"
+                                <img src="assets/Kaypian.png" alt="Logo" width="30"
                                     class="d-inline-block align-text-center">
                                 Kaypian, San Jose Del Monte Bulacan
                             </a>
@@ -338,7 +338,7 @@ file_put_contents('UIDContainer.php', $Write);
                     <li class="nav-item">
                         <div class="container-fluid">
                             <a class="navbar-brand text-white" href="#">
-                                <img src="icons/contact.png" alt="Logo" width="30"
+                                <img src="assets/contact.png" alt="Logo" width="30"
                                     class="d-inline-block align-text-center">
                                 912-123-1234
                             </a>
@@ -347,7 +347,7 @@ file_put_contents('UIDContainer.php', $Write);
                     <li class="nav-item">
                         <div class="container-fluid">
                             <a class="navbar-brand text-white" href="#">
-                                <img src="icons/email.png" alt="Logo" width="30"
+                                <img src="assets/email.png" alt="Logo" width="30"
                                     class="d-inline-block align-text-center">
                                 officebulsusarmiento@bulsu.edu.ph
                             </a>
