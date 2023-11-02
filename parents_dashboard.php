@@ -8,7 +8,7 @@ include 'includes/session.php';
   <meta charset='utf-8'>
   <title>Parents</title>
   <meta name='viewport' content='width=device-width, initial-scale=1'>
-  <link rel='stylesheet' href='src/main.css'>
+  <link rel='stylesheet' href='cssCodes/main.css'>
   <script src="https://kit.fontawesome.com/613bb0837d.js" crossorigin="anonymous"></script>
   <style>
     .content {

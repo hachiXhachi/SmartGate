@@ -8,7 +8,7 @@ include 'includes/session.php';
   <meta charset='utf-8'>
   <title>Faculty</title>
   <meta name='viewport' content='width=device-width, initial-scale=1'>
-  <link rel='stylesheet' href='src/main.css'>
+  <link rel='stylesheet' href='cssCodes/main.css'>
   <script src="node_modules\bootstrap\dist\js\bootstrap.bundle.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.13.3/css/selectize.bootstrap4.min.css"

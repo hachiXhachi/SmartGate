@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <link rel='stylesheet' href='src/main.css'>
+  <link rel='stylesheet' href='cssCodes/main.css'>
   <script src="node_modules\bootstrap\dist\js\bootstrap.bundle.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <style>

@@ -19,7 +19,7 @@ if (isset($_SESSION['mode'])) {
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" href="src/main.css">
+	<link rel="stylesheet" href="cssCodes/main.css">
 	<title>BulSU-SC Smart Gate</title>
 	<style>
 		.form-control::placeholder {
