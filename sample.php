@@ -9,40 +9,25 @@ include 'includes/session.php';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>\
-    <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/9.14.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.14.0/firebase-messaging-compat.js"></script>
+
     <script>
-        window.OneSignalDeferred = window.OneSignalDeferred || [];
-        OneSignalDeferred.push(function (OneSignal) {
-            OneSignal.init({
-                appId: "13801d4b-54a8-4cb0-8a32-c8b4ca00d925",
-            });
-        });
+      
+
+
+
+
     </script>
 </head>
 
 <body>
-
+    <div class="container">
+        <div>Notification data will receive here if the app is open and focused.</div>
+        <div class="message" style="min-height: 80px;"></div>
+        <div>Device Token: </div>
+    </div>
 </body>
-<!-- <script>
-    OneSignal.push(function () {
-        var isPushSupported = OneSignal.isPushNotificationsSupported();
-        if (isPushSupported) {
-            console.log('yes');
-            OneSignal.isPushNotificationsEnabled(function (isEnabled) {
-                if (isEnabled) {
-                    console.log('enabled');
-                } else {
-                    console.log('no');
-                    OneSignal.push(function () {
-                        OneSignal.showHttpPrompt();
-                    });
-                }
-            });
-        } else {
-            console.log('no');
-        }
-    });
 
-</script> -->
 
 </html>

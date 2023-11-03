@@ -127,6 +127,87 @@ include 'includes/session.php';
       }
     }
   </style>
+  <script src="node_modules\bootstrap\dist\js\bootstrap.bundle.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.14.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.14.0/firebase-messaging-compat.js"></script>
+
+  <script>
+   async function fetchFirebaseConfig() {
+    try {
+        const response = await fetch('config.php');
+        if (!response.ok) {
+            throw new Error('Failed to fetch Firebase configuration');
+        }
+
+        const firebaseConfig = await response.json();
+        const app = firebase.initializeApp(firebaseConfig);
+        const messaging = app.messaging();
+
+        messaging.onMessage((payload) => {
+            if (document.hasFocus()) {
+                displayBrowserNotification(payload);
+            }
+        });
+
+        function displayBrowserNotification(payload) {
+            if ('Notification' in window && Notification.permission === 'granted') {
+                const notificationData = payload.notification; // Extract the notification data
+
+                const options = {
+                    body: notificationData.body,
+                    icon: notificationData.icon,
+                };
+
+                new Notification(notificationData.title, options);
+            }
+        }
+
+        const vapidkey = firebaseConfig.vapidkey;
+        messaging.getToken({ vapidKey: vapidkey }).then((currentToken) => {
+            sendTokenToServer(currentToken);
+        }).catch((err) => {
+            console.log(err);
+            setTokenSentToServer(false);
+        });
+
+        async function sendTokenToServer(currentToken) {
+            try {
+                const response = await fetch('update_token.php', {
+                    method: 'POST',
+                    body: JSON.stringify({ currentToken }),
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+
+                if (response.ok) {
+                    const result = await response.json();
+                    console.log(result.message);
+                } else {
+                    console.error('Failed to update token on the server');
+                }
+            } catch (error) {
+                console.error('Error sending token to the server', error);
+            }
+        }
+
+        function isTokenSentToServer() {
+            return window.localStorage.getItem('sentToServer') === '1';
+        }
+
+        function setTokenSentToServer(sent) {
+            window.localStorage.setItem('sentToServer', sent ? '1' : '0');
+        }
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+fetchFirebaseConfig();
+
+  </script>
+
 </head>
 <!-- change pass Modal -->
 <div class="modal fade" id="parentChangepassModal" tabindex="5" aria-labelledby="exampleModalLabel" aria-hidden="true"
@@ -253,8 +334,7 @@ include 'includes/session.php';
 
 
 </body>
-<script src="node_modules\bootstrap\dist\js\bootstrap.bundle.min.js"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <script>
 
   $(".sidebar ul li").on('click', function () {
