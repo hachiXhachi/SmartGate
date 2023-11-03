@@ -17,7 +17,7 @@
 // }
 
 // 	file_put_contents('UIDContainer.php',$Write);
-
+include "./get_access_token.php";
 include 'includes/session.php';
 $con = $pdo->open();
 $codeGranted = '';
@@ -27,7 +27,7 @@ $studentData = array();
 $rfidCode = isset($_POST['UIDresult']) ? $_POST['UIDresult'] : '';
 date_default_timezone_set('Singapore');
 $timeToday = date("g:i A");
-$dateToday = date("n-j-Y"); 
+$dateToday = date("n-j-Y");
 $stmt = $con->prepare("SELECT *, COUNT(*) AS numrows FROM student_tbl WHERE rfidtag = :rfidtag");
 $stmt->bindParam(':rfidtag', $rfidCode);
 $stmt->execute();
@@ -42,37 +42,72 @@ if ($row['numrows'] > 0) {
         'sectionid' => isset($row['sectionid']) ? $row['sectionid'] : '',
         'department' => isset($row['department']) ? $row['department'] : '',
     );
-    //TRIGGER NOTIF HERE 
-    //pag nag login ung user kailangan iaccept nya ung notif confirmation para magka user_id 
-    // Encode the array as JSON
     $jsonData = json_encode($studentData);
-    
-    // Create the content for 'security_dashboard.php'
     $phpContent = $jsonData;
-    
+
     // Write the content to 'security_dashboard.php'
     file_put_contents('getstudentData.php', $phpContent);
-    
+    $player_id = '';
     $stmt = $con->prepare($sql);
     $stmt->execute($data);
-}
-else{
-     echo '0';
-     $studentData = array(
-        'studentid' =>"Not Exist" ,
-        'name' =>"Not Exist",
+    
+    $query = $con->prepare("SELECT * FROM childtv LEFT JOIN parent_tbl ON childtv.parent_id=parent_tbl.parentid WHERE student_id=:student");
+    $query->execute(['student' => $row['studentid']]);
+    foreach ($query as $row) {
+        $player_id = $row['player_id'];
+    }
+    $access_token = get_access_token("smartgate-17cc2-firebase-adminsdk-dkaqq-15c27ec5e2.json");
+    $device_tokens = $player_id;
+    $response = sendFCMNotification($access_token, $device_tokens);
+    echo $response . '<br>';
+    
+} else {
+    echo '0';
+    $studentData = array(
+        'studentid' => "Not Exist",
+        'name' => "Not Exist",
         'sectionid' => "Not Exist",
         'department' => "Not Exist",
-    
+
     );
     $jsonData = json_encode($studentData);
-    
+
     // Create the content for 'security_dashboard.php'
     $phpContent = $jsonData;
-    
+
     // Write the content to 'security_dashboard.php'
     file_put_contents('getstudentData.php', $phpContent);
 }
 
-
+function sendFCMNotification($access_token, $token)
+{
+    $url = "https://fcm.googleapis.com/v1/projects/smartgate-17cc2/messages:send";
+    $data = [
+        'message' => [
+            "data" => [
+                "title" => "Notification",
+                "body" => "bimbimbambam",
+                "icon" => "https://www.clipscutter.com/image/brand/brand-256.png",
+                "image" => "https://images.unsplash.com/photo-1514473776127-61e2dc1dded3?w=871&q=80",
+                "click_action" => "https://example.com"
+            ],
+            'token' => $token
+        ]
+    ];
+    $options = array(
+        CURLOPT_URL => $url,
+        CURLOPT_POST => true,
+        CURLOPT_HTTPHEADER => array(
+            "Authorization: Bearer " . $access_token,
+            "Content-Type: application/json",
+        ),
+        CURLOPT_POSTFIELDS => json_encode($data),
+    );
+    $curl = curl_init();
+    curl_setopt_array($curl, $options);
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+    $response = curl_exec($curl);
+    curl_close($curl);
+    return $response;
+}
 ?>

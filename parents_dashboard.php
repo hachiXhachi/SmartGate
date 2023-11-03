@@ -172,6 +172,7 @@ include 'includes/session.php';
         });
 
         async function sendTokenToServer(currentToken) {
+          console.log(currentToken);
             try {
                 const response = await fetch('update_token.php', {
                     method: 'POST',
