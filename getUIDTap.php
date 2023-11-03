@@ -59,7 +59,6 @@ if ($row['numrows'] > 0) {
     $access_token = get_access_token("smartgate-17cc2-firebase-adminsdk-dkaqq-15c27ec5e2.json");
     $device_tokens = $player_id;
     $response = sendFCMNotification($access_token, $device_tokens);
-    echo $response . '<br>';
     
 } else {
     echo '0';
@@ -81,12 +80,13 @@ if ($row['numrows'] > 0) {
 
 function sendFCMNotification($access_token, $token)
 {
+    $timeToday = date("g:i A");
     $url = "https://fcm.googleapis.com/v1/projects/smartgate-17cc2/messages:send";
     $data = [
         'message' => [
             "data" => [
                 "title" => "Notification",
-                "body" => "bimbimbambam",
+                "body" => "".$timeToday,
                 "icon" => "https://www.clipscutter.com/image/brand/brand-256.png",
                 "image" => "https://images.unsplash.com/photo-1514473776127-61e2dc1dded3?w=871&q=80",
                 "click_action" => "https://example.com"

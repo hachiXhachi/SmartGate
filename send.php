@@ -33,7 +33,7 @@ function sendFCMNotification($access_token, $token) {
 
 $access_token = get_access_token("smartgate-17cc2-firebase-adminsdk-dkaqq-15c27ec5e2.json");
 $device_tokens = [
-"dAO1CkcLp6YysA55DXS81O:APA91bHZ9M5Ta7d9pEQlS-Qe-4wbapebn-uAtCnaWxnYT9kiAyd7tblP2cRO0YF4O6cmlW_x6GIByRuLHH2BVITUmq8CoR5sU1EhDPLsK09HfitgkZGn9ZJrv2tfoSRSNXQpkVaJENnH"    
+    "dAO1CkcLp6YysA55DXS81O:APA91bHZ9M5Ta7d9pEQlS-Qe-4wbapebn-uAtCnaWxnYT9kiAyd7tblP2cRO0YF4O6cmlW_x6GIByRuLHH2BVITUmq8CoR5sU1EhDPLsK09HfitgkZGn9ZJrv2tfoSRSNXQpkVaJENnH"
 ];
 
 foreach ($device_tokens as $token) {
