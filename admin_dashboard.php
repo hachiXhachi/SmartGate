@@ -191,7 +191,7 @@ file_put_contents('UIDContainer.php', $Write);
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary" id="parentconfirmButton" onclick="getInputValues()">Add
+                <button type="submit" class="btn btn-primary" id="parentconfirmButton" onclick="getInputValues();">Add
                     Account</button>
             </div>
         </div>
@@ -413,7 +413,7 @@ file_put_contents('UIDContainer.php', $Write);
     }
 
     function addDiv() {
-        var newDiv = $("<div>").addClass("child-div").html('<div id="child-div" style="display:flex;"><input type="number" id="parent_studid" class="form-control bg-transparent add_children" placeholder="Student Number" style="width:100%; border: 2px solid black; margin-bottom:10px;" min="0" max="9999999999" oninput="validateNumberInput(this);checkMaxLength(this, 10);"><input type="button" onclick="removediv(this)" class="btn btn-danger" value="x"></div>');
+        var newDiv = $("<div>").addClass("child-div").html('<div id="child-div" style="display:flex;"><input type="number" id="parent_studid" name="parent_studid[]" class="form-control bg-transparent add_children" placeholder="Student Number" style="width:100%; border: 2px solid black; margin-bottom:10px;" min="0" max="9999999999" oninput="validateNumberInput(this);checkMaxLength(this, 10);"><input type="button" onclick="removediv(this)" class="btn btn-danger" value="x"></div>');
         $("#targetDiv").append(newDiv);
         $("#parent_submit").prop("disabled", false);
     }
@@ -427,7 +427,6 @@ file_put_contents('UIDContainer.php', $Write);
     }
     function getInputValues() {
         var inputValues = [];
-        // Iterate through all input elements with type="text"
         $(".add_children").each(function () {
             inputValues.push($(this).val());
         });
@@ -483,86 +482,92 @@ file_put_contents('UIDContainer.php', $Write);
 
     }
     function validationParent() {
-        $('#parentModal').modal('hide');
-        const parent_fname = document.getElementById("parent_first_name");
-        const parent_mname = document.getElementById("parent_middle_name");
-        const parent_lname = document.getElementById("parent_last_name");
-        const parent_studid = document.getElementById("parent_studid");
-        const parent_email = document.getElementById("parent_email");
-        var convertstudid = parent_studid.value.toString();
-        var errorMessage;
-        var emailGet =parent_email.value;
-        var modalbodycontent = document.getElementById("Errormodalbody");
-        var parentForm = document.getElementById("parentForm");
-        if (parent_fname.validity.valid && parent_mname.validity.valid && parent_lname.validity.valid && parent_email.validity.valid) {
-            if (convertstudid.length === 10) {
-                const formData = new FormData(parentForm);
-                fetch("add_parent.php", {
-                    method: "POST",
-                    body: formData
-                })
-                    .then(response => {
-                        if (response.ok) {
-                            // Handle success, e.g., show success message
-                            console.log("Form submitted successfully.");
-                            modalbodycontent.innerHTML = "This Account is successfully added!";
-                            $('#Errormodal').modal('show');
+    $('#parentModal').modal('hide');
+    const parent_fname = document.getElementById("parent_first_name");
+    const parent_mname = document.getElementById("parent_middle_name");
+    const parent_lname = document.getElementById("parent_last_name");
+    const parent_studid = document.getElementById("parent_studid");
+    const parent_email = document.getElementById("parent_email");
+    var convertstudid = parent_studid.value.toString();
+    var errorMessage;
+    var emailGet = parent_email.value;
+    var modalbodycontent = document.getElementById("Errormodalbody");
+    var parentForm = document.getElementById("parentForm");
+    if (parent_fname.validity.valid && parent_mname.validity.valid && parent_lname.validity.valid && parent_email.validity.valid) {
+        if (convertstudid.length === 10) {
+            const formData = new FormData(parentForm);
+            
+            // Collect student numbers and add them to the formData
+            var studentNumbers = [];
+            $(".add_children").each(function() {
+                studentNumbers.push($(this).val());
+            });
+            formData.append("parent_studid", JSON.stringify(studentNumbers));
+            
+            fetch("add_parent.php", {
+                method: "POST",
+                body: formData
+            })
+                .then(response => {
+                    if (response.ok) {
+                        // Handle success, e.g., show success message
+                        document.getElementById("exampleModalLabel").innerHTML = "Success";
+                        modalbodycontent.innerHTML = "This Account is successfully added!";
+                        $('#Errormodal').modal('show');
 
-                            // Close modal or show success message
-                            var subject = 'Email';
-                            var message = 'Test Message';
-                            var data = 'email=' + emailGet + '&subject=' + subject + '&message=' + message;
-                            console.log(data)
-                            $.ajax({
-                                type: 'POST',
-                                url: 'sample_send_email.php',
-                                data: data,
-                                success: function (response) {
-                                    console.log(response);
-                                    if (response === 'success') {
-                                        // Assuming you have modalContent and modalLabel defined in your HTML
-                                    } else {
+                        // Close modal or show success message
+                        var subject = 'Email';
+                        var message = 'Test Message';
+                        var data = 'email=' + emailGet + '&subject=' + subject + '&message=' + message;
+                        console.log(data);
+                        $.ajax({
+                            type: 'POST',
+                            url: 'sample_send_email.php',
+                            data: data,
+                            success: function (response) {
+                                console.log(response);
+                                if (response === 'success') {
+                                    // Assuming you have modalContent and modalLabel defined in your HTML
+                                } else {
 
-                                    }
                                 }
-                            });
-                        } else {
-                            // Handle errors
-                            console.error("Form submission failed.");
-                            // Display an error message
-                        }
-                    })
-                    .catch(error => {
-                        console.error("An error occurred:", error);
-                        // Handle any network or request errors
-                    }); parentForm.reset();
-                const divRemover = document.getElementById('child-div');
-                divRemover.remove();
-            } else if (convertstudid.length !== 10) {
-                parent_studid.setCustomValidity("Your student id must be a 10-digit number");
-                errorMessage = "Invalid student ID.";
-            } else {
-                errorMessage = "Please fill in all required fields.";
-            }
+                            }
+                        });
+                    } else {
+                        // Handle errors
+                        console.error("Form submission failed.");
+                        // Display an error message
+                    }
+                })
+                .catch(error => {
+                    console.error("An error occurred:", error);
+                    // Handle any network or request errors
+                });
+            parentForm.reset();
+            const divRemover = document.getElementById('child-div');
+            divRemover.remove();
+        } else if (convertstudid.length !== 10) {
+            parent_studid.setCustomValidity("Your student id must be a 10-digit number");
+            errorMessage = "Invalid student ID.";
         } else {
-            if (!parent_fname.validity.valid) {
-                errorMessage = parent_fname.validationMessage + " (First Name)";
-            } else if (!parent_mname.validity.valid) {
-                errorMessage = parent_mname.validationMessage + " (Middle Name)";
-            } else if (!parent_lname.validity.valid) {
-                errorMessage = parent_lname.validationMessage + " (Last Name)";
-            } else if (!parent_email.validity.valid) {
-                errorMessage = parent_email.validationMessage + " (Email)";
-            }
-
-            modalbodycontent.innerHTML = errorMessage;
-            $('#Errormodal').modal('show');
+            errorMessage = "Please fill in all required fields.";
+        }
+    } else {
+        if (!parent_fname.validity.valid) {
+            errorMessage = parent_fname.validationMessage + " (First Name)";
+        } else if (!parent_mname.validity.valid) {
+            errorMessage = parent_mname.validationMessage + " (Middle Name)";
+        } else if (!parent_lname.validity.valid) {
+            errorMessage = parent_lname.validationMessage + " (Last Name)";
+        } else if (!parent_email.validity.valid) {
+            errorMessage = parent_email.validationMessage + " (Email)";
         }
 
-
-
-
+        modalbodycontent.innerHTML = errorMessage;
+        $('#Errormodal').modal('show');
     }
+}
+
     function validationStudent() {
         $('#confirmationModal').modal('hide');
         const fname = document.getElementById("fname");
@@ -573,6 +578,7 @@ file_put_contents('UIDContainer.php', $Write);
         const email = document.getElementById("email");
         const rfid = document.getElementById("getUID");
         var modalbodycontent = document.getElementById("Errormodalbody");
+        var labelsanaol = document.getElementById("exampleModalLabel");
         var errorMessage;
         myForm = document.getElementById("registrationForm");
         var convert = studid.value.toString();
@@ -585,8 +591,7 @@ file_put_contents('UIDContainer.php', $Write);
                 })
                     .then(response => {
                         if (response.ok) {
-                            // Handle success, e.g., show success message
-                            console.log("Form submitted successfully.");
+                            labelsanaol,innerHTML = "Success";
                             modalbodycontent.innerHTML = "This Account is successfully added!";
                             $('#Errormodal').modal('show');
                             myForm.reset();
@@ -689,25 +694,25 @@ file_put_contents('UIDContainer.php', $Write);
                     console.error("An error occurred:", error);
                     // Handle any network or request errors
                 }); prof_Form.reset();
-        }else {
+        } else {
             if (!prof_fname.validity.valid) {
-            errorMessage = prof_fname.validationMessage + " (First Name)";
-        } else if (!prof_mname.validity.valid) {
-            errorMessage = prof_mname.validationMessage + " (Middle Name)";
-        } else if (!prof_lname.validity.valid) {
-            errorMessage = prof_lname.validationMessage + " (Last Name)";
-        } else if (!prof_email.validity.valid) {
-            errorMessage = prof_email.validationMessage + " (Email)";
+                errorMessage = prof_fname.validationMessage + " (First Name)";
+            } else if (!prof_mname.validity.valid) {
+                errorMessage = prof_mname.validationMessage + " (Middle Name)";
+            } else if (!prof_lname.validity.valid) {
+                errorMessage = prof_lname.validationMessage + " (Last Name)";
+            } else if (!prof_email.validity.valid) {
+                errorMessage = prof_email.validationMessage + " (Email)";
+            }
+            else {
+                errorMessage = "Please fill in all required fields.";
+            }
+            modalbodycontent.innerHTML = errorMessage;
+            $('#Errormodal').modal('show');
         }
-        else {
-            errorMessage = "Please fill in all required fields.";
-        }
-        modalbodycontent.innerHTML = errorMessage;
-        $('#Errormodal').modal('show');
-        }
-        
 
-        
+
+
     }
 </script>
 

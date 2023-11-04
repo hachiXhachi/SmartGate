@@ -11,12 +11,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $password = "password"; // You might want to generate a secure password
 
     $children = $_POST['parent_studid'];
-    $wordArray = explode(" ", $children);
-    $myArray = $wordArray;
+    $myArray = json_decode($children); // Decode the JSON array
 
     $password = password_hash($password, PASSWORD_DEFAULT);
-
-  
 
     $sql = "INSERT INTO parent_tbl(email, name, password) VALUES (?, ?, ?)";
     $data = array($email, $name, $password);
@@ -33,11 +30,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt = $con->prepare($sql);
             $stmt->execute($data);
         }
-
        
         echo json_encode(array("success" => "Form submitted successfully"));
     } else {
-      
         echo json_encode(array("error" => "Form submission failed"));
     }
 } else {
