@@ -202,11 +202,29 @@ file_put_contents('UIDContainer.php', $Write);
     style="font-family:arial">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Please fill out the fields properly</h1>
+            <div class="modal-header" id="exampleModalLabel">
+                <h1 class="modal-title fs-5"></h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body" id=Errormodalbody>
+                ...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Success Modal -->
+<div class="modal fade" id="succModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
+    style="font-family:arial">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" id="succModalLabel">
+                <h1 class="modal-title fs-5">Success</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id=succmodalbody>
                 ...
             </div>
             <div class="modal-footer">
@@ -482,91 +500,93 @@ file_put_contents('UIDContainer.php', $Write);
 
     }
     function validationParent() {
-    $('#parentModal').modal('hide');
-    const parent_fname = document.getElementById("parent_first_name");
-    const parent_mname = document.getElementById("parent_middle_name");
-    const parent_lname = document.getElementById("parent_last_name");
-    const parent_studid = document.getElementById("parent_studid");
-    const parent_email = document.getElementById("parent_email");
-    var convertstudid = parent_studid.value.toString();
-    var errorMessage;
-    var emailGet = parent_email.value;
-    var modalbodycontent = document.getElementById("Errormodalbody");
-    var parentForm = document.getElementById("parentForm");
-    if (parent_fname.validity.valid && parent_mname.validity.valid && parent_lname.validity.valid && parent_email.validity.valid) {
-        if (convertstudid.length === 10) {
-            const formData = new FormData(parentForm);
-            
-            // Collect student numbers and add them to the formData
-            var studentNumbers = [];
-            $(".add_children").each(function() {
-                studentNumbers.push($(this).val());
-            });
-            formData.append("parent_studid", JSON.stringify(studentNumbers));
-            
-            fetch("add_parent.php", {
-                method: "POST",
-                body: formData
-            })
-                .then(response => {
-                    if (response.ok) {
-                        // Handle success, e.g., show success message
-                        document.getElementById("exampleModalLabel").innerHTML = "Success";
-                        modalbodycontent.innerHTML = "This Account is successfully added!";
+        $('#parentModal').modal('hide');
+        const parent_fname = document.getElementById("parent_first_name");
+        const parent_mname = document.getElementById("parent_middle_name");
+        const parent_lname = document.getElementById("parent_last_name");
+        const parent_studid = document.getElementById("parent_studid");
+        const parent_email = document.getElementById("parent_email");
+        var convertstudid = parent_studid.value.toString();
+        var errorMessage;
+        var emailGet = parent_email.value;
+        var modalbodycontent = document.getElementById("Errormodalbody");
+        var parentForm = document.getElementById("parentForm");
+
+        if (parent_fname.validity.valid && parent_mname.validity.valid && parent_lname.validity.valid && parent_email.validity.valid) {
+            if (convertstudid.length === 10) {
+                const formData = new FormData(parentForm);
+
+                // Collect student numbers and add them to the formData
+                var studentNumbers = [];
+                $(".add_children").each(function () {
+                    studentNumbers.push($(this).val());
+                });
+                formData.append("parent_studid", JSON.stringify(studentNumbers));
+
+                fetch("add_parent.php", {
+                    method: "POST",
+                    body: formData,
+                })
+                    .then((response) => response.json())
+                    .then((data) => {
+                        if (data.success) {
+                            // Handle success, e.g., show success message
+                            document.getElementById("succmodalbody").innerHTML = "This Account is successfully added!";
+                            $('#succModal').modal('show');
+
+                            // Close modal or show success message
+                            var subject = 'Email';
+                            var message = 'Test Message';
+                            var emailData = 'email=' + emailGet + '&subject=' + subject + '&message=' + message;
+                            $.ajax({
+                                type: 'POST',
+                                url: 'sample_send_email.php',
+                                data: emailData,
+                                success: function (emailResponse) {
+                                    console.log(emailResponse);
+                                    if (emailResponse === 'success') {
+                                        // Assuming you have modalContent and modalLabel defined in your HTML
+                                    } else {
+                                        // Handle email sending failure
+                                        console.error("Email sending failed.");
+                                    }
+                                },
+                            });
+                            parentForm.reset();
+                            const divRemover = document.getElementById('child-div');
+                            divRemover.remove();
+                        } else {
+                            modalbodycontent.innerHTML = data.error;
+                            $('#Errormodal').modal('show');
+                        }
+                    })
+                    .catch((error) => {
+                        modalbodycontent.innerHTML = "An error occurred:", error;
                         $('#Errormodal').modal('show');
 
-                        // Close modal or show success message
-                        var subject = 'Email';
-                        var message = 'Test Message';
-                        var data = 'email=' + emailGet + '&subject=' + subject + '&message=' + message;
-                        console.log(data);
-                        $.ajax({
-                            type: 'POST',
-                            url: 'sample_send_email.php',
-                            data: data,
-                            success: function (response) {
-                                console.log(response);
-                                if (response === 'success') {
-                                    // Assuming you have modalContent and modalLabel defined in your HTML
-                                } else {
+                    });
 
-                                }
-                            }
-                        });
-                    } else {
-                        // Handle errors
-                        console.error("Form submission failed.");
-                        // Display an error message
-                    }
-                })
-                .catch(error => {
-                    console.error("An error occurred:", error);
-                    // Handle any network or request errors
-                });
-            parentForm.reset();
-            const divRemover = document.getElementById('child-div');
-            divRemover.remove();
-        } else if (convertstudid.length !== 10) {
-            parent_studid.setCustomValidity("Your student id must be a 10-digit number");
-            errorMessage = "Invalid student ID.";
+            } else if (convertstudid.length !== 10) {
+                parent_studid.setCustomValidity("Your student id must be a 10-digit number");
+                errorMessage = "Invalid student ID.";
+            } else {
+                errorMessage = "Please fill in all required fields.";
+            }
         } else {
-            errorMessage = "Please fill in all required fields.";
+            if (!parent_fname.validity.valid) {
+                errorMessage = parent_fname.validationMessage + " (First Name)";
+            } else if (!parent_mname.validity.valid) {
+                errorMessage = parent_mname.validationMessage + " (Middle Name)";
+            } else if (!parent_lname.validity.valid) {
+                errorMessage = parent_lname.validationMessage + " (Last Name)";
+            } else if (!parent_email.validity.valid) {
+                errorMessage = parent_email.validationMessage + " (Email)";
+            }
+            modalbodycontent.innerHTML = errorMessage;
+            $('#Errormodal').modal('show');
         }
-    } else {
-        if (!parent_fname.validity.valid) {
-            errorMessage = parent_fname.validationMessage + " (First Name)";
-        } else if (!parent_mname.validity.valid) {
-            errorMessage = parent_mname.validationMessage + " (Middle Name)";
-        } else if (!parent_lname.validity.valid) {
-            errorMessage = parent_lname.validationMessage + " (Last Name)";
-        } else if (!parent_email.validity.valid) {
-            errorMessage = parent_email.validationMessage + " (Email)";
-        }
-
-        modalbodycontent.innerHTML = errorMessage;
-        $('#Errormodal').modal('show');
     }
-}
+
 
     function validationStudent() {
         $('#confirmationModal').modal('hide');
@@ -578,7 +598,6 @@ file_put_contents('UIDContainer.php', $Write);
         const email = document.getElementById("email");
         const rfid = document.getElementById("getUID");
         var modalbodycontent = document.getElementById("Errormodalbody");
-        var labelsanaol = document.getElementById("exampleModalLabel");
         var errorMessage;
         myForm = document.getElementById("registrationForm");
         var convert = studid.value.toString();
@@ -591,20 +610,20 @@ file_put_contents('UIDContainer.php', $Write);
                 })
                     .then(response => {
                         if (response.ok) {
-                            labelsanaol,innerHTML = "Success";
-                            modalbodycontent.innerHTML = "This Account is successfully added!";
-                            $('#Errormodal').modal('show');
+                            document.getElementById("succmodalbody").innerHTML = "This Account is successfully added!";
+                            $('#succModal').modal('show');
                             myForm.reset();
                             // Close modal or show success message
                         } else {
-                            // Handle errors
-                            console.error("Form submission failed.");
-                            // Display an error message
+
+                            modalbodycontent.innerHTML = "Form submission failed.";
+                            $('#Errormodal').modal('show');
                         }
                     })
                     .catch(error => {
-                        console.error("An error occurred:", error);
-                        // Handle any network or request errors
+                        modalbodycontent.innerHTML = "An error occurred:", error;
+                        $('#Errormodal').modal('show');
+
                     });
             } else if (convert.length !== 10) {
                 studid.setCustomValidity("Your student id must be a 10-digit number");
@@ -664,9 +683,8 @@ file_put_contents('UIDContainer.php', $Write);
                 .then(response => {
                     if (response.ok) {
                         // Handle success, e.g., show success message
-                        console.log("Form submitted successfully.");
-                        modalbodycontent.innerHTML = "This Account is successfully added!";
-                        $('#Errormodal').modal('show');
+                        document.getElementById("succmodalbody").innerHTML = "This Account is successfully added!";
+                        $('#succModal').modal('show');
 
                         var subject = 'Email';
                         var message = 'Test Message';
@@ -676,23 +694,23 @@ file_put_contents('UIDContainer.php', $Write);
                             url: 'sample_send_email.php',
                             data: data,
                             success: function (response) {
-                                console.log(response);
                                 if (response === 'success') {
-                                    // Assuming you have modalContent and modalLabel defined in your HTML
+                                    sanaolLabel.textContent = "Success";
+                                    modalbodycontent.innerHTML = "Your Account credential was send to your Email";
+                                    $('#Errormodal').modal('show');
                                 } else {
 
                                 }
                             }
                         });
                     } else {
-                        // Handle errors
-                        console.error("Form submission failed.");
-                        // Display an error message
+                        modalbodycontent.innerHTML = "Form submission failed.";
+                        $('#Errormodal').modal('show');
                     }
                 })
                 .catch(error => {
-                    console.error("An error occurred:", error);
-                    // Handle any network or request errors
+                    modalbodycontent.innerHTML = "An error occurred:", error;
+                    $('#Errormodal').modal('show');
                 }); prof_Form.reset();
         } else {
             if (!prof_fname.validity.valid) {
