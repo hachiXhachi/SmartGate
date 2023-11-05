@@ -203,7 +203,7 @@ file_put_contents('UIDContainer.php', $Write);
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header" id="exampleModalLabel">
-                <h1 class="modal-title fs-5">Please fill out the fields Properly</h1>
+                <h1 class="modal-title fs-5">Please fill out the fields properly</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body" id=Errormodalbody>

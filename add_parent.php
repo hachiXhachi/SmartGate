@@ -56,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         } else {
             // If any verification failed, return an error message
-            echo json_encode(array("error" => "Some student IDs do not exist in student_tbl"));
+            echo json_encode(array("error" => "Student ID/s do not exist. Please check each ID."));
         }
     } else {
         // Handle cases where the required POST data is missing
