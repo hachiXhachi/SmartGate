@@ -137,31 +137,14 @@ include 'includes/session.php';
     try {
         const response = await fetch('config.php');
         if (!response.ok) {
-            throw new Error('Failed to fetch Firebase configuration');
+            console.log("error connecting")
         }
 
         const firebaseConfig = await response.json();
         const app = firebase.initializeApp(firebaseConfig);
         const messaging = app.messaging();
 
-        messaging.onMessage((payload) => {
-            if (document.hasFocus()) {
-                displayBrowserNotification(payload);
-            }
-        });
-
-        function displayBrowserNotification(payload) {
-            if ('Notification' in window && Notification.permission === 'granted') {
-                const notificationData = payload.notification; // Extract the notification data
-
-                const options = {
-                    body: notificationData.body,
-                    icon: notificationData.icon,
-                };
-
-                new Notification(notificationData.title, options);
-            }
-        }
+      
 
         const vapidkey = firebaseConfig.vapidkey;
         messaging.getToken({ vapidKey: vapidkey }).then((currentToken) => {
@@ -200,6 +183,24 @@ include 'includes/session.php';
 
         function setTokenSentToServer(sent) {
             window.localStorage.setItem('sentToServer', sent ? '1' : '0');
+        }
+        messaging.onMessage((payload) => {
+            if (document.hasFocus()) {
+                displayBrowserNotification(payload);
+            }
+        });
+
+        function displayBrowserNotification(payload) {
+            if ('Notification' in window && Notification.permission === 'granted') {
+                const notificationData = payload.notification; // Extract the notification data
+
+                const options = {
+                    body: notificationData.body,
+                    icon: notificationData.icon,
+                };
+
+                new Notification(notificationData.title, options);
+            }
         }
     } catch (error) {
         console.error(error);
