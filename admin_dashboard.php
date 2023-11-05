@@ -203,7 +203,7 @@ file_put_contents('UIDContainer.php', $Write);
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header" id="exampleModalLabel">
-                <h1 class="modal-title fs-5">Please fill out the fields properly</h1>
+                <h1 class="modal-title fs-5">Please fill out the fields Properly</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body" id=Errormodalbody>
@@ -499,6 +499,17 @@ file_put_contents('UIDContainer.php', $Write);
         document.getElementById("parentconfirmButton").onclick = validationParent;
 
     }
+    function areAppendedInputsValid() {
+        var valid = true;
+        $(".add_children").each(function () {
+            var studentNumber = $(this).val();
+            if (studentNumber.length !== 10) {
+                valid = false;
+                return false; // Break the loop early since we found an invalid input
+            }
+        });
+        return valid;
+    }
     function validationParent() {
         $('#parentModal').modal('hide');
         const parent_fname = document.getElementById("parent_first_name");
@@ -513,7 +524,7 @@ file_put_contents('UIDContainer.php', $Write);
         var parentForm = document.getElementById("parentForm");
 
         if (parent_fname.validity.valid && parent_mname.validity.valid && parent_lname.validity.valid && parent_email.validity.valid) {
-            if (convertstudid.length === 10) {
+            if (convertstudid.length === 10 && areAppendedInputsValid()) {
                 const formData = new FormData(parentForm);
 
                 // Collect student numbers and add them to the formData
