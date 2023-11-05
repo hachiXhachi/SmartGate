@@ -504,7 +504,7 @@ file_put_contents('UIDContainer.php', $Write);
         const parent_fname = document.getElementById("parent_first_name");
         const parent_mname = document.getElementById("parent_middle_name");
         const parent_lname = document.getElementById("parent_last_name");
-        const parent_studid = document.getElementById("parent_studid");
+        var parent_studid = document.getElementById("parent_studid");
         const parent_email = document.getElementById("parent_email");
         var convertstudid = parent_studid.value.toString();
         var errorMessage;
@@ -566,12 +566,14 @@ file_put_contents('UIDContainer.php', $Write);
 
                     });
 
-            } else if (convertstudid.length !== 10) {
+            } else if (convertstudid.length <= 10) {
                 parent_studid.setCustomValidity("Your student id must be a 10-digit number");
                 errorMessage = "Invalid student ID.";
             } else {
                 errorMessage = "Please fill in all required fields.";
             }
+            modalbodycontent.innerHTML = errorMessage;
+            $('#Errormodal').modal('show');
         } else {
             if (!parent_fname.validity.valid) {
                 errorMessage = parent_fname.validationMessage + " (First Name)";
