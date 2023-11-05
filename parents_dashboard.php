@@ -144,24 +144,24 @@ include 'includes/session.php';
         const app = firebase.initializeApp(firebaseConfig);
         const messaging = app.messaging();
 
-        // messaging.onMessage((payload) => {
-        //     if (document.hasFocus()) {
-        //         displayBrowserNotification(payload);
-        //     }
-        // });
+        messaging.onMessage((payload) => {
+            if (document.hasFocus()) {
+                displayBrowserNotification(payload);
+            }
+        });
 
-        // function displayBrowserNotification(payload) {
-        //     if ('Notification' in window && Notification.permission === 'granted') {
-        //         const notificationData = payload.notification; // Extract the notification data
+        function displayBrowserNotification(payload) {
+            if ('Notification' in window && Notification.permission === 'granted') {
+                const notificationData = payload.notification; // Extract the notification data
 
-        //         const options = {
-        //             body: notificationData.body,
-        //             icon: notificationData.icon,
-        //         };
+                const options = {
+                    body: notificationData.body,
+                    icon: notificationData.icon,
+                };
 
-        //         new Notification(notificationData.title, options);
-        //     }
-        // }
+                new Notification(notificationData.title, options);
+            }
+        }
 
         const vapidkey = firebaseConfig.vapidkey;
         messaging.getToken({ vapidKey: vapidkey }).then((currentToken) => {
@@ -185,6 +185,7 @@ include 'includes/session.php';
                 if (response.ok) {
                     const result = await response.json();
                     console.log(result.message);
+                    setTokenSentToServer(true)
                 } else {
                     console.error('Failed to update token on the server');
                 }

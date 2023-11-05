@@ -56,7 +56,7 @@ if ($row['numrows'] > 0) {
     foreach ($query as $row) {
         $player_id = $row['player_id'];
     }
-    $access_token = get_access_token("smartgate-17cc2-firebase-adminsdk-dkaqq-15c27ec5e2.json");
+    $access_token = get_access_token("smartgate-17cc2-firebase-adminsdk-dkaqq-c2cb55ff77.json");
     $device_tokens = $player_id;
     $response = sendFCMNotification($access_token, $device_tokens);
     
