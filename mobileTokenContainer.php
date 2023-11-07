@@ -1,0 +1,1 @@
+<?php $mobile_token='cJUFYPR1Tua0oajTV8CtVs:APA91bGGsgR5VDW38oTscXRRWfrfgPDur_ZufsGApHqV3tAITvKFm-Qm8wmtIGlzOOPEHlO7OVff-YnzyMSfwXhRh--pOYPOpkRZGBNhLP1cRS_sFtwtL5ITvWoAZQBtbQ2EYLNLHNrE'; echo $mobile_token; ?>
