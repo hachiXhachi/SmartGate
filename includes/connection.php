@@ -1,9 +1,9 @@
 <?php
 
 class Database {
-	private $host = "mysql:host=localhost; dbname=smartgatedb";
-	private $user = "root";
-	private $password = "";
+	private $host = "mysql:host=mysql5049.site4now.net; dbname=db_aa1176_gatedb";
+	private $user = "aa1176_gatedb";
+	private $password = "qazplm123";
 	protected $con;
 
 	public function open(){
