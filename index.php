@@ -2,14 +2,17 @@
 include 'includes/session.php';
 
 if (isset($_SESSION['mode'])) {
-	if ($_SESSION['mode'] == 'parent') {
-		header('location: parents_dashboard.php');
-	} else if ($_SESSION['mode'] == 'admin') {
-		header('location: admin_dashboard.php');
-	} else if ($_SESSION['mode'] == 'faculty') {
-		header('location: faculty_dashboard.php');
-	}
+    if ($_SESSION['mode'] == 'parent') {
+        $_SESSION['redirect_mode'] = 'parent';
+    } else if ($_SESSION['mode'] == 'admin') {
+        header('Location: admin_dashboard.php');
+        exit;
+    } else if ($_SESSION['mode'] == 'faculty') {
+        header('Location: faculty_dashboard.php');
+        exit;
+    }
 }
+
 
 ?>
 
@@ -71,6 +74,17 @@ if (isset($_SESSION['mode'])) {
 		}
 	</style>
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script>
+$(document).ready(function () {
+    if ('<?php echo $_SESSION['redirect_mode'] ?? ''; ?>' === 'parent') {
+        if (window.innerWidth < 600) {
+            window.location.href = 'getMobileToken.php';
+        } else {
+            window.location.href = 'parents_dashboard.php';
+        }
+    }
+});
+</script>
 
 </head>
 
@@ -190,40 +204,45 @@ if (isset($_SESSION['mode'])) {
 <script src="node_modules\bootstrap\dist\js\bootstrap.bundle.min.js"></script>
 
 <script>
-	$(document).ready(function () {
-		$('#loginForm').submit(function (event) {
-			event.preventDefault(); // Prevent the form from submitting normally
+		$(document).ready(function () {
+			$('#loginForm').submit(function (event) {
+				event.preventDefault(); // Prevent the form from submitting normally
 
-			// Get the form data
-			var formData = $(this).serialize();
+				// Get the form data
+				var formData = $(this).serialize();
 
-			// Send an AJAX request
-			$.ajax({
-				type: 'POST',
-				url: 'verify_login.php',
-				data: formData,
-				dataType: 'json', // Expect JSON response
+				// Send an AJAX request
+				$.ajax({
+					type: 'POST',
+					url: 'verify_login.php',
+					data: formData,
+					dataType: 'json', // Expect JSON response
 
-				success: function (data) {
-					console.log(data);
-					if (data.status === 'success') {
-						if (data.mode === 'parent') {
-							window.location.href = 'parents_dashboard.php';
-						} else if (data.mode === 'admin') {
-							window.location.href = 'admin_dashboard.php';
-						} else if (data.mode === 'faculty') {
-							window.location.href = 'faculty_dashboard.php';
-						} else if (data.mode === 'security') {
-							window.location.href = 'security_dashboard.php';
+					success: function (data) {
+						console.log(data);
+						if (data.status === 'success') {
+							if (data.mode === 'parent') {
+								if (window.innerWidth < 768) {
+									window.location.href = 'getMobileToken.php';
+								} else {
+									window.location.href = 'parents_dashboard.php';
+								}
+
+							} else if (data.mode === 'admin') {
+								window.location.href = 'admin_dashboard.php';
+							} else if (data.mode === 'faculty') {
+								window.location.href = 'faculty_dashboard.php';
+							} else if (data.mode === 'security') {
+								window.location.href = 'security_dashboard.php';
+							}
+						} else {
+							document.getElementById('Errormodalbody').innerHTML = data.error_message;
+							$('#Errormodal').modal('show');
 						}
-					} else {
-						document.getElementById('Errormodalbody').innerHTML = data.error_message;
-						$('#Errormodal').modal('show');
 					}
-				}
+				});
 			});
 		});
-	});
 
 
 </script>
