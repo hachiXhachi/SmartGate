@@ -1,22 +1,4 @@
 <?php
-// if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-//     // Receive the RFID code from the NodeMCU
-//     $rfidCode = isset($_POST['UIDresult']) ? $_POST['UIDresult'] : '';
-
-//     // Perform a check to see if the RFID code is in the database
-//     if ($rfidCode === '13828005') {
-//         // If it's a match, send back a "1" response
-//         echo '1';
-//     } else {
-//         // If it's not a match, send back a "0" response
-//         echo '0';
-//     }
-// } else {
-//     // Handle other HTTP request methods if needed
-//     http_response_code(405); // Method Not Allowed
-// }
-
-// 	file_put_contents('UIDContainer.php',$Write);
 include "./get_access_token.php";
 include 'includes/session.php';
 $con = $pdo->open();
@@ -59,6 +41,7 @@ if ($row['numrows'] > 0) {
     $access_token = get_access_token("smartgate-17cc2-firebase-adminsdk-dkaqq-c2cb55ff77.json");
     $device_tokens = $player_id;
     $response = sendFCMNotification($access_token, $device_tokens);
+    
     
 } else {
     echo '0';
