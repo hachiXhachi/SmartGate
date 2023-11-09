@@ -159,8 +159,7 @@ file_put_contents('UIDContainer.php', $Write);
     </style>
 </head>
 <!-- student and prof Modal -->
-<div class="modal fade" id="confirmationModal" tabindex="5" aria-labelledby="exampleModalLabel" aria-hidden="true"
-    style="font-family:arial">
+<div class="modal fade" id="confirmationModal" tabindex="5" aria-labelledby="exampleModalLabel" aria-hidden="true" style="font-family:arial">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -178,8 +177,7 @@ file_put_contents('UIDContainer.php', $Write);
     </div>
 </div>
 <!-- parent Modal -->
-<div class="modal fade" id="parentModal" tabindex="5" aria-labelledby="exampleModalLabel" aria-hidden="true"
-    style="font-family:arial">
+<div class="modal fade" id="parentModal" tabindex="5" aria-labelledby="exampleModalLabel" aria-hidden="true" style="font-family:arial">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -198,8 +196,7 @@ file_put_contents('UIDContainer.php', $Write);
     </div>
 </div>
 <!-- Error Modal -->
-<div class="modal fade" id="Errormodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
-    style="font-family:arial">
+<div class="modal fade" id="Errormodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style="font-family:arial">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header" id="exampleModalLabel">
@@ -216,8 +213,7 @@ file_put_contents('UIDContainer.php', $Write);
     </div>
 </div>
 <!-- Success Modal -->
-<div class="modal fade" id="succModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
-    style="font-family:arial">
+<div class="modal fade" id="succModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style="font-family:arial">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header" id="succModalLabel">
@@ -233,6 +229,34 @@ file_put_contents('UIDContainer.php', $Write);
         </div>
     </div>
 </div>
+<!--parent record modal -->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel">Edit User Data</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Add your form elements for editing data here -->
+                <form id="editForm">
+                    <div class="form-group">
+                        <label for="editEmail">Email</label>
+                        <input type="text" class="form-control" id="editEmail" name="editEmail" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="editName">Name</label>
+                        <input type="text" class="form-control" id="editName" name="editName">
+                    </div>
+                    <!-- Add other fields as needed -->
+                    <button type="button" class="btn btn-primary" onclick="updateUserData()">Save Changes</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
 <body id="background-image-dashboard">
     <div class="main-container d-flex" style="font-family: sans-seriff;">
@@ -240,13 +264,11 @@ file_put_contents('UIDContainer.php', $Write);
             <div class="header-box px-3 pt-3 pb-4 py-2 d-flex justify-content-between">
                 <img src="assets/logo_sarmiento.png" width="40" class="img-fluid"> &nbsp;
                 <h5 class="text-white py-1 px-2">Admin Dashboard</h5>
-                <button class="btn d-block px-1 py-0 close-btn text-white"><i
-                        class="fa-solid fa-bars-staggered"></i></button>
+                <button class="btn d-block px-1 py-0 close-btn text-white"><i class="fa-solid fa-bars-staggered"></i></button>
             </div>
             <hr class="h-color mx-4">
             <ul class="list-unstyled px-5 py-3">
-                <li class="active"><a class="text-decoration-none text-white d-block text-center py-2"
-                        onclick="loadView('admin_home')">
+                <li class="active"><a class="text-decoration-none text-white d-block text-center py-2" onclick="loadView('admin_home')">
                         <i class="fa-solid fa-house"></i> Home</a></li>
                 <!-- ---------------------------------------------------- -->
 
@@ -256,16 +278,13 @@ file_put_contents('UIDContainer.php', $Write);
                         <i class="fa-solid fa-clipboard-user"></i> View Records</a>
                     <div class="under_sidebar d-none">
                         <ul class="list-unstyled">
-                            <li><a class="text-decoration-none text-white d-block text-center "
-                                    onclick="loadView('sample')">
+                            <li><a class="text-decoration-none text-white d-block text-center " onclick="loadView('')">
                                     <i class="fa-solid fa-graduation-cap"></i> Student</a></li>
 
-                            <li><a class="text-decoration-none text-white d-block text-center "
-                                    onclick="loadView('admin_home')">
+                            <li><a class="text-decoration-none text-white d-block text-center " onclick="loadView('adminRecord_students')">
                                     <i class="fa-solid fa-users"></i> Parents</a></li>
 
-                            <li><a class="text-decoration-none text-white d-block text-center "
-                                    onclick="loadView('admin_home')">
+                            <li><a class="text-decoration-none text-white d-block text-center " onclick="loadView('admin_home')">
                                     <i class="fa-solid fa-person-chalkboard"></i> Professor</a></li>
 
                         </ul>
@@ -277,15 +296,12 @@ file_put_contents('UIDContainer.php', $Write);
                         <i class="fa-solid fa-bell"></i> Create Account</a>
                     <div class="under_sidebar2 d-none">
                         <ul class="list-unstyled">
-                            <li><a class="text-decoration-none text-white d-block text-center "
-                                    onclick="loadView('admin_studentAccount')">
+                            <li><a class="text-decoration-none text-white d-block text-center " onclick="loadView('admin_studentAccount')">
                                     <i class="fa-solid fa-graduation-cap"></i> Student</a></li>
 
-                            <li><a class="text-decoration-none text-white d-block text-center "
-                                    onclick="loadView('admin_proffesorAccount')">
+                            <li><a class="text-decoration-none text-white d-block text-center " onclick="loadView('admin_proffesorAccount')">
                                     <i class="fa-solid fa-person-chalkboard"></i> Professor</a></li>
-                            <li><a class="text-decoration-none text-white d-block text-center "
-                                    onclick="loadView('admin_parent')">
+                            <li><a class="text-decoration-none text-white d-block text-center " onclick="loadView('admin_parent')">
                                     <i class="fa-solid fa-user"></i> Parents</a></li>
 
                         </ul>
@@ -296,20 +312,16 @@ file_put_contents('UIDContainer.php', $Write);
                 <hr class="h-color mx-4">
             </ul>
             <div class="text-center">
-                <button type="button" id="logout_button" class="btn tn btn-outline-secondary text-white px-5"
-                    style="border: 2px solid black; border-radius: 5px;">Logout</button>
+                <button type="button" id="logout_button" class="btn tn btn-outline-secondary text-white px-5" style="border: 2px solid black; border-radius: 5px;">Logout</button>
             </div>
         </div>
         <div class="content">
             <nav class="navbar navbar-expand-lg bg-transparent">
                 <div class="container-fluid">
-                    <div class="navbar-brand d-flex justify-content-between d-block "
-                        style="display: flex;align-items: center;justify-content: center;margin-left:5%;">
-                        <button class="btn d-block px-1 py-0 open-btn text-white"><i
-                                class="fa-solid fa-bars-staggered"></i></button>&nbsp;&nbsp;&nbsp;&nbsp;
+                    <div class="navbar-brand d-flex justify-content-between d-block " style="display: flex;align-items: center;justify-content: center;margin-left:5%;">
+                        <button class="btn d-block px-1 py-0 open-btn text-white"><i class="fa-solid fa-bars-staggered"></i></button>&nbsp;&nbsp;&nbsp;&nbsp;
                         <div class="image">
-                            <img src="assets/bulsu_icon.png" class="image img-fluid"
-                                style="width:85px; margin-right: 20px;">
+                            <img src="assets/bulsu_icon.png" class="image img-fluid" style="width:85px; margin-right: 20px;">
                         </div>
                         <div class="text-white">
                             <h2>Bulacan State University
@@ -325,8 +337,7 @@ file_put_contents('UIDContainer.php', $Write);
 
     </div>
     <div class="base position-absolute top-50 start-50 translate-middle text-white" id="base">
-        <div class="cotainer position-absolute top-50 start-50 translate-middle text-white" id="container"
-            style="font-family:sans-serif;display: flex;align-items: center;justify-content: center;">
+        <div class="cotainer position-absolute top-50 start-50 translate-middle text-white" id="container" style="font-family:sans-serif;display: flex;align-items: center;justify-content: center;">
             <img src="assets/icon_email.jpg" class="img-fluid" width="70" alt="profile" style="margin-right: 10%;">
             <div class="text-white">
                 <h2>Jian Kyle Albaro
@@ -338,8 +349,7 @@ file_put_contents('UIDContainer.php', $Write);
     <nav class="navbar navbar-expand-lg fixed-bottom" style="font-family: sans-seriff;">
         <div class="container-fluid">
             <a class="navbar-brand text-white" href="#">Contact Us</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
@@ -347,8 +357,7 @@ file_put_contents('UIDContainer.php', $Write);
                     <li class="nav-item">
                         <div class="container-fluid">
                             <a class="navbar-brand text-white" href="#">
-                                <img src="assets/Kaypian.png" alt="Logo" width="30"
-                                    class="d-inline-block align-text-center">
+                                <img src="assets/Kaypian.png" alt="Logo" width="30" class="d-inline-block align-text-center">
                                 Kaypian, San Jose Del Monte Bulacan
                             </a>
                         </div>
@@ -356,8 +365,7 @@ file_put_contents('UIDContainer.php', $Write);
                     <li class="nav-item">
                         <div class="container-fluid">
                             <a class="navbar-brand text-white" href="#">
-                                <img src="assets/contact.png" alt="Logo" width="30"
-                                    class="d-inline-block align-text-center">
+                                <img src="assets/contact.png" alt="Logo" width="30" class="d-inline-block align-text-center">
                                 912-123-1234
                             </a>
                         </div>
@@ -365,8 +373,7 @@ file_put_contents('UIDContainer.php', $Write);
                     <li class="nav-item">
                         <div class="container-fluid">
                             <a class="navbar-brand text-white" href="#">
-                                <img src="assets/email.png" alt="Logo" width="30"
-                                    class="d-inline-block align-text-center">
+                                <img src="assets/email.png" alt="Logo" width="30" class="d-inline-block align-text-center">
                                 officebulsusarmiento@bulsu.edu.ph
                             </a>
                         </div>
@@ -380,39 +387,48 @@ file_put_contents('UIDContainer.php', $Write);
 <script src="node_modules\bootstrap\dist\js\bootstrap.bundle.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
+    $(document).ready(function() {
+        $('.table-row').click(function() {
+            var email = $(this).find('td:eq(0)').text();
+            var name = $(this).find('td:eq(1)').text();
+
+            $('#editEmail').val(email);
+            $('#editName').val(name);
+
+            $('#editModal').modal('show');
+        });
+    });
 
     function logoutFunction() {
         window.location.href = 'logout.php';
     }
     document.getElementById("logout_button").addEventListener("click", logoutFunction);
 
-    $(document).ready(function () {
+    $(document).ready(function() {
         $("#getUID").load("UIDContainer.php");
-        setInterval(function () {
+        setInterval(function() {
             $("#getUID").load("UIDContainer.php");
         }, 500);
     });
-    $(".sidebar ul li").on('click', function () {
+    $(".sidebar ul li").on('click', function() {
         $(".sidebar ul li.active").removeClass('active');
         $('.under_sidebar').addClass('d-none');
         $('.under_sidebar2').addClass('d-none');
         $(this).addClass('active');
     });
-    $('.open-btn').on('click', function () {
+    $('.open-btn').on('click', function() {
         $('.sidebar').addClass('active');
         $('.sidebar').removeClass('d-mb-none');
     });
-    $('.close-btn').on('click', function () {
+    $('.close-btn').on('click', function() {
         $('.sidebar').removeClass('active');
-        $('.sidebar').addClass('d-mb-none');
-        ;
+        $('.sidebar').addClass('d-mb-none');;
     });
-    $('.dropdown').on('click', function () {
+    $('.dropdown').on('click', function() {
         $('.under_sidebar').removeClass('d-none');
-        $('.under_sidebar').addClass('active');
-        ;
+        $('.under_sidebar').addClass('active');;
     });
-    $('.dropdown2').on('click', function () {
+    $('.dropdown2').on('click', function() {
         $('.under_sidebar2').removeClass('d-none');
         $('.under_sidebar2').addClass('active');
 
@@ -443,9 +459,10 @@ file_put_contents('UIDContainer.php', $Write);
             $("#parent_submit").prop("disabled", true);
         }
     }
+
     function getInputValues() {
         var inputValues = [];
-        $(".add_children").each(function () {
+        $(".add_children").each(function() {
             inputValues.push($(this).val());
         });
 
@@ -464,7 +481,7 @@ file_put_contents('UIDContainer.php', $Write);
         xhr.open("POST", "getdepartment.php", true);
         xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 
-        xhr.onreadystatechange = function () {
+        xhr.onreadystatechange = function() {
             if (xhr.readyState == 4 && xhr.status == 200) {
                 // Display the response from the PHP script in the result container
                 document.getElementById("department").value = xhr.responseText;
@@ -474,34 +491,40 @@ file_put_contents('UIDContainer.php', $Write);
         // Send the selected value as POST data
         xhr.send("selectedValue=" + selectedValue);
     }
+
     function validateNumberInput(inputElement) {
         const inputValue = inputElement.value;
         const sanitizedValue = inputValue.replace(/[^0-9]/g, '');
         inputElement.value = sanitizedValue;
     }
+
     function checkMaxLength(input, maxLength) {
         if (input.value.length > maxLength) {
             input.value = input.value.slice(0, maxLength); // Truncate the input value
         }
     }
+
     function submitFormStudent() {
         $('#confirmationModal').modal('show');
         document.getElementById("confirmButton").onclick = validationStudent;
     }
+
     function submitFormProf() {
         document.getElementById("confirmationBody").innerHTML = "Add this Professor Account";
         document.getElementById("exampleModalLabel").innerHTML = "Add Professor Account";
         $('#confirmationModal').modal('show');
         document.getElementById("confirmButton").onclick = validationProf;
     }
+
     function submitFormParent() {
         $('#parentModal').modal('show');
         document.getElementById("parentconfirmButton").onclick = validationParent;
 
     }
+
     function areAppendedInputsValid() {
         var valid = true;
-        $(".add_children").each(function () {
+        $(".add_children").each(function() {
             var studentNumber = $(this).val();
             if (studentNumber.length !== 10) {
                 valid = false;
@@ -510,6 +533,7 @@ file_put_contents('UIDContainer.php', $Write);
         });
         return valid;
     }
+
     function validationParent() {
         $('#parentModal').modal('hide');
         const parent_fname = document.getElementById("parent_first_name");
@@ -529,15 +553,15 @@ file_put_contents('UIDContainer.php', $Write);
 
                 // Collect student numbers and add them to the formData
                 var studentNumbers = [];
-                $(".add_children").each(function () {
+                $(".add_children").each(function() {
                     studentNumbers.push($(this).val());
                 });
                 formData.append("parent_studid", JSON.stringify(studentNumbers));
 
                 fetch("add_parent.php", {
-                    method: "POST",
-                    body: formData,
-                })
+                        method: "POST",
+                        body: formData,
+                    })
                     .then((response) => response.json())
                     .then((data) => {
                         if (data.success) {
@@ -553,7 +577,7 @@ file_put_contents('UIDContainer.php', $Write);
                                 type: 'POST',
                                 url: 'sample_send_email.php',
                                 data: emailData,
-                                success: function (emailResponse) {
+                                success: function(emailResponse) {
                                     console.log(emailResponse);
                                     if (emailResponse === 'success') {
                                         // Assuming you have modalContent and modalLabel defined in your HTML
@@ -618,9 +642,9 @@ file_put_contents('UIDContainer.php', $Write);
             if (convert.length === 10 && studid.validity.valid) {
                 const formData = new FormData(myForm);
                 fetch("add_student.php", {
-                    method: "POST",
-                    body: formData
-                })
+                        method: "POST",
+                        body: formData
+                    })
                     .then(response => {
                         if (response.ok) {
                             document.getElementById("succmodalbody").innerHTML = "This Account is successfully added!";
@@ -647,26 +671,19 @@ file_put_contents('UIDContainer.php', $Write);
         } else {
             if (!fname.validity.valid) {
                 errorMessage = fname.validationMessage + ("(First Name)");
-            }
-            else if (!mname.validity.valid) {
+            } else if (!mname.validity.valid) {
                 errorMessage = mname.validationMessage + ("(Middle Name)");
-            }
-            else if (!lname.validity.valid) {
+            } else if (!lname.validity.valid) {
                 errorMessage = lname.validationMessage + ("(Last Name)");
-            }
-            else if (!studid.validity.valid) {
+            } else if (!studid.validity.valid) {
                 errorMessage = studid.validationMessage + ("(Student )");
-            }
-            else if (!section.validity.valid) {
+            } else if (!section.validity.valid) {
                 errorMessage = section.validationMessage + ("(Section)");
-            }
-            else if (!email.validity.valid) {
+            } else if (!email.validity.valid) {
                 errorMessage = email.validationMessage + ("(Email)");
-            }
-            else if (!rfid.value.trim()) {
+            } else if (!rfid.value.trim()) {
                 errorMessage = "RFID is required.";
-            }
-            else {
+            } else {
 
             }
             modalbodycontent.innerHTML = errorMessage;
@@ -677,6 +694,7 @@ file_put_contents('UIDContainer.php', $Write);
 
 
     }
+
     function validationProf() {
         $('#confirmationModal').modal('hide');
         const prof_fname = document.getElementById("prof_fname");
@@ -690,9 +708,9 @@ file_put_contents('UIDContainer.php', $Write);
         if (prof_fname.validity.valid && prof_mname.validity.valid && prof_lname.validity.valid && prof_email.validity.valid) {
             const formData = new FormData(prof_Form);
             fetch("add_faculty.php", {
-                method: "POST",
-                body: formData
-            })
+                    method: "POST",
+                    body: formData
+                })
                 .then(response => {
                     if (response.ok) {
                         // Handle success, e.g., show success message
@@ -706,7 +724,7 @@ file_put_contents('UIDContainer.php', $Write);
                             type: 'POST',
                             url: 'sample_send_email.php',
                             data: data,
-                            success: function (response) {
+                            success: function(response) {
                                 if (response === 'success') {
                                     sanaolLabel.textContent = "Success";
                                     modalbodycontent.innerHTML = "Your Account credential was send to your Email";
@@ -724,7 +742,8 @@ file_put_contents('UIDContainer.php', $Write);
                 .catch(error => {
                     modalbodycontent.innerHTML = "An error occurred:", error;
                     $('#Errormodal').modal('show');
-                }); prof_Form.reset();
+                });
+            prof_Form.reset();
         } else {
             if (!prof_fname.validity.valid) {
                 errorMessage = prof_fname.validationMessage + " (First Name)";
@@ -734,8 +753,7 @@ file_put_contents('UIDContainer.php', $Write);
                 errorMessage = prof_lname.validationMessage + " (Last Name)";
             } else if (!prof_email.validity.valid) {
                 errorMessage = prof_email.validationMessage + " (Email)";
-            }
-            else {
+            } else {
                 errorMessage = "Please fill in all required fields.";
             }
             modalbodycontent.innerHTML = errorMessage;
