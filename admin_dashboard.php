@@ -240,7 +240,7 @@ file_put_contents('UIDContainer.php', $Write);
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="editModalLabel">Edit User Data</h5>
+                <h5 class="modal-title" id="editModalLabel">Edit Student Data</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 
                 </button>
@@ -331,6 +331,7 @@ file_put_contents('UIDContainer.php', $Write);
             </div>
             <!-- Add other fields as needed -->
             <button type="button" id="studentSubmit" class="btn btn-primary">Save Changes</button>
+
         </div>
 
         </form>
@@ -533,119 +534,173 @@ file_put_contents('UIDContainer.php', $Write);
     }
 
     function showModal() {
-    var target = event.target;
-    while (target.tagName !== "TR") {
-        target = target.parentNode;
+        var target = event.target;
+        while (target.tagName !== "TR") {
+            target = target.parentNode;
+        }
+
+        var id = target.getElementsByTagName("td")[0].innerText;
+        if (!$('#studentRecordModal').data('deleteButtonAppended')) {
+        // Create a delete button dynamically
+        var deleteButton = document.createElement("button");
+        deleteButton.textContent = "Delete";
+        deleteButton.className = "btn btn-danger";
+        deleteButton.onclick = function () {
+            deleteStudentData(id);
+            // Close the modal or perform other actions if needed
+            $('#studentRecordModal').modal('hide');
+        };
+
+        // Append the delete button to the modal content
+        $('#studentRecordModal .modal-content').append(deleteButton);
+
+        // Set the flag to indicate that the delete button has been appended
+        $('#studentRecordModal').data('deleteButtonAppended', true);
+    }
+        // Fetch data from the server based on the ID
+        $.ajax({
+            type: "POST",
+            url: "admin_fetchStudent.php", // Create a new PHP file for fetching data
+            data: {
+                id: id
+            },
+            success: function (response) {
+                // Parse the JSON response
+                var data = JSON.parse(response);
+
+                // Check if data is retrieved successfully
+                if (data.success) {
+                    // Fill the input fields with retrieved data
+                    $("#fname").val(data.firstName);
+                    $("#mname").val(data.middleName);
+                    $("#lname").val(data.lastName);
+                    $("#studid").val(data.studentId);
+                    $("#sectionSelect").val(data.section);
+                    $("#email").val(data.email);
+                    $("#getUID").val(data.rfidTag);
+                    $("#department").val(data.department);
+
+                    // Show the modal
+                    $('#studentRecordModal').modal('show');
+                } else {
+                    console.error("Error fetching data: ", data.message);
+                }
+            },
+            error: function (error) {
+                // Handle AJAX errors
+                console.error("AJAX Error: ", error);
+            }
+        });
+
+        // Attach the click event to the submit button
+        document.getElementById("studentSubmit").addEventListener("click", function (event) {
+            updateStudentData(id);
+        });
     }
 
-    var id = target.getElementsByTagName("td")[0].innerText;
 
-    // Fetch data from the server based on the ID
-    $.ajax({
-        type: "POST",
-        url: "admin_fetchStudent.php", // Create a new PHP file for fetching data
-        data: {
-            id: id
-        },
-        success: function (response) {
-            // Parse the JSON response
-            var data = JSON.parse(response);
+    function updateStudentData(id) {
+        var stud_id = id;
+        var firstName = $("#fname").val();
+        var middleName = $("#mname").val();
+        var lastName = $("#lname").val();
+        var studentId = $("#studid").val();
+        var section = $("#sectionSelect").val();
+        var email = $("#email").val();
+        var rfidTag = $("#getUID").val();
+        var department = $("#department").val();
 
-            // Check if data is retrieved successfully
-            if (data.success) {
-                // Fill the input fields with retrieved data
-                $("#fname").val(data.firstName);
-                $("#mname").val(data.middleName);
-                $("#lname").val(data.lastName);
-                $("#studid").val(data.studentId);
-                $("#sectionSelect").val(data.section);
-                $("#email").val(data.email);
-                $("#getUID").val(data.rfidTag);
-                $("#department").val(data.department);
+        // Make an AJAX request to your PHP script
+        $.ajax({
+            type: "POST",
+            url: "admin_updateStudent.php",
+            data: {
+                id: stud_id,
+                firstName: firstName,
+                middleName: middleName,
+                lastName: lastName,
+                studentId: studentId,
+                section: section,
+                department: department,
+                email: email,
+                rfidTag: rfidTag
+            },
+            success: function (response) {
+                try {
+                    // Parse the JSON response
+                    var result = JSON.parse(response);
 
-                // Show the modal
-                $('#studentRecordModal').modal('show');
-            } else {
-                console.error("Error fetching data: ", data.message);
-            }
-        },
-        error: function (error) {
-            // Handle AJAX errors
-            console.error("AJAX Error: ", error);
-        }
-    });
+                    // Check if the status is "Success"
+                    if (result.status === "Success") {
+                        // Close the modal after successful update
+                        $('#studentRecordModal').modal('hide');
 
-    // Attach the click event to the submit button
-    document.getElementById("studentSubmit").addEventListener("click", function (event) {
-        updateStudentData(id);
-    });
-}
-
-
-function updateStudentData(id) {
-    var stud_id = id;
-    var firstName = $("#fname").val();
-    var middleName = $("#mname").val();
-    var lastName = $("#lname").val();
-    var studentId = $("#studid").val();
-    var section = $("#sectionSelect").val();
-    var email = $("#email").val();
-    var rfidTag = $("#getUID").val();
-    var department = $("#department").val();
-
-    // Make an AJAX request to your PHP script
-    $.ajax({
-        type: "POST",
-        url: "admin_updateStudent.php",
-        data: {
-            id: stud_id,
-            firstName: firstName,
-            middleName: middleName,
-            lastName: lastName,
-            studentId: studentId,
-            section: section,
-            department: department,
-            email: email,
-            rfidTag: rfidTag
-        },
-        success: function (response) {
-            try {
-                // Parse the JSON response
-                var result = JSON.parse(response);
-
-                // Check if the status is "Success"
-                if (result.status === "Success") {
-                    // Close the modal after successful update
-                    $('#studentRecordModal').modal('hide');
-
-                    // Update the corresponding row in the table with the returned data
-                    updateTableRow(id, result.data);
-                } else {
-                    // Log or alert the error message
-                    console.error("Error updating data: ", result.message);
+                        // Update the corresponding row in the table with the returned data
+                        updateTableRow(id, result.data);
+                    } else {
+                        // Log or alert the error message
+                        console.error("Error updating data: ", result.message);
+                    }
+                } catch (error) {
+                    // Handle JSON parsing error
+                    console.error("Error parsing JSON: ", error);
                 }
-            } catch (error) {
-                // Handle JSON parsing error
-                console.error("Error parsing JSON: ", error);
+            },
+            error: function (error) {
+                // Handle AJAX errors
+                console.error("AJAX Error: ", error);
             }
-        },
-        error: function (error) {
-            // Handle AJAX errors
-            console.error("AJAX Error: ", error);
-        }
-    });
-}
+        });
+    }
 
-function updateTableRow(id, data) {
-    // Find the row with the matching ID in the table
-    var row = $("#studentsRecord_table tbody tr:has(td:contains('" + id + "'))");
+    function updateTableRow(id, data) {
+        // Find the row with the matching ID in the table
+        var row = $("#studentsRecord_table tbody tr:has(td:contains('" + id + "'))");
 
-    // Update the data in the table row
-    row.find("td:eq(1)").text(data.name);
-    row.find("td:eq(2)").text(data.studentid);
-    row.find("td:eq(3)").text(data.sectionid);
-    row.find("td:eq(4)").text(data.department);
-}
+        // Update the data in the table row
+        row.find("td:eq(1)").text(data.name);
+        row.find("td:eq(2)").text(data.studentid);
+        row.find("td:eq(3)").text(data.sectionid);
+        row.find("td:eq(4)").text(data.department);
+    }
+    function deleteStudentData(id) {
+        // Make an AJAX request to your PHP script for delete
+        $.ajax({
+            type: "POST",
+            url: "admin_deleteStudent.php",
+            data: {
+                id: id
+            },
+            success: function (response) {
+                try {
+                    // Parse the JSON response
+                    var result = JSON.parse(response);
+
+                    // Check if the status is "Success"
+                    if (result.status === "Success") {
+                        // Remove the corresponding row from the table
+                        removeTableRow(id);
+                    } else {
+                        // Log or alert the error message
+                        console.error("Error deleting data: ", result.message);
+                    }
+                } catch (error) {
+                    // Handle JSON parsing error
+                    console.error("Error parsing JSON: ", error);
+                }
+            },
+            error: function (error) {
+                // Handle AJAX errors
+                console.error("AJAX Error: ", error);
+            }
+        });
+    }
+
+    function removeTableRow(id) {
+        // Find the row with the matching ID in the table and remove it
+        $("#studentsRecord_table tbody tr:has(td:contains('" + id + "'))").remove();
+    }
+
 
     function studentSelect() {
         document.getElementById("studentsRecord_table").addEventListener("click", showModal);
