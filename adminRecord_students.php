@@ -23,12 +23,14 @@ include 'includes/session.php';
       }
     }
   </style>
-  <div class="table-container" id="tball">
-    <table class="table table-hover text-center">
+  <div>
+    <table id="studentsRecord_table" class="table table-hover text-center">
       <thead>
         <tr class="table-secondary">
-          <th>Email</th>
+          <th>Student ID</th>
           <th>Name</th>
+          <th>Section</th>
+          <th>Department</th>
           
       </thead>
       <tbody>
@@ -36,12 +38,13 @@ include 'includes/session.php';
         $con = $pdo->open();
         try {
           $con = $pdo->open();
-          $stmt1 = $con->prepare("SELECT * FROM parent_tbl");
+          $stmt1 = $con->prepare("SELECT * FROM student_tbl");
           $stmt1->execute();
           foreach ($stmt1 as $row1) {
-            echo "<tr data-id='" . $row1['id'] . "' class='table-row'>";
-            echo "<td>" . $row1['email'] . "</td>";
+            echo "<td>" . $row1['studentid'] . "</td>";
             echo "<td>" . $row1['name'] . "</td>";
+            echo "<td>" . $row1['sectionid'] . "</td>";
+            echo "<td>" . $row1['department'] . "</td>";
             echo "</tr>";
           }
           

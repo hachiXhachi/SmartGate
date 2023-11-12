@@ -159,7 +159,8 @@ file_put_contents('UIDContainer.php', $Write);
     </style>
 </head>
 <!-- student and prof Modal -->
-<div class="modal fade" id="confirmationModal" tabindex="5" aria-labelledby="exampleModalLabel" aria-hidden="true" style="font-family:arial">
+<div class="modal fade" id="confirmationModal" tabindex="5" aria-labelledby="exampleModalLabel" aria-hidden="true"
+    style="font-family:arial">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -177,7 +178,8 @@ file_put_contents('UIDContainer.php', $Write);
     </div>
 </div>
 <!-- parent Modal -->
-<div class="modal fade" id="parentModal" tabindex="5" aria-labelledby="exampleModalLabel" aria-hidden="true" style="font-family:arial">
+<div class="modal fade" id="parentModal" tabindex="5" aria-labelledby="exampleModalLabel" aria-hidden="true"
+    style="font-family:arial">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -196,7 +198,8 @@ file_put_contents('UIDContainer.php', $Write);
     </div>
 </div>
 <!-- Error Modal -->
-<div class="modal fade" id="Errormodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style="font-family:arial">
+<div class="modal fade" id="Errormodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
+    style="font-family:arial">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header" id="exampleModalLabel">
@@ -213,7 +216,8 @@ file_put_contents('UIDContainer.php', $Write);
     </div>
 </div>
 <!-- Success Modal -->
-<div class="modal fade" id="succModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style="font-family:arial">
+<div class="modal fade" id="succModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
+    style="font-family:arial">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header" id="succModalLabel">
@@ -264,11 +268,13 @@ file_put_contents('UIDContainer.php', $Write);
             <div class="header-box px-3 pt-3 pb-4 py-2 d-flex justify-content-between">
                 <img src="assets/logo_sarmiento.png" width="40" class="img-fluid"> &nbsp;
                 <h5 class="text-white py-1 px-2">Admin Dashboard</h5>
-                <button class="btn d-block px-1 py-0 close-btn text-white"><i class="fa-solid fa-bars-staggered"></i></button>
+                <button class="btn d-block px-1 py-0 close-btn text-white"><i
+                        class="fa-solid fa-bars-staggered"></i></button>
             </div>
             <hr class="h-color mx-4">
             <ul class="list-unstyled px-5 py-3">
-                <li class="active"><a class="text-decoration-none text-white d-block text-center py-2" onclick="loadView('admin_home')">
+                <li class="active"><a class="text-decoration-none text-white d-block text-center py-2"
+                        onclick="loadView('admin_home')">
                         <i class="fa-solid fa-house"></i> Home</a></li>
                 <!-- ---------------------------------------------------- -->
 
@@ -278,13 +284,15 @@ file_put_contents('UIDContainer.php', $Write);
                         <i class="fa-solid fa-clipboard-user"></i> View Records</a>
                     <div class="under_sidebar d-none">
                         <ul class="list-unstyled">
-                            <li><a class="text-decoration-none text-white d-block text-center " onclick="loadView('')">
+                            <li><a class="text-decoration-none text-white d-block text-center "
+                                    onclick="loadView('adminRecord_students', studentSelect)">
                                     <i class="fa-solid fa-graduation-cap"></i> Student</a></li>
 
-                            <li><a class="text-decoration-none text-white d-block text-center " onclick="loadView('adminRecord_students')">
+                            <li><a class="text-decoration-none text-white d-block text-center " onclick="loadView('')">
                                     <i class="fa-solid fa-users"></i> Parents</a></li>
 
-                            <li><a class="text-decoration-none text-white d-block text-center " onclick="loadView('admin_home')">
+                            <li><a class="text-decoration-none text-white d-block text-center "
+                                    onclick="loadView('admin_home')">
                                     <i class="fa-solid fa-person-chalkboard"></i> Professor</a></li>
 
                         </ul>
@@ -296,12 +304,15 @@ file_put_contents('UIDContainer.php', $Write);
                         <i class="fa-solid fa-bell"></i> Create Account</a>
                     <div class="under_sidebar2 d-none">
                         <ul class="list-unstyled">
-                            <li><a class="text-decoration-none text-white d-block text-center " onclick="loadView('admin_studentAccount')">
+                            <li><a class="text-decoration-none text-white d-block text-center "
+                                    onclick="loadView('admin_studentAccount')">
                                     <i class="fa-solid fa-graduation-cap"></i> Student</a></li>
 
-                            <li><a class="text-decoration-none text-white d-block text-center " onclick="loadView('admin_proffesorAccount')">
+                            <li><a class="text-decoration-none text-white d-block text-center "
+                                    onclick="loadView('admin_proffesorAccount')">
                                     <i class="fa-solid fa-person-chalkboard"></i> Professor</a></li>
-                            <li><a class="text-decoration-none text-white d-block text-center " onclick="loadView('admin_parent')">
+                            <li><a class="text-decoration-none text-white d-block text-center "
+                                    onclick="loadView('admin_parent')">
                                     <i class="fa-solid fa-user"></i> Parents</a></li>
 
                         </ul>
@@ -312,16 +323,20 @@ file_put_contents('UIDContainer.php', $Write);
                 <hr class="h-color mx-4">
             </ul>
             <div class="text-center">
-                <button type="button" id="logout_button" class="btn tn btn-outline-secondary text-white px-5" style="border: 2px solid black; border-radius: 5px;">Logout</button>
+                <button type="button" id="logout_button" class="btn tn btn-outline-secondary text-white px-5"
+                    style="border: 2px solid black; border-radius: 5px;">Logout</button>
             </div>
         </div>
         <div class="content">
             <nav class="navbar navbar-expand-lg bg-transparent">
                 <div class="container-fluid">
-                    <div class="navbar-brand d-flex justify-content-between d-block " style="display: flex;align-items: center;justify-content: center;margin-left:5%;">
-                        <button class="btn d-block px-1 py-0 open-btn text-white"><i class="fa-solid fa-bars-staggered"></i></button>&nbsp;&nbsp;&nbsp;&nbsp;
+                    <div class="navbar-brand d-flex justify-content-between d-block "
+                        style="display: flex;align-items: center;justify-content: center;margin-left:5%;">
+                        <button class="btn d-block px-1 py-0 open-btn text-white"><i
+                                class="fa-solid fa-bars-staggered"></i></button>&nbsp;&nbsp;&nbsp;&nbsp;
                         <div class="image">
-                            <img src="assets/bulsu_icon.png" class="image img-fluid" style="width:85px; margin-right: 20px;">
+                            <img src="assets/bulsu_icon.png" class="image img-fluid"
+                                style="width:85px; margin-right: 20px;">
                         </div>
                         <div class="text-white">
                             <h2>Bulacan State University
@@ -337,7 +352,8 @@ file_put_contents('UIDContainer.php', $Write);
 
     </div>
     <div class="base position-absolute top-50 start-50 translate-middle text-white" id="base">
-        <div class="cotainer position-absolute top-50 start-50 translate-middle text-white" id="container" style="font-family:sans-serif;display: flex;align-items: center;justify-content: center;">
+        <div class="cotainer position-absolute top-50 start-50 translate-middle text-white" id="container"
+            style="font-family:sans-serif;display: flex;align-items: center;justify-content: center;">
             <img src="assets/icon_email.jpg" class="img-fluid" width="70" alt="profile" style="margin-right: 10%;">
             <div class="text-white">
                 <h2>Jian Kyle Albaro
@@ -349,7 +365,8 @@ file_put_contents('UIDContainer.php', $Write);
     <nav class="navbar navbar-expand-lg fixed-bottom" style="font-family: sans-seriff;">
         <div class="container-fluid">
             <a class="navbar-brand text-white" href="#">Contact Us</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
@@ -357,7 +374,8 @@ file_put_contents('UIDContainer.php', $Write);
                     <li class="nav-item">
                         <div class="container-fluid">
                             <a class="navbar-brand text-white" href="#">
-                                <img src="assets/Kaypian.png" alt="Logo" width="30" class="d-inline-block align-text-center">
+                                <img src="assets/Kaypian.png" alt="Logo" width="30"
+                                    class="d-inline-block align-text-center">
                                 Kaypian, San Jose Del Monte Bulacan
                             </a>
                         </div>
@@ -365,7 +383,8 @@ file_put_contents('UIDContainer.php', $Write);
                     <li class="nav-item">
                         <div class="container-fluid">
                             <a class="navbar-brand text-white" href="#">
-                                <img src="assets/contact.png" alt="Logo" width="30" class="d-inline-block align-text-center">
+                                <img src="assets/contact.png" alt="Logo" width="30"
+                                    class="d-inline-block align-text-center">
                                 912-123-1234
                             </a>
                         </div>
@@ -373,7 +392,8 @@ file_put_contents('UIDContainer.php', $Write);
                     <li class="nav-item">
                         <div class="container-fluid">
                             <a class="navbar-brand text-white" href="#">
-                                <img src="assets/email.png" alt="Logo" width="30" class="d-inline-block align-text-center">
+                                <img src="assets/email.png" alt="Logo" width="30"
+                                    class="d-inline-block align-text-center">
                                 officebulsusarmiento@bulsu.edu.ph
                             </a>
                         </div>
@@ -387,8 +407,8 @@ file_put_contents('UIDContainer.php', $Write);
 <script src="node_modules\bootstrap\dist\js\bootstrap.bundle.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    $(document).ready(function() {
-        $('.table-row').click(function() {
+    $(document).ready(function () {
+        $('.table-row').click(function () {
             var email = $(this).find('td:eq(0)').text();
             var name = $(this).find('td:eq(1)').text();
 
@@ -404,46 +424,59 @@ file_put_contents('UIDContainer.php', $Write);
     }
     document.getElementById("logout_button").addEventListener("click", logoutFunction);
 
-    $(document).ready(function() {
+    $(document).ready(function () {
         $("#getUID").load("UIDContainer.php");
-        setInterval(function() {
+        setInterval(function () {
             $("#getUID").load("UIDContainer.php");
         }, 500);
     });
-    $(".sidebar ul li").on('click', function() {
+    $(".sidebar ul li").on('click', function () {
         $(".sidebar ul li.active").removeClass('active');
         $('.under_sidebar').addClass('d-none');
         $('.under_sidebar2').addClass('d-none');
         $(this).addClass('active');
     });
-    $('.open-btn').on('click', function() {
+    $('.open-btn').on('click', function () {
         $('.sidebar').addClass('active');
         $('.sidebar').removeClass('d-mb-none');
     });
-    $('.close-btn').on('click', function() {
+    $('.close-btn').on('click', function () {
         $('.sidebar').removeClass('active');
         $('.sidebar').addClass('d-mb-none');;
     });
-    $('.dropdown').on('click', function() {
+    $('.dropdown').on('click', function () {
         $('.under_sidebar').removeClass('d-none');
         $('.under_sidebar').addClass('active');;
     });
-    $('.dropdown2').on('click', function() {
+    $('.dropdown2').on('click', function () {
         $('.under_sidebar2').removeClass('d-none');
-        $('.under_sidebar2').addClass('active');
-
-        ;
+        $('.under_sidebar2').addClass('active');;
     });
 
-    function loadView(viewName) {
+    function loadView(viewName, callback) {
         fetch(`${viewName}.php`)
             .then(response => response.text())
             .then(data => {
                 document.getElementById('base').innerHTML = data;
+                if (callback) {
+                    callback();
+                }
             })
             .catch(error => {
                 console.error('Error loading view:', error);
             });
+    }
+
+    function studentSelect() {
+        document.getElementById("studentsRecord_table").addEventListener("click", function (event) {
+            var target = event.target;
+            while (target.tagName !== "TR") {
+                target = target.parentNode;
+            }
+
+            var id = target.getElementsByTagName("td")[0].innerText;
+            alert("Clicked ID: " + id);
+        });
     }
 
     function addDiv() {
@@ -462,7 +495,7 @@ file_put_contents('UIDContainer.php', $Write);
 
     function getInputValues() {
         var inputValues = [];
-        $(".add_children").each(function() {
+        $(".add_children").each(function () {
             inputValues.push($(this).val());
         });
 
@@ -481,7 +514,7 @@ file_put_contents('UIDContainer.php', $Write);
         xhr.open("POST", "getdepartment.php", true);
         xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 
-        xhr.onreadystatechange = function() {
+        xhr.onreadystatechange = function () {
             if (xhr.readyState == 4 && xhr.status == 200) {
                 // Display the response from the PHP script in the result container
                 document.getElementById("department").value = xhr.responseText;
@@ -524,7 +557,7 @@ file_put_contents('UIDContainer.php', $Write);
 
     function areAppendedInputsValid() {
         var valid = true;
-        $(".add_children").each(function() {
+        $(".add_children").each(function () {
             var studentNumber = $(this).val();
             if (studentNumber.length !== 10) {
                 valid = false;
@@ -553,15 +586,15 @@ file_put_contents('UIDContainer.php', $Write);
 
                 // Collect student numbers and add them to the formData
                 var studentNumbers = [];
-                $(".add_children").each(function() {
+                $(".add_children").each(function () {
                     studentNumbers.push($(this).val());
                 });
                 formData.append("parent_studid", JSON.stringify(studentNumbers));
 
                 fetch("add_parent.php", {
-                        method: "POST",
-                        body: formData,
-                    })
+                    method: "POST",
+                    body: formData,
+                })
                     .then((response) => response.json())
                     .then((data) => {
                         if (data.success) {
@@ -577,7 +610,7 @@ file_put_contents('UIDContainer.php', $Write);
                                 type: 'POST',
                                 url: 'sample_send_email.php',
                                 data: emailData,
-                                success: function(emailResponse) {
+                                success: function (emailResponse) {
                                     console.log(emailResponse);
                                     if (emailResponse === 'success') {
                                         // Assuming you have modalContent and modalLabel defined in your HTML
@@ -642,9 +675,9 @@ file_put_contents('UIDContainer.php', $Write);
             if (convert.length === 10 && studid.validity.valid) {
                 const formData = new FormData(myForm);
                 fetch("add_student.php", {
-                        method: "POST",
-                        body: formData
-                    })
+                    method: "POST",
+                    body: formData
+                })
                     .then(response => {
                         if (response.ok) {
                             document.getElementById("succmodalbody").innerHTML = "This Account is successfully added!";
@@ -708,9 +741,9 @@ file_put_contents('UIDContainer.php', $Write);
         if (prof_fname.validity.valid && prof_mname.validity.valid && prof_lname.validity.valid && prof_email.validity.valid) {
             const formData = new FormData(prof_Form);
             fetch("add_faculty.php", {
-                    method: "POST",
-                    body: formData
-                })
+                method: "POST",
+                body: formData
+            })
                 .then(response => {
                     if (response.ok) {
                         // Handle success, e.g., show success message
@@ -724,7 +757,7 @@ file_put_contents('UIDContainer.php', $Write);
                             type: 'POST',
                             url: 'sample_send_email.php',
                             data: data,
-                            success: function(response) {
+                            success: function (response) {
                                 if (response === 'success') {
                                     sanaolLabel.textContent = "Success";
                                     modalbodycontent.innerHTML = "Your Account credential was send to your Email";
