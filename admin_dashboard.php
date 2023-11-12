@@ -1,4 +1,5 @@
 <?php
+include 'includes/session.php';
 $Write = "<?php $" . "UIDresult=''; " . "echo $" . "UIDresult;" . " ?>";
 file_put_contents('UIDContainer.php', $Write);
 ?>
@@ -233,34 +234,109 @@ file_put_contents('UIDContainer.php', $Write);
         </div>
     </div>
 </div>
-<!--parent record modal -->
-<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+<!--student record modal -->
+<div class="modal fade" id="studentRecordModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel"
+    aria-hidden="true" style="font-family:arial">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="editModalLabel">Edit User Data</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
                 </button>
             </div>
             <div class="modal-body">
                 <!-- Add your form elements for editing data here -->
                 <form id="editForm">
-                    <div class="form-group">
-                        <label for="editEmail">Email</label>
-                        <input type="text" class="form-control" id="editEmail" name="editEmail" readonly>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="column1">First Name</label>
+                                <input type="text" class="form-control bg-transparent" name="first_name" required
+                                    pattern="[A-Za-z ]{2,16}" id="fname" placeholder="First Name"
+                                    style="border: 2px solid black;">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="column2">Middle Name</label>
+                                <input type="text" class="form-control bg-transparent" name="middle_name" required
+                                    pattern="[A-Za-z ]{2,16}" id="mname" placeholder="Middle Name"
+                                    style="border: 2px solid black;">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="column3">Last Name</label>
+                                <input type="text" class="form-control bg-transparent" name="last_name" required
+                                    pattern="[A-Za-z ]{2,16}" id="lname" placeholder="Last Name"
+                                    style="border: 2px solid black;">
+                            </div>
+                        </div>
+                        <!-- Second Row -->
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="column4">Student Number</label>
+                                <input type="number" class="form-control bg-transparent" name="studentid" id="studid"
+                                    placeholder="Student Number" min="0" max="9999999999"
+                                    oninput="validateNumberInput(this);checkMaxLength(this, 10);"
+                                    style="border: 2px solid black;" readonly>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group text-white">
+                                <label for="sectionSelect">Choose a Section:</label>
+                                <select class="form-control bg-transparent" id="sectionSelect" name="sectionid"
+                                    onchange="changeFunction()" style="width:100%; border: 2px solid black;">
+                                    <option value="" disabled selected hidden>Section</option>
+                                    <?php
+
+                                    $sql = "SELECT section_name, department_name FROM section_tbl";
+                                    $stmt = $con->query($sql);
+
+                                    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                                        $sectionName = $row['section_name'];
+                                        echo '<option id="option">' . $sectionName . '</option>';
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="column3">Department</label>
+                                <input type="text" class="form-control bg-transparent" id="department" name="department"
+                                    style="border: 2px solid black;" readonly>
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <label for="column7">Email</label>
+                                <input type="email" class="form-control bg-transparent" name="schoolemail" id="email"
+                                    placeholder="Email" style="width:100%; border: 2px solid black;" required>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="column6">Rfid Code</label>
+                                <textarea rows="1" name="rfidtag" maxlength="12" id="getUID"
+                                    class="form-control bg-transparent column6"
+                                    style="border: 2px solid black; resize:none;"
+                                    placeholder="Please Tag your Card"></textarea>
+                            </div>
+                        </div>
+
                     </div>
-                    <div class="form-group">
-                        <label for="editName">Name</label>
-                        <input type="text" class="form-control" id="editName" name="editName">
-                    </div>
-                    <!-- Add other fields as needed -->
-                    <button type="button" class="btn btn-primary" onclick="updateUserData()">Save Changes</button>
-                </form>
             </div>
+            <!-- Add other fields as needed -->
+            <button type="button" id="studentSubmit" class="btn btn-primary">Save Changes</button>
         </div>
+
+        </form>
     </div>
 </div>
+
 
 <body id="background-image-dashboard">
     <div class="main-container d-flex" style="font-family: sans-seriff;">
@@ -407,17 +483,6 @@ file_put_contents('UIDContainer.php', $Write);
 <script src="node_modules\bootstrap\dist\js\bootstrap.bundle.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    $(document).ready(function () {
-        $('.table-row').click(function () {
-            var email = $(this).find('td:eq(0)').text();
-            var name = $(this).find('td:eq(1)').text();
-
-            $('#editEmail').val(email);
-            $('#editName').val(name);
-
-            $('#editModal').modal('show');
-        });
-    });
 
     function logoutFunction() {
         window.location.href = 'logout.php';
@@ -467,17 +532,129 @@ file_put_contents('UIDContainer.php', $Write);
             });
     }
 
-    function studentSelect() {
-        document.getElementById("studentsRecord_table").addEventListener("click", function (event) {
-            var target = event.target;
-            while (target.tagName !== "TR") {
-                target = target.parentNode;
-            }
-
-            var id = target.getElementsByTagName("td")[0].innerText;
-            alert("Clicked ID: " + id);
-        });
+    function showModal() {
+    var target = event.target;
+    while (target.tagName !== "TR") {
+        target = target.parentNode;
     }
+
+    var id = target.getElementsByTagName("td")[0].innerText;
+
+    // Fetch data from the server based on the ID
+    $.ajax({
+        type: "POST",
+        url: "admin_fetchStudent.php", // Create a new PHP file for fetching data
+        data: {
+            id: id
+        },
+        success: function (response) {
+            // Parse the JSON response
+            var data = JSON.parse(response);
+
+            // Check if data is retrieved successfully
+            if (data.success) {
+                // Fill the input fields with retrieved data
+                $("#fname").val(data.firstName);
+                $("#mname").val(data.middleName);
+                $("#lname").val(data.lastName);
+                $("#studid").val(data.studentId);
+                $("#sectionSelect").val(data.section);
+                $("#email").val(data.email);
+                $("#getUID").val(data.rfidTag);
+                $("#department").val(data.department);
+
+                // Show the modal
+                $('#studentRecordModal').modal('show');
+            } else {
+                console.error("Error fetching data: ", data.message);
+            }
+        },
+        error: function (error) {
+            // Handle AJAX errors
+            console.error("AJAX Error: ", error);
+        }
+    });
+
+    // Attach the click event to the submit button
+    document.getElementById("studentSubmit").addEventListener("click", function (event) {
+        updateStudentData(id);
+    });
+}
+
+
+function updateStudentData(id) {
+    var stud_id = id;
+    var firstName = $("#fname").val();
+    var middleName = $("#mname").val();
+    var lastName = $("#lname").val();
+    var studentId = $("#studid").val();
+    var section = $("#sectionSelect").val();
+    var email = $("#email").val();
+    var rfidTag = $("#getUID").val();
+    var department = $("#department").val();
+
+    // Make an AJAX request to your PHP script
+    $.ajax({
+        type: "POST",
+        url: "admin_updateStudent.php",
+        data: {
+            id: stud_id,
+            firstName: firstName,
+            middleName: middleName,
+            lastName: lastName,
+            studentId: studentId,
+            section: section,
+            department: department,
+            email: email,
+            rfidTag: rfidTag
+        },
+        success: function (response) {
+            try {
+                // Parse the JSON response
+                var result = JSON.parse(response);
+
+                // Check if the status is "Success"
+                if (result.status === "Success") {
+                    // Close the modal after successful update
+                    $('#studentRecordModal').modal('hide');
+
+                    // Update the corresponding row in the table with the returned data
+                    updateTableRow(id, result.data);
+                } else {
+                    // Log or alert the error message
+                    console.error("Error updating data: ", result.message);
+                }
+            } catch (error) {
+                // Handle JSON parsing error
+                console.error("Error parsing JSON: ", error);
+            }
+        },
+        error: function (error) {
+            // Handle AJAX errors
+            console.error("AJAX Error: ", error);
+        }
+    });
+}
+
+function updateTableRow(id, data) {
+    // Find the row with the matching ID in the table
+    var row = $("#studentsRecord_table tbody tr:has(td:contains('" + id + "'))");
+
+    // Update the data in the table row
+    row.find("td:eq(1)").text(data.name);
+    row.find("td:eq(2)").text(data.studentid);
+    row.find("td:eq(3)").text(data.sectionid);
+    row.find("td:eq(4)").text(data.department);
+}
+
+    function studentSelect() {
+        document.getElementById("studentsRecord_table").addEventListener("click", showModal);
+    }
+
+    // Call the function when the document is ready
+    $(document).ready(function () {
+        studentSelect();
+    });
 
     function addDiv() {
         var newDiv = $("<div>").addClass("child-div").html('<div id="child-div" style="display:flex;"><input type="number" id="parent_studid" name="parent_studid[]" class="form-control bg-transparent add_children" placeholder="Student Number" style="width:100%; border: 2px solid black; margin-bottom:10px;" min="0" max="9999999999" oninput="validateNumberInput(this);checkMaxLength(this, 10);"><input type="button" onclick="removediv(this)" class="btn btn-danger" value="x"></div>');
@@ -509,7 +686,6 @@ file_put_contents('UIDContainer.php', $Write);
 
     function changeFunction() {
         var selectedValue = document.getElementById("sectionSelect").value;
-
         var xhr = new XMLHttpRequest();
         xhr.open("POST", "getdepartment.php", true);
         xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");

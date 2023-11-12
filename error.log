@@ -1,0 +1,132 @@
+SQL Query: UPDATE student_tbl SET name = ?, sectionid = ?, department = ?, schoolemail = ?, rfidtag = ? WHERE studentid = ?
+Parameters: Array
+(
+    [0] =>   
+    [1] => 
+    [2] => 
+    [3] => 
+    [4] => 
+    [5] => 
+)
+
+SQL Query: UPDATE student_tbl SET name = ?, sectionid = ?, department = ?, schoolemail = ?, rfidtag = ? WHERE studentid = ?
+Parameters: Array
+(
+    [0] => qwe qwe albaro
+    [1] => ENG. 2B
+    [2] => GATE
+    [3] => qwe@gmail.com
+    [4] => 312313123133
+    [5] => 0936
+)
+
+SQL Query: UPDATE student_tbl SET name = ?, sectionid = ?, department = ?, schoolemail = ?, rfidtag = ? WHERE studentid = ?
+Parameters: Array
+(
+    [0] => qwe qwe albaro
+    [1] => ENG. 2B
+    [2] => GATE
+    [3] => qwe@gmail.com
+    [4] => 312313123133
+    [5] => 0936
+)
+
+SQL Query: UPDATE student_tbl SET name = ?, sectionid = ?, department = ?, schoolemail = ?, rfidtag = ? WHERE studentid = ?
+Parameters: Array
+(
+    [0] => jian qwe qwe
+    [1] => SOCSTUD 1A
+    [2] => GATE
+    [3] => qwe@gmail.com
+    [4] => q12121
+    [5] => 0936111111
+)
+
+SQL Query: UPDATE student_tbl SET name = ?, sectionid = ?, department = ?, schoolemail = ?, rfidtag = ? WHERE studentid = ?
+Parameters: Array
+(
+    [0] => jian qwe qwe
+    [1] => SOCSTUD 1A
+    [2] => GATE
+    [3] => qwe@gmail.com
+    [4] => q12121
+    [5] => 0936333333
+)
+
+SQL Query: UPDATE student_tbl SET name = ?, sectionid = ?, department = ?, schoolemail = ?, rfidtag = ? WHERE studentid = ?
+Parameters: Array
+(
+    [0] => wahaha qwe qwe
+    [1] => SOCSTUD 1A
+    [2] => GATE
+    [3] => qwe@gmail.com
+    [4] => q12121
+    [5] => 0936111111
+)
+
+SQL Query: UPDATE student_tbl SET name = ?, sectionid = ?, department = ?, schoolemail = ?, rfidtag = ? WHERE studentid = ?
+Parameters: Array
+(
+    [0] => wahaha qwe qwe
+    [1] => SOCSTUD 1A
+    [2] => GATE
+    [3] => qwe@gmail.com
+    [4] => q12121
+    [5] => 0936111111
+)
+
+SQL Query: UPDATE student_tbl SET name = ?, sectionid = ?, department = ?, schoolemail = ?, rfidtag = ? WHERE studentid = ?
+Parameters: Array
+(
+    [0] => Jian  
+    [1] => ENG. 2B
+    [2] => GATE
+    [3] => jian@gmail.com
+    [4] => C08B1E85
+    [5] => 123
+)
+
+SQL Query: UPDATE student_tbl SET name = ?, sectionid = ?, department = ?, schoolemail = ?, rfidtag = ? WHERE studentid = ?
+Parameters: Array
+(
+    [0] => Jian  
+    [1] => ENG. 2B
+    [2] => GATE
+    [3] => jian@gmail.com
+    [4] => C08B1E85
+    [5] => 123
+)
+
+SQL Query: UPDATE student_tbl SET name = ?, sectionid = ?, department = ?, schoolemail = ?, rfidtag = ? WHERE studentid = ?
+Parameters: Array
+(
+    [0] => Mark  
+    [1] => IT 4C
+    [2] => BSIT
+    [3] => zxc@gmail.com
+    [4] => 3E491D85
+    [5] => 456
+)
+
+SQL Query: UPDATE student_tbl SET name = ?, sectionid = ?, department = ?, schoolemail = ?, rfidtag = ? WHERE studentid = ?
+Parameters: Array
+(
+    [0] => Mark  
+    [1] => IT 4C
+    [2] => BSIT
+    [3] => zxc@gmail.com
+    [4] => 3E491D85
+    [5] => 456
+)
+
+SQL Query: UPDATE student_tbl SET name = ?, sectionid = ?, department = ?, schoolemail = ?, rfidtag = ? WHERE studentid = ?
+Parameters: Array
+(
+    [0] => Mark  
+    [1] => IT 4C
+    [2] => BSIT
+    [3] => zxc@gmail.com
+    [4] => 3E491D85
+    [5] => 456
+)
+
