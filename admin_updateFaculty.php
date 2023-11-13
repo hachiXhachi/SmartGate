@@ -5,15 +5,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Retrieve the data from the AJAX request
     $id = $_POST["id"];
     $Name = $_POST["Name"];
-    $studentId = $_POST["studentId"];
-    $section = $_POST["section"];
     $email = $_POST["email"];
-    $rfidTag = $_POST["rfidTag"];
-    $department = $_POST["department"];
+
 
     // Corrected SQL syntax for UPDATE statement
-    $sql = "UPDATE student_tbl SET name = ?, sectionid = ?, department = ?, schoolemail = ?, rfidtag = ? WHERE studentid = ?";
-    $data = array($Name, $section, $department, $email, $rfidTag, $studentId);
+    $sql = "UPDATE faculty_tbl SET name = ?, email = ? WHERE id = ?";
+    $data = array($Name, $email, $id);
 
     $stmt = $con->prepare($sql);
 
@@ -42,7 +39,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 function fetchStudentData($id, $con) {
     // Query the database to fetch student data based on the ID
-    $sql = "SELECT * FROM student_tbl WHERE studentid = ?";
+    $sql = "SELECT * FROM faculty_tbl WHERE id = ?";
     $stmt = $con->prepare($sql);
     $stmt->execute([$id]);
     return $stmt->fetch(PDO::FETCH_ASSOC);

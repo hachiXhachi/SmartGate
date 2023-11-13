@@ -1,0 +1,20 @@
+
+tr,
+table,
+td,
+th {
+  border: 2px solid black;
+}
+
+#tball {
+  max-height: 400px;
+  overflow-y: auto;
+  max-width: 100%;
+  width: auto;
+}
+
+@media (max-width: 767px) {
+  #tball {
+    height: 300px;
+  }
+}

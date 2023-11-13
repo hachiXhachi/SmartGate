@@ -6,7 +6,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $id = $_POST["id"];
 
     // Query the database to fetch student data based on the ID
-    $sql = "SELECT * FROM student_tbl WHERE studentid = ?";
+    $sql = "SELECT * FROM faculty_tbl WHERE id = ?";
     $stmt = $con->prepare($sql);
     $stmt->execute([$id]);
     $result = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -18,11 +18,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo json_encode([
             'success' => true,
             'Name' => $result['name'],
-            'studentId' => $result['studentid'],
-            'section' => $result['sectionid'],
-            'email' => $result['schoolemail'],
-            'rfidTag' => $result['rfidtag'],
-            'department' => $result['department']
+            'email' => $result['email'],
+
         ]);
     } else {
         // Return an error message

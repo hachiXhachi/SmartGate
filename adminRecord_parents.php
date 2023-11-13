@@ -18,7 +18,7 @@ include 'includes/session.php';
         <?php
         $con = $pdo->open();
         try {
-          $stmt1 = $con->prepare("SELECT * FROM student_tbl");
+          $stmt1 = $con->prepare("SELECT * FROM parent_tbl");
           $stmt1->execute();
           $rows = $stmt1->fetchAll(PDO::FETCH_ASSOC);
       

@@ -249,27 +249,11 @@ file_put_contents('UIDContainer.php', $Write);
                 <!-- Add your form elements for editing data here -->
                 <form id="editForm">
                     <div class="row">
-                        <div class="col-md-4">
+                        <div class="col-lg-12">
                             <div class="form-group">
-                                <label for="column1">First Name</label>
-                                <input type="text" class="form-control bg-transparent" name="first_name" required
-                                    pattern="[A-Za-z ]{2,16}" id="fname" placeholder="First Name"
-                                    style="border: 2px solid black;">
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="column2">Middle Name</label>
-                                <input type="text" class="form-control bg-transparent" name="middle_name" required
-                                    pattern="[A-Za-z ]{2,16}" id="mname" placeholder="Middle Name"
-                                    style="border: 2px solid black;">
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="column3">Last Name</label>
-                                <input type="text" class="form-control bg-transparent" name="last_name" required
-                                    pattern="[A-Za-z ]{2,16}" id="lname" placeholder="Last Name"
+                                <label for="column1">Name</label>
+                                <input type="text" class="form-control bg-transparent" name="name" required
+                                    pattern="[A-Za-z ]{2,16}" id="name" placeholder="Name"
                                     style="border: 2px solid black;">
                             </div>
                         </div>
@@ -337,7 +321,42 @@ file_put_contents('UIDContainer.php', $Write);
         </form>
     </div>
 </div>
+<!--Faculty update modal -->
+<div class="modal fade" id="facultyRecordModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel"
+    aria-hidden="true" style="font-family:arial">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel">Edit Student Data</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            <label for="prof_lname">Name</label>
+                            <input type="text" class="form-control bg-transparent" required pattern="[A-Za-z ]{2,16}"
+                                id="prof_nameUpdate" name="prof_name" placeholder="Name"
+                                style="border: 2px solid black;">
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            <label for="prof_email">Email</label>
+                            <input type="email" class="form-control bg-transparent" id="prof_emailUpdate" name="email"
+                                placeholder="Email" style="width:100%; border: 2px solid black;" required>
+                        </div>
+                    </div>
+
+
+            </div>
+            <button type="button" id="facultySubmit" class="btn btn-primary">Save Changes</button>
+            </form>
+        </div>
+    </div>
+</div>
 
 <body id="background-image-dashboard">
     <div class="main-container d-flex" style="font-family: sans-seriff;">
@@ -369,7 +388,7 @@ file_put_contents('UIDContainer.php', $Write);
                                     <i class="fa-solid fa-users"></i> Parents</a></li>
 
                             <li><a class="text-decoration-none text-white d-block text-center "
-                                    onclick="loadView('admin_home')">
+                                    onclick="loadView('adminRecord_faculty', showParent)">
                                     <i class="fa-solid fa-person-chalkboard"></i> Professor</a></li>
 
                         </ul>
@@ -532,7 +551,97 @@ file_put_contents('UIDContainer.php', $Write);
                 console.error('Error loading view:', error);
             });
     }
+    function showParent() {
+        $('#facultyRecord_table tbody').on('click', 'tr', function () {
+            var id = $(this).data('id');
+            $.ajax({
+                type: "POST",
+                url: "admin_fetchFaculty.php", // Create a new PHP file for fetching data
+                data: {
+                    id: id
+                },
+                success: function (response) {
+                    // Parse the JSON response
+                    var data = JSON.parse(response);
+                    if (!$('#facultyRecordModal').data('deleteButtonAppended')) {
+                        // Create a delete button dynamically
+                        var deleteButton = document.createElement("button");
+                        deleteButton.textContent = "Delete";
+                        deleteButton.className = "btn btn-danger";
+                        deleteButton.onclick = function () {
+                            deleteFacultyData(id)
+                            // Close the modal or perform other actions if needed
+                            $('#facultyRecordModal').modal('hide');
+                        };
 
+                        // Append the delete button to the modal content
+                        $('#facultyRecordModal .modal-content').append(deleteButton);
+
+                        // Set the flag to indicate that the delete button has been appended
+                        $('#facultyRecordModal').data('deleteButtonAppended', true);
+                    }
+                    // Check if data is retrieved successfully
+                    if (data.success) {
+                        // Fill the input fields with retrieved data
+                        $("#prof_nameUpdate").val(data.Name);
+                        $("#prof_emailUpdate").val(data.email);
+                        // Show the modal
+                        $('#facultyRecordModal').modal('show');
+                    } else {
+                        console.error("Error fetching data: ", data.message);
+                    }
+                },
+                error: function (error) {
+                    // Handle AJAX errors
+                    console.error("AJAX Error: ", error);
+                }
+            });
+            document.getElementById("facultySubmit").addEventListener("click", function (event) {
+            updateFacultyData(id);
+        });
+
+        });
+    }
+    function updateFacultyData(id){
+        var fac_id = id;
+        var email = $("#prof_emailUpdate").val();
+        var Name = $("#prof_nameUpdate").val();
+        $.ajax({
+            type: "POST",
+            url: "admin_updateFaculty.php",
+            data: {
+                id: fac_id,
+                Name: Name,
+                email: email,
+              
+            },
+            success: function (response) {
+                try {
+                    // Parse the JSON response
+                    var result = JSON.parse(response);
+
+                    // Check if the status is "Success"
+                    if (result.status === "Success") {
+                        // Close the modal after successful update
+                        $('#facultyRecordModal').modal('hide');
+
+                        // Update the corresponding row in the table with the returned data
+                        updateTableRowFaculty(id, result.data)
+                    } else {
+                        // Log or alert the error message
+                        console.error("Error updating data: ", result.message);
+                    }
+                } catch (error) {
+                    // Handle JSON parsing error
+                    console.error( error);
+                }
+            },
+            error: function (error) {
+                // Handle AJAX errors
+                console.error("AJAX Error: ", error);
+            }
+        });
+    }
     function showModal() {
         var target = event.target;
         while (target.tagName !== "TR") {
@@ -541,22 +650,22 @@ file_put_contents('UIDContainer.php', $Write);
 
         var id = target.getElementsByTagName("td")[0].innerText;
         if (!$('#studentRecordModal').data('deleteButtonAppended')) {
-        // Create a delete button dynamically
-        var deleteButton = document.createElement("button");
-        deleteButton.textContent = "Delete";
-        deleteButton.className = "btn btn-danger";
-        deleteButton.onclick = function () {
-            deleteStudentData(id);
-            // Close the modal or perform other actions if needed
-            $('#studentRecordModal').modal('hide');
-        };
+            // Create a delete button dynamically
+            var deleteButton = document.createElement("button");
+            deleteButton.textContent = "Delete";
+            deleteButton.className = "btn btn-danger";
+            deleteButton.onclick = function () {
+                deleteStudentData(id);
+                // Close the modal or perform other actions if needed
+                $('#studentRecordModal').modal('hide');
+            };
 
-        // Append the delete button to the modal content
-        $('#studentRecordModal .modal-content').append(deleteButton);
+            // Append the delete button to the modal content
+            $('#studentRecordModal .modal-content').append(deleteButton);
 
-        // Set the flag to indicate that the delete button has been appended
-        $('#studentRecordModal').data('deleteButtonAppended', true);
-    }
+            // Set the flag to indicate that the delete button has been appended
+            $('#studentRecordModal').data('deleteButtonAppended', true);
+        }
         // Fetch data from the server based on the ID
         $.ajax({
             type: "POST",
@@ -571,9 +680,7 @@ file_put_contents('UIDContainer.php', $Write);
                 // Check if data is retrieved successfully
                 if (data.success) {
                     // Fill the input fields with retrieved data
-                    $("#fname").val(data.firstName);
-                    $("#mname").val(data.middleName);
-                    $("#lname").val(data.lastName);
+                    $("#name").val(data.Name);
                     $("#studid").val(data.studentId);
                     $("#sectionSelect").val(data.section);
                     $("#email").val(data.email);
@@ -601,9 +708,7 @@ file_put_contents('UIDContainer.php', $Write);
 
     function updateStudentData(id) {
         var stud_id = id;
-        var firstName = $("#fname").val();
-        var middleName = $("#mname").val();
-        var lastName = $("#lname").val();
+        var Name = $("#name").val();
         var studentId = $("#studid").val();
         var section = $("#sectionSelect").val();
         var email = $("#email").val();
@@ -616,9 +721,7 @@ file_put_contents('UIDContainer.php', $Write);
             url: "admin_updateStudent.php",
             data: {
                 id: stud_id,
-                firstName: firstName,
-                middleName: middleName,
-                lastName: lastName,
+                Name: Name,
                 studentId: studentId,
                 section: section,
                 department: department,
@@ -663,6 +766,45 @@ file_put_contents('UIDContainer.php', $Write);
         row.find("td:eq(3)").text(data.sectionid);
         row.find("td:eq(4)").text(data.department);
     }
+    function updateTableRowFaculty(id, data) {
+    // Find the row with the corresponding data-id attribute
+    var $row = $("tr[data-id='" + id + "']");
+
+    // Update the HTML content of the row with the new data
+    $row.find("td:eq(0)").text(data.name);
+    $row.find("td:eq(1)").text(data.email);
+}
+    function  deleteFacultyData(id){
+        $.ajax({
+            type: "POST",
+            url: "admin_deleteFaculty.php",
+            data: {
+                id: id
+            },
+            success: function (response) {
+                try {
+                    // Parse the JSON response
+                    var result = JSON.parse(response);
+
+                    // Check if the status is "Success"
+                    if (result.status === "Success") {
+                        // Remove the corresponding row from the table
+                        removeTableRowFaculty(id)
+                    } else {
+                        // Log or alert the error message
+                        console.error("Error deleting data: ", result.message);
+                    }
+                } catch (error) {
+                    // Handle JSON parsing error
+                    console.error("Error parsing JSON: ", error);
+                }
+            },
+            error: function (error) {
+                // Handle AJAX errors
+                console.error("AJAX Error: ", error);
+            }
+        });
+    }
     function deleteStudentData(id) {
         // Make an AJAX request to your PHP script for delete
         $.ajax({
@@ -700,6 +842,11 @@ file_put_contents('UIDContainer.php', $Write);
         // Find the row with the matching ID in the table and remove it
         $("#studentsRecord_table tbody tr:has(td:contains('" + id + "'))").remove();
     }
+    function removeTableRowFaculty(id) {
+    // Find the row with the matching data-id attribute and remove it
+    $("#facultyRecord_table tbody tr[data-id='" + id + "']").remove();
+}
+
 
 
     function studentSelect() {
