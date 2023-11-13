@@ -592,10 +592,46 @@ file_put_contents('UIDContainer.php', $Write);
         document.getElementById("parentSubmit").addEventListener("click", function (event) {
             // Get the ID of the clicked row
             var id = $(this).data('id');
-            updateParentData(id);
+            // if(validateParentForm()){
+            //     updateParentData(id);
+            // }
+
         });
     });
+    $('#parentSubmit').on('click', function () {
+        // Get the ID of the clicked row
+        var id = $(this).data('id');
+        // Validate the form before submitting
+        if (validateParentForm()) {
+            // Add your code to submit the form or perform other actions
+            // For example, you can call a function to handle the form submission
+            updateParentData(id);
+            // Optionally, you can close the modal or perform other actions
+            $('#parentRecordModal').modal('hide');
+        }
+    });
 
+    function validateParentForm() {
+        // Get form inputs
+        var name = $("#parent_nameUpdate").val();
+        var email = $("#parent_emailUpdate").val();
+
+        // Perform validation
+        if (name.trim() === "") {
+            alert("Name is required");
+            return false;
+        }
+
+        if (email.trim() === "") {
+            alert("Email is required");
+            return false;
+        }
+
+        // Additional validation logic can be added as needed
+
+        // If all validations pass, return true
+        return true;
+    }
 
 
     // Function to update parent data
@@ -688,8 +724,7 @@ file_put_contents('UIDContainer.php', $Write);
                     var result = JSON.parse(response);
 
                     // Check if the status is "Success"
-                    if (result.status === "Success") {
-                        console.log("Attempting to remove row with ID: " + id);
+                    if (result.status === "Success") {;
                         // Remove the corresponding row from the table
                         removeTableRowParent(id);
                         console.log("Row removed successfully.");
@@ -717,7 +752,6 @@ file_put_contents('UIDContainer.php', $Write);
     function removeTableRowParent(id) {
         // Find the row with the matching data-id attribute and remove it
         var $row = $("#parentRecord_table tbody tr[data-id='" + id + "']");
-        console.log("Removing row with ID:", id);
 
         if ($row.length > 0) {
             $row.remove();
@@ -733,8 +767,23 @@ file_put_contents('UIDContainer.php', $Write);
         document.getElementById("facultySubmit").addEventListener("click", function (event) {
             // Get the ID of the clicked row
             var id = $(this).data('id');
-            updateFacultyData(id);
+            // if(validateFacultyForm()){
+            //     updateFacultyData(id);
+            // }
+
         });
+    });
+    $('#facultySubmit').on('click', function () {
+        // Get the ID of the clicked row
+        var id = $(this).data('id');
+        // Validate the form before submitting
+        if (validateFacultyForm()) {
+            // Add your code to submit the form or perform other actions
+            // For example, you can call a function to handle the form submission
+            updateFacultyData(id);
+            // Optionally, you can close the modal or perform other actions
+            $('#facultyRecordModal').modal('hide');
+        }
     });
     function updateFacultyData(id) {
         var fac_id = id;
@@ -784,7 +833,7 @@ file_put_contents('UIDContainer.php', $Write);
 
                     // Check if the status is "Success"
                     if (result.status === "Success") {
-                        console.log("Attempting to remove row with ID: " + id);
+                
                         // Remove the corresponding row from the table
                         removeTableRowFaculty(id);
                         console.log("Row removed successfully.");
@@ -862,16 +911,36 @@ file_put_contents('UIDContainer.php', $Write);
     function removeTableRowFaculty(id) {
         // Find the row with the matching data-id attribute and remove it
         var $row = $("#facultyRecord_table tbody tr[data-id='" + id + "']");
-        console.log("Removing row with ID:", id);
 
         if ($row.length > 0) {
             $row.remove();
         } else {
-            console.error("Row not found for ID:", id);
+            console.error("Row not found for ID:");
         }
     }
+    function validateFacultyForm() {
 
+        var name = $("#prof_nameUpdate").val();
+        var email = $("#prof_emailUpdate").val();
 
+        // Perform validation
+        if (name.trim() === "") {
+            alert("Name is required");
+            return false;
+        }
+
+        if (email.trim() === "") {
+            alert("Email is required");
+            return false;
+        }
+
+        // Additional validation logic can be added as needed
+
+        // If all validations pass, return true
+        return true;
+    }
+
+    // Student
     function showModal() {
         var target = event.target;
         while (target.tagName !== "TR") {
@@ -928,13 +997,64 @@ file_put_contents('UIDContainer.php', $Write);
                 console.error("AJAX Error: ", error);
             }
         });
-
-        // Attach the click event to the submit button
-        document.getElementById("studentSubmit").addEventListener("click", function (event) {
+        $('#studentSubmit').on('click', function () {
+        // Get the ID of the clicked row
+        // Validate the form before submitting
+        if (validateStudentForm()) {
+            // Add your code to submit the form or perform other actions
+            // For example, you can call a function to handle the form submission
             updateStudentData(id);
-        });
+            // Optionally, you can close the modal or perform other actions
+            $('#studentRecordModal').modal('hide');
+        }
+    });
+        // Attach the click event to the submit button
+        // document.getElementById("studentSubmit").addEventListener("click", function (event) {
+        //     if (validateStudentForm()) {
+                
+        //     }
+        // });
     }
 
+    function validateStudentForm() {
+        // Get form inputs
+        var name = $("#name").val();
+        var studid = $("#studid").val();
+        var sectionSelect = $("#sectionSelect").val();
+        var email = $("#email").val();
+        var getUID = $("#getUID").val();
+
+        // Perform validation
+        if (name.trim() === "") {
+            alert("Name is required");
+            return false;
+        }
+
+        if (studid.trim() === "") {
+            alert("Student Number is required");
+            return false;
+        }
+
+        if (sectionSelect.trim() === "") {
+            alert("Section is required");
+            return false;
+        }
+
+        if (email.trim() === "") {
+            alert("Email is required");
+            return false;
+        }
+
+        if (getUID.trim() === "") {
+            alert("Rfid Code is required");
+            return false;
+        }
+
+        // Additional validation logic can be added as needed
+
+        // If all validations pass, return true
+        return true;
+    }
 
     function updateStudentData(id) {
         var stud_id = id;
@@ -962,7 +1082,6 @@ file_put_contents('UIDContainer.php', $Write);
                 try {
                     // Parse the JSON response
                     var result = JSON.parse(response);
-
                     // Check if the status is "Success"
                     if (result.status === "Success") {
                         // Close the modal after successful update
@@ -992,9 +1111,9 @@ file_put_contents('UIDContainer.php', $Write);
 
         // Update the data in the table row
         row.find("td:eq(1)").text(data.name);
-        row.find("td:eq(2)").text(data.studentid);
-        row.find("td:eq(3)").text(data.sectionid);
-        row.find("td:eq(4)").text(data.department);
+        row.find("td:eq(2)").text(data.sectionid);
+        row.find("td:eq(3)").text(data.department);
+        
     }
 
 
