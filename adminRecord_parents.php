@@ -5,13 +5,12 @@ include 'includes/session.php';
 <link rel="stylesheet" type="text/css" href="cssCodes/recordStudent.css">
 
   <div>
-    <table id="studentsRecord_table" class="table table-hover text-center">
+    <table id="parentRecord_table" class="table table-hover text-center">
       <thead>
         <tr class="table-secondary">
-          <th>Student ID</th>
           <th>Name</th>
-          <th>Section</th>
-          <th>Department</th>
+          <th>Email</th>
+
           
       </thead>
       <tbody>
@@ -23,13 +22,12 @@ include 'includes/session.php';
           $rows = $stmt1->fetchAll(PDO::FETCH_ASSOC);
       
           foreach ($rows as $row) {
-              echo "<tr>";
-              echo "<td>" . $row['studentid'] . "</td>";
-              echo "<td>" . $row['name'] . "</td>";
-              echo "<td>" . $row['sectionid'] . "</td>";
-              echo "<td>" . $row['department'] . "</td>";
-              echo "</tr>";
-          }
+            echo "<tr data-id='" . $row['parentid'] . "'>";
+            echo "<td>" . $row['name'] . "</td>";
+            echo "<td>" . $row['email'] . "</td>";
+            echo "</tr>";
+        }
+        
       } catch (PDOException $e) {
           // Handle the exception
       }

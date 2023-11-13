@@ -323,14 +323,12 @@ file_put_contents('UIDContainer.php', $Write);
 </div>
 <!--Faculty update modal -->
 <div class="modal fade" id="facultyRecordModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel"
-    aria-hidden="true" style="font-family:arial">
+    aria-hidden="true" style="font-family: arial;">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="editModalLabel">Edit Student Data</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-
-                </button>
             </div>
             <div class="modal-body">
                 <form>
@@ -346,13 +344,50 @@ file_put_contents('UIDContainer.php', $Write);
                         <div class="form-group">
                             <label for="prof_email">Email</label>
                             <input type="email" class="form-control bg-transparent" id="prof_emailUpdate" name="email"
+                                placeholder="Email" style="width: 100%; border: 2px solid black;" required>
+                        </div>
+                    </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="facultySubmit" class="btn btn-primary">Save Changes</button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!--Parent update modal -->
+<div class="modal fade" id="parentRecordModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel"
+    aria-hidden="true" style="font-family:arial">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" id="parentUpdate">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel">Edit Student Data</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            <label for="prof_lname">Name</label>
+                            <input type="text" class="form-control bg-transparent" required pattern="[A-Za-z ]{2,16}"
+                                id="parent_nameUpdate" name="prof_name" placeholder="Name"
+                                style="border: 2px solid black;">
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            <label for="prof_email">Email</label>
+                            <input type="email" class="form-control bg-transparent" id="parent_emailUpdate" name="email"
                                 placeholder="Email" style="width:100%; border: 2px solid black;" required>
                         </div>
                     </div>
 
 
             </div>
-            <button type="button" id="facultySubmit" class="btn btn-primary">Save Changes</button>
+            <button type="button" id="parentSubmit" class="btn btn-primary">Save Changes</button>
             </form>
         </div>
     </div>
@@ -384,11 +419,12 @@ file_put_contents('UIDContainer.php', $Write);
                                     onclick="loadView('adminRecord_students', studentSelect)">
                                     <i class="fa-solid fa-graduation-cap"></i> Student</a></li>
 
-                            <li><a class="text-decoration-none text-white d-block text-center " onclick="loadView('')">
+                            <li><a class="text-decoration-none text-white d-block text-center "
+                                    onclick="loadView('adminRecord_parents', showParent)">
                                     <i class="fa-solid fa-users"></i> Parents</a></li>
 
                             <li><a class="text-decoration-none text-white d-block text-center "
-                                    onclick="loadView('adminRecord_faculty', showParent)">
+                                    onclick="loadView('adminRecord_faculty', showFaculty)">
                                     <i class="fa-solid fa-person-chalkboard"></i> Professor</a></li>
 
                         </ul>
@@ -551,58 +587,156 @@ file_put_contents('UIDContainer.php', $Write);
                 console.error('Error loading view:', error);
             });
     }
+    // Attach the click event listener for the "Save" button when the modal is shown
+    $('#parentRecordModal').on('shown.bs.modal', function () {
+        document.getElementById("parentSubmit").addEventListener("click", function (event) {
+            // Get the ID of the clicked row
+            var id = $(this).data('id');
+            updateParentData(id);
+        });
+    });
+
+
+
+    // Function to update parent data
+    function updateParentData(id) {
+        var parent_id = id;
+        var email = $("#parent_emailUpdate").val();
+        var Name = $("#parent_nameUpdate").val();
+        $.ajax({
+            type: "POST",
+            url: "admin_updateParent.php",
+            data: {
+                id: parent_id,
+                Name: Name,
+                email: email,
+            },
+            success: function (response) {
+                try {
+                    var result = JSON.parse(response);
+                    if (result.status === "Success") {
+                        // Close the modal after successful update
+                        $('#parentRecordModal').modal('hide');
+                        // Update the corresponding row in the table with the returned data
+                        updateTableRowParent(id, result.data);
+                    } else {
+                        console.error("Error updating data: ", result.message);
+                    }
+                } catch (error) {
+                    console.error(error);
+                }
+            },
+            error: function (error) {
+                console.error("AJAX Error: ", error);
+            }
+        });
+    }
     function showParent() {
-        $('#facultyRecord_table tbody').on('click', 'tr', function () {
+        $('#parentRecord_table tbody').on('click', 'tr', function () {
             var id = $(this).data('id');
             $.ajax({
                 type: "POST",
-                url: "admin_fetchFaculty.php", // Create a new PHP file for fetching data
+                url: "admin_fetchParent.php",
                 data: {
                     id: id
                 },
                 success: function (response) {
-                    // Parse the JSON response
                     var data = JSON.parse(response);
-                    if (!$('#facultyRecordModal').data('deleteButtonAppended')) {
-                        // Create a delete button dynamically
-                        var deleteButton = document.createElement("button");
-                        deleteButton.textContent = "Delete";
-                        deleteButton.className = "btn btn-danger";
-                        deleteButton.onclick = function () {
-                            deleteFacultyData(id)
-                            // Close the modal or perform other actions if needed
-                            $('#facultyRecordModal').modal('hide');
-                        };
-
-                        // Append the delete button to the modal content
-                        $('#facultyRecordModal .modal-content').append(deleteButton);
-
-                        // Set the flag to indicate that the delete button has been appended
-                        $('#facultyRecordModal').data('deleteButtonAppended', true);
-                    }
-                    // Check if data is retrieved successfully
                     if (data.success) {
-                        // Fill the input fields with retrieved data
-                        $("#prof_nameUpdate").val(data.Name);
-                        $("#prof_emailUpdate").val(data.email);
-                        // Show the modal
-                        $('#facultyRecordModal').modal('show');
+                        $("#parent_nameUpdate").val(data.Name);
+                        $("#parent_emailUpdate").val(data.email);
+                        $("#parentSubmit").data('id', id);
+                        if (!$('#parentRecordModal').data('deleteButtonAppended')) {
+                            // Create a delete button dynamically
+                            var deleteButton = document.createElement("button");
+                            deleteButton.textContent = "Delete";
+                            deleteButton.className = "btn btn-danger";
+                            deleteButton.onclick = function () {
+                                // Use the correct id when deleting
+                                deleteParentData($("#parentSubmit").data('id'));
+                                // Close the modal or perform other actions if needed
+                                $('#parentRecordModal').modal('hide');
+                            };
+
+                            // Append the delete button to the modal content
+                            $('#parentRecordModal .modal-content').append(deleteButton);
+
+                            // Set the flag to indicate that the delete button has been appended
+                            $('#parentRecordModal').data('deleteButtonAppended', true);
+                        }
+                        $('#parentRecordModal').modal('show');
                     } else {
                         console.error("Error fetching data: ", data.message);
                     }
                 },
                 error: function (error) {
-                    // Handle AJAX errors
                     console.error("AJAX Error: ", error);
                 }
             });
-            document.getElementById("facultySubmit").addEventListener("click", function (event) {
-            updateFacultyData(id);
-        });
-
         });
     }
-    function updateFacultyData(id){
+    function deleteParentData(id) {
+        $.ajax({
+            type: "POST",
+            url: "admin_deleteParent.php",
+            data: {
+                id: id
+            },
+            success: function (response) {
+                try {
+                    // Parse the JSON response
+                    var result = JSON.parse(response);
+
+                    // Check if the status is "Success"
+                    if (result.status === "Success") {
+                        console.log("Attempting to remove row with ID: " + id);
+                        // Remove the corresponding row from the table
+                        removeTableRowParent(id);
+                        console.log("Row removed successfully.");
+                    } else {
+                        // Log or alert the error message
+                        console.error("Error deleting data: ", result.message);
+                    }
+                } catch (error) {
+                    // Handle JSON parsing error
+                    console.error("Error parsing JSON: ", error);
+                }
+            },
+            error: function (error) {
+                // Handle AJAX errors
+                console.error("AJAX Error: ", error);
+            }
+        });
+    }
+    // Function to update the HTML content of the table row
+    function updateTableRowParent(id, data) {
+        var $row = $("tr[data-id='" + id + "']");
+        $row.find("td:eq(0)").text(data.name);
+        $row.find("td:eq(1)").text(data.email);
+    }
+    function removeTableRowParent(id) {
+        // Find the row with the matching data-id attribute and remove it
+        var $row = $("#parentRecord_table tbody tr[data-id='" + id + "']");
+        console.log("Removing row with ID:", id);
+
+        if ($row.length > 0) {
+            $row.remove();
+        } else {
+            console.error("Row not found for ID:", id);
+        }
+    }
+    //faculty
+
+
+    // Attach the click event listener for the "Save" button when the modal is shown
+    $('#facultyRecordModal').on('shown.bs.modal', function () {
+        document.getElementById("facultySubmit").addEventListener("click", function (event) {
+            // Get the ID of the clicked row
+            var id = $(this).data('id');
+            updateFacultyData(id);
+        });
+    });
+    function updateFacultyData(id) {
         var fac_id = id;
         var email = $("#prof_emailUpdate").val();
         var Name = $("#prof_nameUpdate").val();
@@ -613,7 +747,35 @@ file_put_contents('UIDContainer.php', $Write);
                 id: fac_id,
                 Name: Name,
                 email: email,
-              
+            },
+            success: function (response) {
+                try {
+                    var result = JSON.parse(response);
+                    if (result.status === "Success") {
+                        // Close the modal after successful update
+                        $('#facultyRecordModal').modal('hide');
+                        // Update the corresponding row in the table with the returned data
+                        updateTableRowFaculty(id, result.data);
+                    } else {
+                        console.error("Error updating data: ", result.message);
+                    }
+                } catch (error) {
+                    console.error(error);
+                }
+            },
+            error: function (error) {
+                console.error("AJAX Error: ", error);
+            }
+        });
+    }
+
+    // Function to delete faculty data
+    function deleteFacultyData(id) {
+        $.ajax({
+            type: "POST",
+            url: "admin_deleteFaculty.php",
+            data: {
+                id: id
             },
             success: function (response) {
                 try {
@@ -622,18 +784,17 @@ file_put_contents('UIDContainer.php', $Write);
 
                     // Check if the status is "Success"
                     if (result.status === "Success") {
-                        // Close the modal after successful update
-                        $('#facultyRecordModal').modal('hide');
-
-                        // Update the corresponding row in the table with the returned data
-                        updateTableRowFaculty(id, result.data)
+                        console.log("Attempting to remove row with ID: " + id);
+                        // Remove the corresponding row from the table
+                        removeTableRowFaculty(id);
+                        console.log("Row removed successfully.");
                     } else {
                         // Log or alert the error message
-                        console.error("Error updating data: ", result.message);
+                        console.error("Error deleting data: ", result.message);
                     }
                 } catch (error) {
                     // Handle JSON parsing error
-                    console.error( error);
+                    console.error("Error parsing JSON: ", error);
                 }
             },
             error: function (error) {
@@ -642,6 +803,75 @@ file_put_contents('UIDContainer.php', $Write);
             }
         });
     }
+
+    function showFaculty() {
+        $('#facultyRecord_table tbody').on('click', 'tr', function () {
+            var id = $(this).data('id');
+            $.ajax({
+                type: "POST",
+                url: "admin_fetchFaculty.php",
+                data: {
+                    id: id
+                },
+                success: function (response) {
+                    var data = JSON.parse(response);
+                    if (data.success) {
+                        $("#prof_nameUpdate").val(data.Name);
+                        $("#prof_emailUpdate").val(data.email);
+                        // Set data-id attribute to the Save button
+                        $("#facultySubmit").data('id', id);
+                        // Create delete button only if it doesn't exist
+                        if (!$('#facultyRecordModal').data('deleteButtonAppended')) {
+                            // Create a delete button dynamically
+                            var deleteButton = document.createElement("button");
+                            deleteButton.textContent = "Delete";
+                            deleteButton.className = "btn btn-danger";
+                            deleteButton.onclick = function () {
+                                // Use the correct id when deleting
+                                deleteFacultyData($("#facultySubmit").data('id'));
+                                // Close the modal or perform other actions if needed
+                                $('#facultyRecordModal').modal('hide');
+                            };
+
+                            // Append the delete button to the modal content
+                            $('#facultyRecordModal .modal-content').append(deleteButton);
+
+                            // Set the flag to indicate that the delete button has been appended
+                            $('#facultyRecordModal').data('deleteButtonAppended', true);
+                        }
+                        $('#facultyRecordModal').modal('show');
+                    } else {
+                        console.error("Error fetching data: ", data.message);
+                    }
+                },
+                error: function (error) {
+                    console.error("AJAX Error: ", error);
+                }
+            });
+        });
+    }
+
+    // Function to update the HTML content of the table row
+    function updateTableRowFaculty(id, data) {
+        // Find the row with the corresponding data-id attribute
+        var $row = $("tr[data-id='" + id + "']");
+        // Update the HTML content of the row with the new data
+        $row.find("td:eq(0)").text(data.name);
+        $row.find("td:eq(1)").text(data.email);
+    }
+    function removeTableRowFaculty(id) {
+        // Find the row with the matching data-id attribute and remove it
+        var $row = $("#facultyRecord_table tbody tr[data-id='" + id + "']");
+        console.log("Removing row with ID:", id);
+
+        if ($row.length > 0) {
+            $row.remove();
+        } else {
+            console.error("Row not found for ID:", id);
+        }
+    }
+
+
     function showModal() {
         var target = event.target;
         while (target.tagName !== "TR") {
@@ -766,45 +996,8 @@ file_put_contents('UIDContainer.php', $Write);
         row.find("td:eq(3)").text(data.sectionid);
         row.find("td:eq(4)").text(data.department);
     }
-    function updateTableRowFaculty(id, data) {
-    // Find the row with the corresponding data-id attribute
-    var $row = $("tr[data-id='" + id + "']");
 
-    // Update the HTML content of the row with the new data
-    $row.find("td:eq(0)").text(data.name);
-    $row.find("td:eq(1)").text(data.email);
-}
-    function  deleteFacultyData(id){
-        $.ajax({
-            type: "POST",
-            url: "admin_deleteFaculty.php",
-            data: {
-                id: id
-            },
-            success: function (response) {
-                try {
-                    // Parse the JSON response
-                    var result = JSON.parse(response);
 
-                    // Check if the status is "Success"
-                    if (result.status === "Success") {
-                        // Remove the corresponding row from the table
-                        removeTableRowFaculty(id)
-                    } else {
-                        // Log or alert the error message
-                        console.error("Error deleting data: ", result.message);
-                    }
-                } catch (error) {
-                    // Handle JSON parsing error
-                    console.error("Error parsing JSON: ", error);
-                }
-            },
-            error: function (error) {
-                // Handle AJAX errors
-                console.error("AJAX Error: ", error);
-            }
-        });
-    }
     function deleteStudentData(id) {
         // Make an AJAX request to your PHP script for delete
         $.ajax({
@@ -842,10 +1035,7 @@ file_put_contents('UIDContainer.php', $Write);
         // Find the row with the matching ID in the table and remove it
         $("#studentsRecord_table tbody tr:has(td:contains('" + id + "'))").remove();
     }
-    function removeTableRowFaculty(id) {
-    // Find the row with the matching data-id attribute and remove it
-    $("#facultyRecord_table tbody tr[data-id='" + id + "']").remove();
-}
+
 
 
 
