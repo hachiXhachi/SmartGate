@@ -1255,7 +1255,7 @@ file_put_contents('UIDContainer.php', $Write);
     }
 
     function validationParent() {
-        $('#parentModal').modal('hide');
+       
         const parent_fname = document.getElementById("parent_first_name");
         const parent_mname = document.getElementById("parent_middle_name");
         const parent_lname = document.getElementById("parent_last_name");
@@ -1284,6 +1284,7 @@ file_put_contents('UIDContainer.php', $Write);
                 })
                     .then((response) => response.json())
                     .then((data) => {
+                        $('#parentModal').modal('hide');
                         if (data.success) {
                             // Handle success, e.g., show success message
                             document.getElementById("succmodalbody").innerHTML = "This Account is successfully added!";
@@ -1327,8 +1328,6 @@ file_put_contents('UIDContainer.php', $Write);
             } else {
                 errorMessage = "Please fill in all required fields.";
             }
-            modalbodycontent.innerHTML = errorMessage;
-            $('#Errormodal').modal('show');
         } else {
             if (!parent_fname.validity.valid) {
                 errorMessage = parent_fname.validationMessage + " (First Name)";
