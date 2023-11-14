@@ -6,7 +6,7 @@ th {
   border: 2px solid black;
 }
 
-#tball {
+table {
   max-height: 400px;
   overflow-y: auto;
   max-width: 100%;
@@ -14,7 +14,12 @@ th {
 }
 
 @media (max-width: 767px) {
-  #tball {
-    height: 300px;
+  table {
+    max-height:60px;
+    overflow-y: auto;
+  }
+  #container{
+    max-height:60px;
+    overflow-y: auto;
   }
 }

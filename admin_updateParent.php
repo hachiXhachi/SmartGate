@@ -6,15 +6,33 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $id = $_POST["id"];
     $Name = $_POST["Name"];
     $email = $_POST["email"];
-
+    $newStudentId = $_POST["newStudentId"];
 
     // Corrected SQL syntax for UPDATE statement
-    $sql = "UPDATE parent_tbl SET name = ?, email = ? WHERE parentid = ?";
-    $data = array($Name, $email, $id);
+    $updateSql = "UPDATE parent_tbl SET name = ?, email = ? WHERE parentid = ?";
+    $updateData = array($Name, $email, $id);
 
-    $stmt = $con->prepare($sql);
+    $updateStmt = $con->prepare($updateSql);
 
-    if ($stmt->execute($data)) {
+    if ($updateStmt->execute($updateData)) {
+        // Check if a new student ID is provided
+        if (!empty($newStudentId)) {
+            // Check if the new student ID exists in student_tbl
+            if (studentIdExists($newStudentId, $con)) {
+                // Insert the new student ID into childtv
+                $insertSql = "INSERT INTO childtv(parent_id, student_id) VALUES (?, ?)";
+                $insertData = array($id, $newStudentId);
+
+                $insertStmt = $con->prepare($insertSql);
+                $insertStmt->execute($insertData);
+            }else{
+                echo json_encode([
+                    'status' => 'Error',
+                    'data' => 'Student ID Dont Exist in the Database'
+                ]);
+            }
+        }
+        echo "\n";
         // Fetch the updated data
         $updatedData = fetchStudentData($id, $con);
 
@@ -27,7 +45,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Send a JSON error response to the client
         echo json_encode([
             'status' => 'Error',
-            'message' => $stmt->errorInfo()[2] // Output the error message
+            'message' => $updateStmt->errorInfo()[2] // Output the error message
         ]);
     }
 } else {
@@ -43,5 +61,14 @@ function fetchStudentData($id, $con) {
     $stmt = $con->prepare($sql);
     $stmt->execute([$id]);
     return $stmt->fetch(PDO::FETCH_ASSOC);
+}
+
+function studentIdExists($studentId, $con) {
+    // Check if the student ID exists in student_tbl
+    $sql = "SELECT COUNT(*) FROM student_tbl WHERE studentid = ?";
+    $stmt = $con->prepare($sql);
+    $stmt->execute([$studentId]);
+    $count = $stmt->fetchColumn();
+    return $count > 0;
 }
 ?>

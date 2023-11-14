@@ -18,6 +18,16 @@ file_put_contents('UIDContainer.php', $Write);
             width: 100%;
         }
 
+        .input-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .input-container label {
+            margin-right: 10px;
+            /* Adjust the margin as needed */
+        }
+
         input[type="number"]::-webkit-inner-spin-button,
         input[type="number"]::-webkit-outer-spin-button,
         input[type="number"]::-webkit-input-speech-button,
@@ -253,7 +263,7 @@ file_put_contents('UIDContainer.php', $Write);
                             <div class="form-group">
                                 <label for="column1">Name</label>
                                 <input type="text" class="form-control bg-transparent" name="name" required
-                                    pattern="[A-Za-z ]{2,16}" id="name" placeholder="Name"
+                                    pattern="[A-Za-z ]{2,16}" id="nameModal" placeholder="Name"
                                     style="border: 2px solid black;">
                             </div>
                         </div>
@@ -261,17 +271,17 @@ file_put_contents('UIDContainer.php', $Write);
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="column4">Student Number</label>
-                                <input type="number" class="form-control bg-transparent" name="studentid" id="studid"
-                                    placeholder="Student Number" min="0" max="9999999999"
+                                <input type="number" class="form-control bg-transparent" name="studentid"
+                                    id="studidModal" placeholder="Student Number" min="0" max="9999999999"
                                     oninput="validateNumberInput(this);checkMaxLength(this, 10);"
                                     style="border: 2px solid black;" readonly>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group text-white">
-                                <label for="sectionSelect">Choose a Section:</label>
-                                <select class="form-control bg-transparent" id="sectionSelect" name="sectionid"
-                                    onchange="changeFunction()" style="width:100%; border: 2px solid black;">
+                                <label for="sectionSelectModal">Choose a Section:</label>
+                                <select class="form-control bg-transparent" id="sectionSelectModal" name="sectionid"
+                                    onchange="changeFunctionModal()" style="width:100%; border: 2px solid black;">
                                     <option value="" disabled selected hidden>Section</option>
                                     <?php
 
@@ -289,15 +299,16 @@ file_put_contents('UIDContainer.php', $Write);
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="column3">Department</label>
-                                <input type="text" class="form-control bg-transparent" id="department" name="department"
-                                    style="border: 2px solid black;" readonly>
+                                <input type="text" class="form-control bg-transparent" id="departmentModal"
+                                    name="department" style="border: 2px solid black;" readonly>
                             </div>
                         </div>
                         <div class="col-lg-12">
                             <div class="form-group">
                                 <label for="column7">Email</label>
-                                <input type="email" class="form-control bg-transparent" name="schoolemail" id="email"
-                                    placeholder="Email" style="width:100%; border: 2px solid black;" required>
+                                <input type="email" class="form-control bg-transparent" name="schoolemail"
+                                    id="emailModal" placeholder="Email" style="width:100%; border: 2px solid black;"
+                                    required>
                             </div>
                         </div>
                         <br>
@@ -327,7 +338,7 @@ file_put_contents('UIDContainer.php', $Write);
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="editModalLabel">Edit Student Data</h5>
+                <h5 class="modal-title" id="editModalLabel">Edit Professor Data</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -362,7 +373,7 @@ file_put_contents('UIDContainer.php', $Write);
     <div class="modal-dialog" role="document">
         <div class="modal-content" id="parentUpdate">
             <div class="modal-header">
-                <h5 class="modal-title" id="editModalLabel">Edit Student Data</h5>
+                <h5 class="modal-title" id="editModalLabel">Edit Parent Data</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 
                 </button>
@@ -384,10 +395,10 @@ file_put_contents('UIDContainer.php', $Write);
                                 placeholder="Email" style="width:100%; border: 2px solid black;" required>
                         </div>
                     </div>
-
+                    <div id="appendedInputs"></div>
 
             </div>
-            <button type="button" id="parentSubmit" class="btn btn-primary">Save Changes</button>
+            <button type="button" id="parentSubmit" class="btn btn-success">Save Changes</button>
             </form>
         </div>
     </div>
@@ -616,7 +627,7 @@ file_put_contents('UIDContainer.php', $Write);
         var name = $("#parent_nameUpdate").val();
         var email = $("#parent_emailUpdate").val();
 
-        // Perform validation
+        // Perform validation for name and email
         if (name.trim() === "") {
             alert("Name is required");
             return false;
@@ -627,32 +638,59 @@ file_put_contents('UIDContainer.php', $Write);
             return false;
         }
 
-        // Additional validation logic can be added as needed
+        // Validate the new student ID
+        var newStudentId = $("input[name='newStudentId']").val();
+        if (newStudentId.trim() === "") {
+            alert("New Student ID is required");
+            return false;
+        }
 
-        // If all validations pass, return true
-        return true;
+        // Perform validation for dynamically appended input fields (existing student IDs)
+        var isValid = true;
+        $("input[name^='studentId']").each(function () {
+            var studentId = $(this).val();
+
+            // Perform validation for each existing student ID
+            if (studentId.trim() === "") {
+                alert("Student ID is required");
+                isValid = false;
+                return false; // Break the loop early if an invalid student ID is found
+            }
+
+            // Add additional validation logic for existing student IDs if needed
+        });
+
+        return isValid;
     }
-
 
     // Function to update parent data
     function updateParentData(id) {
         var parent_id = id;
         var email = $("#parent_emailUpdate").val();
         var Name = $("#parent_nameUpdate").val();
+
+
+
+        // Check if a new student ID is provided
+        var newStudentId = $("input[name='newStudentId']").val();
+
         $.ajax({
             type: "POST",
             url: "admin_updateParent.php",
             data: {
                 id: parent_id,
                 Name: Name,
-                email: email,
+                email: email, // Pass the array of student IDs to PHP
+                newStudentId: newStudentId // Pass the new student ID to PHP
             },
             success: function (response) {
+                console.log(response);
                 try {
                     var result = JSON.parse(response);
                     if (result.status === "Success") {
-                        // Close the modal after successful update
+                        // Close the modal after a successful update
                         $('#parentRecordModal').modal('hide');
+                        $('#succmodal').modal('show');
                         // Update the corresponding row in the table with the returned data
                         updateTableRowParent(id, result.data);
                     } else {
@@ -667,6 +705,7 @@ file_put_contents('UIDContainer.php', $Write);
             }
         });
     }
+
     function showParent() {
         $('#parentRecord_table tbody').on('click', 'tr', function () {
             var id = $(this).data('id');
@@ -677,11 +716,37 @@ file_put_contents('UIDContainer.php', $Write);
                     id: id
                 },
                 success: function (response) {
+                    console.log(response);
                     var data = JSON.parse(response);
                     if (data.success) {
                         $("#parent_nameUpdate").val(data.Name);
                         $("#parent_emailUpdate").val(data.email);
                         $("#parentSubmit").data('id', id);
+
+                        // Clear existing appended inputs
+                        $('#appendedInputs').empty();
+
+                        // Create labels for existing appended inputs
+                        var studentIds = data.studentIds; // Assuming you have this property in your JSON response
+                        for (var i = 0; i < studentIds.length; i++) {
+                            createAppendedInput(i, studentIds[i]);
+                        }
+
+                        // Append button for adding new input if it doesn't exist
+                        if (!$('#parentRecordModal').data('AddButtonAppended')) {
+                            // Append button for adding new input
+                            var addButton = document.createElement("button");
+                            addButton.textContent = "Add Student ID";
+                            addButton.className = "btn btn-primary";
+                            addButton.type = "button";
+                            addButton.name = "addStudentIdButton";
+                            addButton.onclick = function () {
+                                addAppendedInput();
+                            };
+                            $('#parentRecordModal .modal-content').append(addButton);
+                            $('#parentRecordModal').data('AddButtonAppended', true);
+                        }
+
                         if (!$('#parentRecordModal').data('deleteButtonAppended')) {
                             // Create a delete button dynamically
                             var deleteButton = document.createElement("button");
@@ -689,9 +754,14 @@ file_put_contents('UIDContainer.php', $Write);
                             deleteButton.className = "btn btn-danger";
                             deleteButton.onclick = function () {
                                 // Use the correct id when deleting
-                                deleteParentData($("#parentSubmit").data('id'));
+                                var confimationDelete = confirm("are you sure you want to delete this?");
+
+                                if (confimationDelete) {
+                                    deleteParentData($("#parentSubmit").data('id'));
+                                    $('#parentRecordModal').modal('hide');
+                                }
                                 // Close the modal or perform other actions if needed
-                                $('#parentRecordModal').modal('hide');
+
                             };
 
                             // Append the delete button to the modal content
@@ -711,6 +781,93 @@ file_put_contents('UIDContainer.php', $Write);
             });
         });
     }
+
+    function createAppendedInput(index, value) {
+        // Create a container div for each input and button
+        var container = document.createElement("div");
+        container.className = "input-container";
+
+        // Create label
+        var label = document.createElement("label");
+        label.textContent = "Student ID " + (index + 1) + ":";
+        label.style = "font-size:12px;"
+        container.appendChild(label);
+
+        // Create input
+        var input = document.createElement("input");
+        input.type = "number";
+        input.className = "form-control bg-transparent";
+        input.name = "studentId" + (index + 1);
+        input.value = value;
+        input.style = "border: 2px solid black;";
+        input.readOnly = true;
+        container.appendChild(input);
+
+        // Create delete button
+        var deleteButton = document.createElement("button");
+        deleteButton.textContent = "Delete";
+        deleteButton.className = "btn btn-danger";
+        deleteButton.type = "button";
+        deleteButton.onclick = function () {
+            // Call a function to confirm deletion and perform deletion if confirmed
+            confirmAndDelete(value);
+        };
+        container.appendChild(deleteButton);
+
+        // Append the container to the main container
+        $('#appendedInputs').append(container);
+    }
+
+
+    function confirmAndDelete(studentId) {
+        var confirmation = confirm("Are you sure you want to delete this data?");
+        if (confirmation) {
+            // Perform AJAX request to delete the row in childtv with the provided studentId
+            deleteChildTvRow(studentId);
+        }
+    }
+
+    function deleteChildTvRow(studentId) {
+        // Perform AJAX request to delete the row in childtv
+        $.ajax({
+            type: "POST",
+            url: "deleteChildTvRow.php", // Adjust the URL to your PHP script
+            data: {
+                studentId: studentId
+            },
+            success: function (response) {
+                var result = JSON.parse(response);
+                // Handle success, e.g., remove the corresponding input field from the UI
+                if (result.status === "Success") {
+                    console.log("success");
+                }
+            },
+            error: function (error) {
+                // Handle error
+                console.error("AJAX Error: ", error);
+            }
+        });
+    }
+
+
+
+    function addAppendedInput() {
+        // Create label for the new input
+        var newLabel = document.createElement("label");
+        newLabel.textContent = "New Student ID:";
+        $('#appendedInputs').append(newLabel);
+
+        // Create and append input field
+        var input = document.createElement("input");
+        input.type = "number";
+        input.className = "form-control bg-transparent";
+        input.name = "newStudentId"; // Modify as needed
+        input.style = "border: 2px solid black;";
+        $('#appendedInputs').append(input);
+    }
+
+
+
     function deleteParentData(id) {
         $.ajax({
             type: "POST",
@@ -724,7 +881,8 @@ file_put_contents('UIDContainer.php', $Write);
                     var result = JSON.parse(response);
 
                     // Check if the status is "Success"
-                    if (result.status === "Success") {;
+                    if (result.status === "Success") {
+                        ;
                         // Remove the corresponding row from the table
                         removeTableRowParent(id);
                         console.log("Row removed successfully.");
@@ -833,7 +991,7 @@ file_put_contents('UIDContainer.php', $Write);
 
                     // Check if the status is "Success"
                     if (result.status === "Success") {
-                
+
                         // Remove the corresponding row from the table
                         removeTableRowFaculty(id);
                         console.log("Row removed successfully.");
@@ -974,17 +1132,18 @@ file_put_contents('UIDContainer.php', $Write);
             },
             success: function (response) {
                 // Parse the JSON response
+                console
                 var data = JSON.parse(response);
 
                 // Check if data is retrieved successfully
                 if (data.success) {
                     // Fill the input fields with retrieved data
-                    $("#name").val(data.Name);
-                    $("#studid").val(data.studentId);
-                    $("#sectionSelect").val(data.section);
-                    $("#email").val(data.email);
+                    $("#nameModal").val(data.Name);
+                    $("#studidModal").val(data.studentId);
+                    $("#sectionSelectModal").val(data.section);
+                    $("#emailModal").val(data.email);
                     $("#getUID").val(data.rfidTag);
-                    $("#department").val(data.department);
+                    $("#departmentModal").val(data.department);
 
                     // Show the modal
                     $('#studentRecordModal').modal('show');
@@ -998,30 +1157,30 @@ file_put_contents('UIDContainer.php', $Write);
             }
         });
         $('#studentSubmit').on('click', function () {
-        // Get the ID of the clicked row
-        // Validate the form before submitting
-        if (validateStudentForm()) {
-            // Add your code to submit the form or perform other actions
-            // For example, you can call a function to handle the form submission
-            updateStudentData(id);
-            // Optionally, you can close the modal or perform other actions
-            $('#studentRecordModal').modal('hide');
-        }
-    });
+            // Get the ID of the clicked row
+            // Validate the form before submitting
+            if (validateStudentForm()) {
+                // Add your code to submit the form or perform other actions
+                // For example, you can call a function to handle the form submission
+                updateStudentData(id);
+                // Optionally, you can close the modal or perform other actions
+                $('#studentRecordModal').modal('hide');
+            }
+        });
         // Attach the click event to the submit button
         // document.getElementById("studentSubmit").addEventListener("click", function (event) {
         //     if (validateStudentForm()) {
-                
+
         //     }
         // });
     }
 
     function validateStudentForm() {
         // Get form inputs
-        var name = $("#name").val();
-        var studid = $("#studid").val();
-        var sectionSelect = $("#sectionSelect").val();
-        var email = $("#email").val();
+        var name = $("#nameModal").val();
+        var studid = $("#studidModal").val();
+        var sectionSelect = $("#sectionSelectModal").val();
+        var email = $("#emailModal").val();
         var getUID = $("#getUID").val();
 
         // Perform validation
@@ -1058,12 +1217,12 @@ file_put_contents('UIDContainer.php', $Write);
 
     function updateStudentData(id) {
         var stud_id = id;
-        var Name = $("#name").val();
-        var studentId = $("#studid").val();
-        var section = $("#sectionSelect").val();
-        var email = $("#email").val();
+        var Name = $("#namModale").val();
+        var studentId = $("#studidModal").val();
+        var section = $("#sectionSelectModal").val();
+        var email = $("#emailModal").val();
         var rfidTag = $("#getUID").val();
-        var department = $("#department").val();
+        var department = $("#departmentModal").val();
 
         // Make an AJAX request to your PHP script
         $.ajax({
@@ -1113,7 +1272,7 @@ file_put_contents('UIDContainer.php', $Write);
         row.find("td:eq(1)").text(data.name);
         row.find("td:eq(2)").text(data.sectionid);
         row.find("td:eq(3)").text(data.department);
-        
+
     }
 
 
@@ -1211,6 +1370,22 @@ file_put_contents('UIDContainer.php', $Write);
         // Send the selected value as POST data
         xhr.send("selectedValue=" + selectedValue);
     }
+    function changeFunctionModal() {
+        var selectedValue = document.getElementById("sectionSelectModal").value;
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "getdepartment.php", true);
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                // Display the response from the PHP script in the result container
+                document.getElementById("departmentModal").value = xhr.responseText;
+            }
+        };
+
+        // Send the selected value as POST data
+        xhr.send("selectedValue=" + selectedValue);
+    }
 
     function validateNumberInput(inputElement) {
         const inputValue = inputElement.value;
@@ -1255,7 +1430,6 @@ file_put_contents('UIDContainer.php', $Write);
     }
 
     function validationParent() {
-       
         const parent_fname = document.getElementById("parent_first_name");
         const parent_mname = document.getElementById("parent_middle_name");
         const parent_lname = document.getElementById("parent_last_name");

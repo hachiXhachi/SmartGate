@@ -5,20 +5,35 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Retrieve the ID from the AJAX request
     $id = $_POST["id"];
 
-    // Perform the delete operation
-    $sql = "DELETE FROM parent_tbl WHERE parentid = ?";
-    $stmt = $con->prepare($sql);
+    // Start a transaction to ensure atomicity
+    $con->beginTransaction();
 
-    if ($stmt->execute([$id])) {
+    try {
+        // Delete from childtv table first
+        $deleteChildSql = "DELETE FROM childtv WHERE parent_id = ?";
+        $deleteChildStmt = $con->prepare($deleteChildSql);
+        $deleteChildStmt->execute([$id]);
+
+        // Delete from parent_tbl
+        $deleteParentSql = "DELETE FROM parent_tbl WHERE parentid = ?";
+        $deleteParentStmt = $con->prepare($deleteParentSql);
+        $deleteParentStmt->execute([$id]);
+
+        // Commit the transaction if all queries are successful
+        $con->commit();
+
         // Send a JSON success response to the client
         echo json_encode([
             'status' => 'Success'
         ]);
-    } else {
+    } catch (Exception $e) {
+        // Rollback the transaction in case of an error
+        $con->rollBack();
+
         // Send a JSON error response to the client
         echo json_encode([
             'status' => 'Error',
-            'message' => $stmt->errorInfo()[2] // Output the error message
+            'message' => $e->getMessage() // Output the error message
         ]);
     }
 } else {
