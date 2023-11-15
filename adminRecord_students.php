@@ -1,10 +1,41 @@
 <?php
 include 'includes/session.php';
 ?>
-<div class="container" style="font-family:sans-seriff; width: 100%;">
-<link rel="stylesheet" type="text/css" href="cssCodes/recordStudent.css">
+<style>
+  tr,
+table,
+td,
+th {
+  border: 2px solid black;
+}
 
-  <div>
+table {
+  max-height: 400px;
+  overflow-y: auto;
+  max-width: 100%;
+  width: auto;
+}
+
+@media (max-width: 767px) {
+  #container {
+    max-height:200px;
+    overflow-y: auto;
+    overflow-x: none;
+    width: auto;
+  }
+  table {
+  max-height: 400px;
+  overflow-y: auto;
+  max-width: 100%;
+  width: auto;
+}
+
+}
+</style>
+<div class="container"  style="font-family:sans-seriff; width: 100%;">
+
+
+  <div id="container">
     <table id="studentsRecord_table" class="table table-hover text-center">
       <thead>
         <tr class="table-secondary">
@@ -14,7 +45,7 @@ include 'includes/session.php';
           <th>Department</th>
           
       </thead>
-      <tbody>
+      <tbody >
         <?php
         $con = $pdo->open();
         try {

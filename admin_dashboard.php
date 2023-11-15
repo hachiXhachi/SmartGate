@@ -638,11 +638,15 @@ file_put_contents('UIDContainer.php', $Write);
             return false;
         }
 
-        // Validate the new student ID
-        var newStudentId = $("input[name='newStudentId']").val();
-        if (newStudentId.trim() === "") {
-            alert("New Student ID is required");
-            return false;
+        var hasNewStudentId = $("input[name='newStudentId']").length > 0;
+
+        // Validate the new student ID only if it is present
+        if (hasNewStudentId) {
+            var newStudentId = $("input[name='newStudentId']").val();
+            if (newStudentId.trim() === "") {
+                alert("New Student ID is required");
+                return false;
+            }
         }
 
         // Perform validation for dynamically appended input fields (existing student IDs)
@@ -729,7 +733,7 @@ file_put_contents('UIDContainer.php', $Write);
                         // Create labels for existing appended inputs
                         var studentIds = data.studentIds; // Assuming you have this property in your JSON response
                         for (var i = 0; i < studentIds.length; i++) {
-                            createAppendedInput(i, studentIds[i]);
+                            createAppendedInput(i, studentIds[i] ,id);
                         }
 
                         // Append button for adding new input if it doesn't exist
@@ -782,17 +786,17 @@ file_put_contents('UIDContainer.php', $Write);
         });
     }
 
-    function createAppendedInput(index, value) {
+    function createAppendedInput(index, value , id) {
         // Create a container div for each input and button
         var container = document.createElement("div");
         container.className = "input-container";
-
+        var passParentId = id;
         // Create label
         var label = document.createElement("label");
         label.textContent = "Student ID " + (index + 1) + ":";
         label.style = "font-size:12px;"
         container.appendChild(label);
-
+        console.log(id);
         // Create input
         var input = document.createElement("input");
         input.type = "number";
@@ -810,36 +814,39 @@ file_put_contents('UIDContainer.php', $Write);
         deleteButton.type = "button";
         deleteButton.onclick = function () {
             // Call a function to confirm deletion and perform deletion if confirmed
-            confirmAndDelete(value);
+            confirmAndDelete(value,passParentId);
         };
         container.appendChild(deleteButton);
-
+        
         // Append the container to the main container
         $('#appendedInputs').append(container);
     }
 
 
-    function confirmAndDelete(studentId) {
+    function confirmAndDelete(studentId,passParentId) {
         var confirmation = confirm("Are you sure you want to delete this data?");
+       
         if (confirmation) {
             // Perform AJAX request to delete the row in childtv with the provided studentId
-            deleteChildTvRow(studentId);
+            deleteChildTvRow(studentId,passParentId);
         }
     }
 
-    function deleteChildTvRow(studentId) {
+    function deleteChildTvRow(studentId,passParentId) {
         // Perform AJAX request to delete the row in childtv
         $.ajax({
             type: "POST",
             url: "deleteChildTvRow.php", // Adjust the URL to your PHP script
             data: {
+                passParentId: passParentId,
                 studentId: studentId
             },
             success: function (response) {
                 var result = JSON.parse(response);
                 // Handle success, e.g., remove the corresponding input field from the UI
                 if (result.status === "Success") {
-                    console.log("success");
+                    alert("Deleted");
+                    $('#parentRecordModal').modal('hide');
                 }
             },
             error: function (error) {
@@ -1421,7 +1428,7 @@ file_put_contents('UIDContainer.php', $Write);
         var valid = true;
         $(".add_children").each(function () {
             var studentNumber = $(this).val();
-            if (studentNumber.length !== 10) {
+            if (studentNumber.length !== 10 && studentNumber == "") {
                 valid = false;
                 return false; // Break the loop early since we found an invalid input
             }
@@ -1458,6 +1465,7 @@ file_put_contents('UIDContainer.php', $Write);
                 })
                     .then((response) => response.json())
                     .then((data) => {
+                        console.log(data);
                         $('#parentModal').modal('hide');
                         if (data.success) {
                             // Handle success, e.g., show success message
@@ -1491,6 +1499,7 @@ file_put_contents('UIDContainer.php', $Write);
                         }
                     })
                     .catch((error) => {
+                        console.log(response.error);
                         modalbodycontent.innerHTML = "An error occurred:", error;
                         $('#Errormodal').modal('show');
 
@@ -1499,8 +1508,12 @@ file_put_contents('UIDContainer.php', $Write);
             } else if (convertstudid.length <= 10) {
                 parent_studid.setCustomValidity("Your student id must be a 10-digit number");
                 errorMessage = "Invalid student ID.";
+                modalbodycontent.innerHTML = errorMessage;
+                $('#Errormodal').modal('show');
             } else {
                 errorMessage = "Please fill in all required fields.";
+                modalbodycontent.innerHTML = errorMessage;
+                $('#Errormodal').modal('show');
             }
         } else {
             if (!parent_fname.validity.valid) {
@@ -1540,9 +1553,10 @@ file_put_contents('UIDContainer.php', $Write);
                 })
                     .then(response => {
                         if (response.ok) {
+                            console.log(response);
                             document.getElementById("succmodalbody").innerHTML = "This Account is successfully added!";
                             $('#succModal').modal('show');
-                            myForm.reset();
+
                             // Close modal or show success message
                         } else {
 
@@ -1555,12 +1569,16 @@ file_put_contents('UIDContainer.php', $Write);
                         $('#Errormodal').modal('show');
 
                     });
+
             } else if (convert.length !== 10) {
                 studid.setCustomValidity("Your student id must be a 10-digit number");
                 errorMessage = "Invalid student ID.";
+                $('#Errormodal').modal('show');
             } else {
                 errorMessage = "Please fill in all required fields.";
+                $('#Errormodal').modal('show');
             }
+            myForm.reset();
         } else {
             if (!fname.validity.valid) {
                 errorMessage = fname.validationMessage + ("(First Name)");

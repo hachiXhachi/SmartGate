@@ -6,7 +6,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $id = $_POST["id"];
     $Name = $_POST["Name"];
     $email = $_POST["email"];
-    $newStudentId = $_POST["newStudentId"];
+    
 
     // Corrected SQL syntax for UPDATE statement
     $updateSql = "UPDATE parent_tbl SET name = ?, email = ? WHERE parentid = ?";
@@ -16,7 +16,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if ($updateStmt->execute($updateData)) {
         // Check if a new student ID is provided
-        if (!empty($newStudentId)) {
+        if (isset($_POST['newStudentId'])) {
+            $newStudentId = $_POST["newStudentId"];
             // Check if the new student ID exists in student_tbl
             if (studentIdExists($newStudentId, $con)) {
                 // Insert the new student ID into childtv

@@ -4,13 +4,14 @@ include 'includes/session.php';
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Retrieve the studentId from the AJAX request
     $studentId = $_POST["studentId"];
+    $parentId = $_POST['passParentId'];
 
     // Prepare the SQL statement to delete the row in childtv
-    $deleteSql = "DELETE FROM childtv WHERE student_id = ?";
+    $deleteSql = "DELETE FROM childtv WHERE student_id = ? AND parent_id = ?";
     $deleteStmt = $con->prepare($deleteSql);
 
     // Bind the parameter and execute the statement
-    $deleteStmt->execute([$studentId]);
+    $deleteStmt->execute([$studentId,$parentId]);
 
     // Check if the deletion was successful
     if ($deleteStmt->rowCount() > 0) {
