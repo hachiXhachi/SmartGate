@@ -1534,79 +1534,67 @@ file_put_contents('UIDContainer.php', $Write);
 
 
     function validationStudent() {
-        $('#confirmationModal').modal('hide');
-        const fname = document.getElementById("fname");
-        const mname = document.getElementById("mname");
-        const lname = document.getElementById("lname");
-        const studid = document.getElementById("studid");
-        const section = document.getElementById("sectionSelect");
-        const email = document.getElementById("email");
-        const rfid = document.getElementById("getUID");
-        var modalbodycontent = document.getElementById("Errormodalbody");
-        var errorMessage;
-        myForm = document.getElementById("registrationForm");
-        var convert = studid.value.toString();
-        if (fname.validity.valid && mname.validity.valid && lname.validity.valid && section.validity.valid && email.validity.valid && rfid.validity.valid) {
-            if (convert.length === 10 && studid.validity.valid) {
-                const formData = new FormData(myForm);
-                fetch("add_student.php", {
-                    method: "POST",
-                    body: formData
-                })
-                    .then(response => {
-                        if (response.ok) {
-                            console.log(response);
-                            document.getElementById("succmodalbody").innerHTML = "This Account is successfully added!";
-                            $('#succModal').modal('show');
+    $('#confirmationModal').modal('hide');
 
-                            // Close modal or show success message
-                        } else {
+    const fname = document.getElementById("fname");
+    const mname = document.getElementById("mname");
+    const lname = document.getElementById("lname");
+    const studid = document.getElementById("studid");
+    const section = document.getElementById("sectionSelect");
+    const email = document.getElementById("email");
+    const rfid = document.getElementById("getUID");
 
-                            modalbodycontent.innerHTML = "Form submission failed.";
-                            $('#Errormodal').modal('show');
-                        }
-                    })
-                    .catch(error => {
-                        modalbodycontent.innerHTML = "An error occurred:", error;
-                        $('#Errormodal').modal('show');
+    const modalbodycontent = document.getElementById("Errormodalbody");
+    let errorMessage;
 
-                    });
+    const convert = studid.value.toString();
 
-            } else if (convert.length !== 10) {
-                studid.setCustomValidity("Your student id must be a 10-digit number");
-                errorMessage = "Invalid student ID.";
-                $('#Errormodal').modal('show');
+    if (!fname.validity.valid) {
+        errorMessage = fname.validationMessage + " (First Name)";
+    } else if (!mname.validity.valid) {
+        errorMessage = mname.validationMessage + " (Middle Name)";
+    } else if (!lname.validity.valid) {
+        errorMessage = lname.validationMessage + " (Last Name)";
+    } else if (!section.validity.valid) {
+        errorMessage = section.validationMessage + " (Section)";
+    } else if (!email.validity.valid) {
+        errorMessage = email.validationMessage + " (Email)";
+    } else if (!rfid.validity.valid) {
+        errorMessage = "RFID is required.";
+    } else if (!studid.validity.valid) {
+        errorMessage = studid.validationMessage + " (Student Number)";
+    } else if (convert.length !== 10) {
+        errorMessage = "Your student id must be a 10-digit number";
+    } else {
+        const formData = new FormData(document.getElementById("registrationForm"));
+
+        fetch("add_student.php", {
+            method: "POST",
+            body: formData
+        })
+        .then(response => {
+            if (response.ok) {
+                console.log(response);
+                document.getElementById("succmodalbody").innerHTML = "This Account is successfully added!";
+                $('#succModal').modal('show');
+                document.getElementById("registrationForm").reset();
             } else {
-                errorMessage = "Please fill in all required fields.";
+                modalbodycontent.innerHTML = "Form submission failed.";
                 $('#Errormodal').modal('show');
             }
-            myForm.reset();
-        } else {
-            if (!fname.validity.valid) {
-                errorMessage = fname.validationMessage + ("(First Name)");
-            } else if (!mname.validity.valid) {
-                errorMessage = mname.validationMessage + ("(Middle Name)");
-            } else if (!lname.validity.valid) {
-                errorMessage = lname.validationMessage + ("(Last Name)");
-            } else if (!studid.validity.valid) {
-                errorMessage = studid.validationMessage + ("(Student )");
-            } else if (!section.validity.valid) {
-                errorMessage = section.validationMessage + ("(Section)");
-            } else if (!email.validity.valid) {
-                errorMessage = email.validationMessage + ("(Email)");
-            } else if (!rfid.value.trim()) {
-                errorMessage = "RFID is required.";
-            } else {
-
-            }
-            modalbodycontent.innerHTML = errorMessage;
+        })
+        .catch(error => {
+            modalbodycontent.innerHTML = "An error occurred: " + error;
             $('#Errormodal').modal('show');
-        }
+        });
 
-
-
-
+        return;
     }
+
+    modalbodycontent.innerHTML = errorMessage;
+    $('#Errormodal').modal('show');
+}
+
 
     function validationProf() {
         $('#confirmationModal').modal('hide');
