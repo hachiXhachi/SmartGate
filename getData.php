@@ -53,7 +53,7 @@ if (isset($_POST['page'])) {
             while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
               $i++;
               ?>
-              <tr>
+              <tr data-student-id="<?php echo $row["student_id"]; ?>">
 
                 <td>
                   <?php echo $row["date"]; ?>

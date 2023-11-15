@@ -10,7 +10,8 @@ include 'includes/session.php';
   <meta name='viewport' content='width=device-width, initial-scale=1'>
   <link rel='stylesheet' href='cssCodes/main.css'>
   <script src="node_modules\bootstrap\dist\js\bootstrap.bundle.min.js"></script>
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.13.3/css/selectize.bootstrap4.min.css"
     rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.13.3/js/standalone/selectize.min.js"></script>
@@ -175,10 +176,8 @@ include 'includes/session.php';
           $('.loading-overlay').fadeOut("slow");
         }
       });
-
-
-
     }
+
   </script>
 </head>
 
@@ -218,11 +217,13 @@ include 'includes/session.php';
             onclick="loadView('faculty_home');hideSelect()" id="home"><i class="fa-solid fa-house"></i> Home</a></li>
         <hr class="h-color mx-4">
         <li><a class="text-decoration-none text-white d-block text-center py-2"
-            onclick="loadView('faculty_attendance');showSelect()" id="attend"><i class="fa-solid fa-clipboard-user"></i> View
+            onclick="loadView('faculty_attendance');showSelect()" id="attend"><i class="fa-solid fa-clipboard-user"></i>
+            View
             Attendance</a></li>
         <hr class="h-color mx-4">
         <li><a class="text-decoration-none text-white d-block text-center py-2"
-            onclick="loadView('faculty_notification');hideSelect()" id="notif"><i class="fa-solid fa-bell"></i> Notification
+            onclick="loadView('faculty_notification');hideSelect()" id="notif"><i class="fa-solid fa-bell"></i>
+            Notification
             Tab</a></li>
         <hr class="h-color mx-4">
         <li><a class="text-decoration-none text-white d-block text-center py-2"
@@ -348,15 +349,49 @@ include 'includes/session.php';
   function loadView(viewName) {
     document.getElementById('dropdown').value = "All";
     fetch(`${viewName}.php`)
-      .then(response => response.text())
-      .then(data => {
-        document.getElementById('base').innerHTML = data;
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('base').innerHTML = data;
 
-      })
-      .catch(error => {
-        console.error('Error loading view:', error);
-      });
-  }
+            // Attach click event to each row inside the #base element
+            $('#base').on('click', '#attendance_list tr', function() {
+                var studentId = $(this).data('student-id');
+                calculateTotalDays(studentId)
+            });
+        })
+        .catch(error => {
+            console.error('Error loading view:', error);
+        });
+}
+function calculateTotalDays(studentId) {
+    var uniqueDays = [];
+
+    // Iterate through each row in the table
+    $('#attendance_list tr').each(function() {
+        var rowStudentId = $(this).data('student-id');
+
+        // Check if the row corresponds to the selected student
+        if (rowStudentId == studentId) {
+            // Get the date value
+            var dateString = $(this).find('td:eq(0)').text(); // Assuming date is in the 1st column
+
+            // Extract day from the date
+            var dayOfWeek = moment(dateString, 'MM-DD-YYYY').format('dddd');
+
+            // Add the unique day to the array
+            if (!uniqueDays.includes(dayOfWeek)) {
+                uniqueDays.push(dayOfWeek);
+            }
+        }
+    });
+
+    // Display the total number of unique days
+    var totalDays = uniqueDays.length;
+
+    alert('Total days for the week: ' + totalDays);
+}
+
+
 
   $(document).ready(function () {
     var selectizeControl = $('#dropdown').selectize({

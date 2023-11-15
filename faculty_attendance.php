@@ -28,35 +28,14 @@ $pagination = new Pagination($pagConfig);
 // Fetch records based on the limit 
 $query = $con->query("SELECT * FROM attendance_tbl LEFT JOIN student_tbl ON attendance_tbl.student_id=student_tbl.studentid ORDER BY id DESC LIMIT $limit");
 ?>
-<!-- <link rel='stylesheet' href='src/main.css'>
-<script src="node_modules\bootstrap\dist\js\bootstrap.bundle.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> -->
 
-<!-- <div class="search-panel">
-    <div class="form-row">
-        <div class="form-group col-md-6">
-            <input type="text" class="form-control" id="keywords" placeholder="Type keywords..."
-                onkeyup="searchFilter();">
-        </div>
-        <div class="form-group col-md-4">
-            <select class="form-control" id="filterBy" onchange="searchFilter();">
-                <option value="">Filter by Status</option>
-                <option value="1">Active</option>
-                <option value="0">Inactive</option>
-            </select>
-        </div>
-    </div>
-</div> -->
 <div class="datalist-wrapper">
-    <!-- Loading overlay -->
-    <!-- <div class="loading-overlay">
-        <div class="overlay-content">Loading...</div>
-    </div> -->
+  
 
     <!-- Data list container -->
     <div id="dataContainer" class="container" style="font-family:sans-seriff; width: 100%;">
     <div class="table-container" id="tball">
-    <table class="table table-hover text-center">
+    <table class="table table-hover text-center" id = "faculty_attendance">
       <thead>
         <tr class="table-secondary">
           <th>Date</th>
@@ -73,7 +52,7 @@ $query = $con->query("SELECT * FROM attendance_tbl LEFT JOIN student_tbl ON atte
                     while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
                         $i++;
                         ?>
-                        <tr>
+                        <tr data-student-id="<?php echo $row["student_id"]; ?>">
 
                             <td>
                                 <?php echo $row["date"]; ?>
