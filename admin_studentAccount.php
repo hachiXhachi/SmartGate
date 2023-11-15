@@ -71,7 +71,7 @@
                 <div class="form-group text-white">
                     <label for="sectionSelect">Choose a Section:</label>
                     <select class="form-control bg-transparent" id="sectionSelect"
-                        name="sectionid" onchange="changeFunction()" style="width:100%; border: 2px solid black;">
+                        name="sectionid" onchange="changeFunction()" style="width:100%; border: 2px solid black;" required>
                         <option value="" disabled selected hidden>Section</option>
                         <?php
                         include 'includes/session.php';
