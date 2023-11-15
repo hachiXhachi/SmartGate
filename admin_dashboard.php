@@ -317,8 +317,8 @@ file_put_contents('UIDContainer.php', $Write);
                                 <label for="column6">Rfid Code</label>
                                 <textarea rows="1" name="rfidtag" maxlength="12" id="getUID"
                                     class="form-control bg-transparent column6"
-                                    style="border: 2px solid black; resize:none;"
-                                    placeholder="Please Tag your Card" readonly></textarea>
+                                    style="border: 2px solid black; resize:none;" placeholder="Please Tag your Card"
+                                    readonly></textarea>
                             </div>
                         </div>
 
@@ -672,11 +672,14 @@ file_put_contents('UIDContainer.php', $Write);
         var parent_id = id;
         var email = $("#parent_emailUpdate").val();
         var Name = $("#parent_nameUpdate").val();
+        var newStudentIds = [];
+        $("input[name^='newStudentId']").each(function () {
+            var newStudentId = $(this).val();
+            if (newStudentId.trim() !== "") {
+                newStudentIds.push(newStudentId);
+            }
+        });
 
-
-
-        // Check if a new student ID is provided
-        var newStudentId = $("input[name='newStudentId']").val();
 
         $.ajax({
             type: "POST",
@@ -685,7 +688,7 @@ file_put_contents('UIDContainer.php', $Write);
                 id: parent_id,
                 Name: Name,
                 email: email, // Pass the array of student IDs to PHP
-                newStudentId: newStudentId // Pass the new student ID to PHP
+                newStudentIds: newStudentIds // Pass the new student ID to PHP
             },
             success: function (response) {
                 console.log(response);
@@ -733,7 +736,7 @@ file_put_contents('UIDContainer.php', $Write);
                         // Create labels for existing appended inputs
                         var studentIds = data.studentIds; // Assuming you have this property in your JSON response
                         for (var i = 0; i < studentIds.length; i++) {
-                            createAppendedInput(i, studentIds[i] ,id);
+                            createAppendedInput(i, studentIds[i], id);
                         }
 
                         // Append button for adding new input if it doesn't exist
@@ -786,7 +789,7 @@ file_put_contents('UIDContainer.php', $Write);
         });
     }
 
-    function createAppendedInput(index, value , id) {
+    function createAppendedInput(index, value, id) {
         // Create a container div for each input and button
         var container = document.createElement("div");
         container.className = "input-container";
@@ -814,25 +817,25 @@ file_put_contents('UIDContainer.php', $Write);
         deleteButton.type = "button";
         deleteButton.onclick = function () {
             // Call a function to confirm deletion and perform deletion if confirmed
-            confirmAndDelete(value,passParentId);
+            confirmAndDelete(value, passParentId);
         };
         container.appendChild(deleteButton);
-        
+
         // Append the container to the main container
         $('#appendedInputs').append(container);
     }
 
 
-    function confirmAndDelete(studentId,passParentId) {
+    function confirmAndDelete(studentId, passParentId) {
         var confirmation = confirm("Are you sure you want to delete this data?");
-       
+
         if (confirmation) {
             // Perform AJAX request to delete the row in childtv with the provided studentId
-            deleteChildTvRow(studentId,passParentId);
+            deleteChildTvRow(studentId, passParentId);
         }
     }
 
-    function deleteChildTvRow(studentId,passParentId) {
+    function deleteChildTvRow(studentId, passParentId) {
         // Perform AJAX request to delete the row in childtv
         $.ajax({
             type: "POST",

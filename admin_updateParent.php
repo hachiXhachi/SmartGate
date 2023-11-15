@@ -7,7 +7,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $Name = $_POST["Name"];
     $email = $_POST["email"];
     
-
     // Corrected SQL syntax for UPDATE statement
     $updateSql = "UPDATE parent_tbl SET name = ?, email = ? WHERE parentid = ?";
     $updateData = array($Name, $email, $id);
@@ -15,25 +14,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $updateStmt = $con->prepare($updateSql);
 
     if ($updateStmt->execute($updateData)) {
-        // Check if a new student ID is provided
-        if (isset($_POST['newStudentId'])) {
-            $newStudentId = $_POST["newStudentId"];
-            // Check if the new student ID exists in student_tbl
-            if (studentIdExists($newStudentId, $con)) {
-                // Insert the new student ID into childtv
-                $insertSql = "INSERT INTO childtv(parent_id, student_id) VALUES (?, ?)";
-                $insertData = array($id, $newStudentId);
+        // Check if new student IDs are provided
+        if (isset($_POST['newStudentIds']) && is_array($_POST['newStudentIds'])) {
+            $newStudentIds = $_POST['newStudentIds'];
 
-                $insertStmt = $con->prepare($insertSql);
-                $insertStmt->execute($insertData);
-            }else{
-                echo json_encode([
-                    'status' => 'Error',
-                    'data' => 'Student ID Dont Exist in the Database'
-                ]);
+            foreach ($newStudentIds as $newStudentId) {
+                // Check if the new student ID exists in student_tbl
+                if (studentIdExists($newStudentId, $con)) {
+                    // Insert the new student ID into childtv
+                    $insertSql = "INSERT INTO childtv(parent_id, student_id) VALUES (?, ?)";
+                    $insertData = array($id, $newStudentId);
+
+                    $insertStmt = $con->prepare($insertSql);
+                    $insertStmt->execute($insertData);
+                } else {
+                    echo json_encode([
+                        'status' => 'Error',
+                        'data' => 'Student ID ' . $newStudentId . ' Does Not Exist in the Database'
+                    ]);
+                }
             }
         }
-        echo "\n";
+
         // Fetch the updated data
         $updatedData = fetchStudentData($id, $con);
 
