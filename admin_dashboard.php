@@ -1001,7 +1001,6 @@ file_put_contents('UIDContainer.php', $Write);
 
                     // Check if the status is "Success"
                     if (result.status === "Success") {
-
                         // Remove the corresponding row from the table
                         removeTableRowFaculty(id);
                         console.log("Row removed successfully.");
@@ -1109,6 +1108,20 @@ file_put_contents('UIDContainer.php', $Write);
     }
 
     // Student
+    $('#studentSubmit').on('click', function () {
+        // Get the ID of the clicked row
+        var id = $('#studentSubmit').data('id');
+
+        // Validate the form before submitting
+        if (validateStudentForm()) {
+            // Add your code to submit the form or perform other actions
+            // For example, you can call a function to handle the form submission
+            updateStudentData(id);
+            // Optionally, you can close the modal or perform other actions
+            $('#studentRecordModal').modal('hide');
+        }
+    });
+
     function showModal() {
         var target = event.target;
         while (target.tagName !== "TR") {
@@ -1122,7 +1135,7 @@ file_put_contents('UIDContainer.php', $Write);
             deleteButton.textContent = "Delete";
             deleteButton.className = "btn btn-danger";
             deleteButton.onclick = function () {
-                deleteStudentData(id);
+                deleteStudentData($('#studentSubmit').data('id'));
                 // Close the modal or perform other actions if needed
                 $('#studentRecordModal').modal('hide');
             };
@@ -1133,6 +1146,7 @@ file_put_contents('UIDContainer.php', $Write);
             // Set the flag to indicate that the delete button has been appended
             $('#studentRecordModal').data('deleteButtonAppended', true);
         }
+
         // Fetch data from the server based on the ID
         $.ajax({
             type: "POST",
@@ -1142,7 +1156,7 @@ file_put_contents('UIDContainer.php', $Write);
             },
             success: function (response) {
                 // Parse the JSON response
-                console
+                console.log(response);
                 var data = JSON.parse(response);
 
                 // Check if data is retrieved successfully
@@ -1155,6 +1169,9 @@ file_put_contents('UIDContainer.php', $Write);
                     $("#getUID").val(data.rfidTag);
                     $("#departmentModal").val(data.department);
 
+                    // Set the data-id attribute for later use
+                    $('#studentSubmit').data('id', id);
+
                     // Show the modal
                     $('#studentRecordModal').modal('show');
                 } else {
@@ -1166,24 +1183,8 @@ file_put_contents('UIDContainer.php', $Write);
                 console.error("AJAX Error: ", error);
             }
         });
-        $('#studentSubmit').on('click', function () {
-            // Get the ID of the clicked row
-            // Validate the form before submitting
-            if (validateStudentForm()) {
-                // Add your code to submit the form or perform other actions
-                // For example, you can call a function to handle the form submission
-                updateStudentData(id);
-                // Optionally, you can close the modal or perform other actions
-                $('#studentRecordModal').modal('hide');
-            }
-        });
-        // Attach the click event to the submit button
-        // document.getElementById("studentSubmit").addEventListener("click", function (event) {
-        //     if (validateStudentForm()) {
-
-        //     }
-        // });
     }
+
 
     function validateStudentForm() {
         // Get form inputs
@@ -1227,7 +1228,7 @@ file_put_contents('UIDContainer.php', $Write);
 
     function updateStudentData(id) {
         var stud_id = id;
-        var Name = $("#namModale").val();
+        var Name = $("#nameModal").val();
         var studentId = $("#studidModal").val();
         var section = $("#sectionSelectModal").val();
         var email = $("#emailModal").val();
@@ -1248,9 +1249,9 @@ file_put_contents('UIDContainer.php', $Write);
                 rfidTag: rfidTag
             },
             success: function (response) {
+                var result = JSON.parse(response);
+                console.log(result);
                 try {
-                    // Parse the JSON response
-                    var result = JSON.parse(response);
                     // Check if the status is "Success"
                     if (result.status === "Success") {
                         // Close the modal after successful update
@@ -1288,6 +1289,7 @@ file_put_contents('UIDContainer.php', $Write);
 
     function deleteStudentData(id) {
         // Make an AJAX request to your PHP script for delete
+        console.log(id);
         $.ajax({
             type: "POST",
             url: "admin_deleteStudent.php",
@@ -1295,6 +1297,7 @@ file_put_contents('UIDContainer.php', $Write);
                 id: id
             },
             success: function (response) {
+                console.log(response);
                 try {
                     // Parse the JSON response
                     var result = JSON.parse(response);

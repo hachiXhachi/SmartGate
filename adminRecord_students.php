@@ -9,7 +9,7 @@ th {
   border: 2px solid black;
 }
 
-table {
+#container {
   max-height: 400px;
   overflow-y: auto;
   max-width: 100%;
@@ -23,18 +23,10 @@ table {
     overflow-x: none;
     width: auto;
   }
-  table {
-  max-height: 400px;
-  overflow-y: auto;
-  max-width: 100%;
-  width: auto;
-}
 
 }
 </style>
 <div class="container"  style="font-family:sans-seriff; width: 100%;">
-
-
   <div id="container">
     <table id="studentsRecord_table" class="table table-hover text-center">
       <thead>
