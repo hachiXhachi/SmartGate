@@ -1155,8 +1155,7 @@ file_put_contents('UIDContainer.php', $Write);
                 id: id
             },
             success: function (response) {
-                // Parse the JSON response
-                console.log(response);
+  
                 var data = JSON.parse(response);
 
                 // Check if data is retrieved successfully
@@ -1250,7 +1249,6 @@ file_put_contents('UIDContainer.php', $Write);
             },
             success: function (response) {
                 var result = JSON.parse(response);
-                console.log(result);
                 try {
                     // Check if the status is "Success"
                     if (result.status === "Success") {
@@ -1288,8 +1286,7 @@ file_put_contents('UIDContainer.php', $Write);
 
 
     function deleteStudentData(id) {
-        // Make an AJAX request to your PHP script for delete
-        console.log(id);
+
         $.ajax({
             type: "POST",
             url: "admin_deleteStudent.php",
@@ -1297,7 +1294,6 @@ file_put_contents('UIDContainer.php', $Write);
                 id: id
             },
             success: function (response) {
-                console.log(response);
                 try {
                     // Parse the JSON response
                     var result = JSON.parse(response);
