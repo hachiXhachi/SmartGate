@@ -1,33 +1,9 @@
 <?php
 include 'includes/session.php';
 ?>
-<style>
-  tr,
-table,
-td,
-th {
-  border: 2px solid black;
-}
-
-#container {
-  max-height: 400px;
-  overflow-y: auto;
-  max-width: 100%;
-  width: auto;
-}
-
-@media (max-width: 767px) {
-  #container {
-    max-height:200px;
-    overflow-y: auto;
-    overflow-x: none;
-    width: auto;
-  }
-
-}
-</style>
+<link rel="stylesheet" type="text/css" href="cssCodes/recordStudent.css">
 <div class="container"  style="font-family:sans-seriff; width: 100%;">
-  <div id="container">
+  <div>
     <table id="studentsRecord_table" class="table table-hover text-center">
       <thead>
         <tr class="table-secondary">

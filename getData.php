@@ -17,7 +17,7 @@ if (isset($_POST['page'])) {
       $whereSQL = " WHERE (sectionid LIKE '%" . $_POST['sectionSearch'] . "%')"; 
   }
     // Count of all records 
-    $query = $con->query("SELECT COUNT(*) as rowNum FROM attendance_tbl LEFT JOIN student_tbl ON attendance_tbl.student_id=student_tbl.studentid" . $whereSQL);
+    $query = $con->query("SELECT COUNT(*) as rowNum FROM student_tbl" . $whereSQL);
     $result = $query->fetch(PDO::FETCH_ASSOC);
     $rowCount = $result['rowNum'];
 
@@ -33,50 +33,43 @@ if (isset($_POST['page'])) {
     $pagination = new Pagination($pagConfig);
 
     // Fetch records based on the offset and limit 
-    $query = $con->query("SELECT * FROM attendance_tbl LEFT JOIN student_tbl ON attendance_tbl.student_id=student_tbl.studentid" . $whereSQL . " ORDER BY id DESC LIMIT $offset,$limit");
+    // $query = $con->query("SELECT * FROM attendance_tbl LEFT JOIN student_tbl ON attendance_tbl.student_id=student_tbl.studentid" . $whereSQL . " ORDER BY id DESC LIMIT $offset,$limit");
+    $query = $con->query("SELECT * FROM student_tbl". $whereSQL ." ORDER BY studentid DESC LIMIT $offset,$limit")
     ?>
     <!-- Data list container --><div>
         <table class="table table-hover text-center">
         <thead>
         <tr class="table-secondary">
-          <th>Date</th>
-          <th>Time-in</th>
-          <th>Time-out</th>
-          <th>Student Name</th>
+        <th>Student Name</th>
           <th>Section</th>
+          <th>Department</th>
         </tr>
       </thead>
         <tbody id="attendance_list">
-          <?php
-          if ($query->rowCount() > 0) {
-            $i = 0;
-            while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
-              $i++;
-              ?>
-              <tr data-student-id="<?php echo $row["student_id"]; ?>">
+        <?php
+                if ($query->rowCount() > 0) {
+                    $i = 0;
+                    while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
+                        $i++;
+                        ?>
+                        <tr data-student-id="<?php echo $row["studentid"]; ?>" data-student-name="<?php echo $row['name']?>">
 
-                <td>
-                  <?php echo $row["date"]; ?>
-                </td>
-                <td>
-                  <?php echo $row["time_in"]; ?>
-                </td>
-                <td>
-                  <?php echo $row["time_out"]; ?>
-                </td>
-                <td>
-                  <?php echo $row["name"]; ?>
-                </td>
-                <td>
-                  <?php echo $row["sectionid"]; ?>
-                </td>
-              </tr>
-              <?php
-            }
-          } else {
-            echo '<tr><td colspan="6">No records found...</td></tr>';
-          }
-          ?>
+                            <td>
+                                <?php echo $row["name"]; ?>
+                            </td>
+                            <td>
+                                <?php echo $row["sectionid"]; ?>
+                            </td>
+                            <td>
+                                <?php echo $row["department"]; ?>
+                            </td>
+                        </tr>
+                        <?php
+                    }
+                } else {
+                    echo '<tr><td colspan="6">No records found...</td></tr>';
+                }
+                ?>
 
         </tbody>
     </table>

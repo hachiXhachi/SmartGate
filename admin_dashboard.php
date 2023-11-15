@@ -696,8 +696,9 @@ file_put_contents('UIDContainer.php', $Write);
                     var result = JSON.parse(response);
                     if (result.status === "Success") {
                         // Close the modal after a successful update
+                        alert("Success");
                         $('#parentRecordModal').modal('hide');
-                        $('#succmodal').modal('show');
+                       
                         // Update the corresponding row in the table with the returned data
                         updateTableRowParent(id, result.data);
                     } else {
@@ -892,7 +893,7 @@ file_put_contents('UIDContainer.php', $Write);
 
                     // Check if the status is "Success"
                     if (result.status === "Success") {
-                        ;
+                        alert("Deleted!");
                         // Remove the corresponding row from the table
                         removeTableRowParent(id);
                         console.log("Row removed successfully.");
@@ -969,7 +970,7 @@ file_put_contents('UIDContainer.php', $Write);
                 try {
                     var result = JSON.parse(response);
                     if (result.status === "Success") {
-                        // Close the modal after successful update
+                        alert("Success");
                         $('#facultyRecordModal').modal('hide');
                         // Update the corresponding row in the table with the returned data
                         updateTableRowFaculty(id, result.data);
@@ -1002,6 +1003,7 @@ file_put_contents('UIDContainer.php', $Write);
                     // Check if the status is "Success"
                     if (result.status === "Success") {
                         // Remove the corresponding row from the table
+                        alert("Deleted");
                         removeTableRowFaculty(id);
                         console.log("Row removed successfully.");
                     } else {
@@ -1253,6 +1255,7 @@ file_put_contents('UIDContainer.php', $Write);
                     // Check if the status is "Success"
                     if (result.status === "Success") {
                         // Close the modal after successful update
+                        alert("Success");
                         $('#studentRecordModal').modal('hide');
 
                         // Update the corresponding row in the table with the returned data
@@ -1301,6 +1304,7 @@ file_put_contents('UIDContainer.php', $Write);
                     // Check if the status is "Success"
                     if (result.status === "Success") {
                         // Remove the corresponding row from the table
+                        alert("Deleted");
                         removeTableRow(id);
                     } else {
                         // Log or alert the error message

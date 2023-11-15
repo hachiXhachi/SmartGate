@@ -11,7 +11,7 @@ $baseURL = 'getData.php';
 $limit = 5;
 
 // Count of all records 
-$query = $con->query("SELECT COUNT(*) as rowNum FROM attendance_tbl");
+$query = $con->query("SELECT COUNT(*) as rowNum FROM student_tbl");
 $result = $query->fetch(PDO::FETCH_ASSOC);
 $rowCount = $result['rowNum'];
 
@@ -26,7 +26,8 @@ $pagConfig = array(
 $pagination = new Pagination($pagConfig);
 
 // Fetch records based on the limit 
-$query = $con->query("SELECT * FROM attendance_tbl LEFT JOIN student_tbl ON attendance_tbl.student_id=student_tbl.studentid ORDER BY id DESC LIMIT $limit");
+// $query = $con->query("SELECT * FROM attendance_tbl LEFT JOIN student_tbl ON attendance_tbl.student_id=student_tbl.studentid ORDER BY id DESC LIMIT $limit");
+$query = $con->query("SELECT * FROM student_tbl ORDER BY studentid DESC LIMIT $limit")
 ?>
 
 <div class="datalist-wrapper">
@@ -38,11 +39,12 @@ $query = $con->query("SELECT * FROM attendance_tbl LEFT JOIN student_tbl ON atte
     <table class="table table-hover text-center" id = "faculty_attendance">
       <thead>
         <tr class="table-secondary">
-          <th>Date</th>
+          <!-- <th>Date</th>
           <th>Time-in</th>
-          <th>Time-out</th>
+          <th>Time-out</th> -->
           <th>Student Name</th>
           <th>Section</th>
+          <th>Department</th>
         </tr>
       </thead>
       <tbody id="attendance_list">
@@ -52,22 +54,16 @@ $query = $con->query("SELECT * FROM attendance_tbl LEFT JOIN student_tbl ON atte
                     while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
                         $i++;
                         ?>
-                        <tr data-student-id="<?php echo $row["student_id"]; ?>">
+                        <tr data-student-id="<?php echo $row["studentid"]; ?>" data-student-name="<?php echo $row['name']?>">
 
-                            <td>
-                                <?php echo $row["date"]; ?>
-                            </td>
-                            <td>
-                                <?php echo $row["time_in"]; ?>
-                            </td>
-                            <td>
-                                <?php echo $row["time_out"]; ?>
-                            </td>
                             <td>
                                 <?php echo $row["name"]; ?>
                             </td>
                             <td>
                                 <?php echo $row["sectionid"]; ?>
+                            </td>
+                            <td>
+                                <?php echo $row["department"]; ?>
                             </td>
                         </tr>
                         <?php
@@ -80,6 +76,6 @@ $query = $con->query("SELECT * FROM attendance_tbl LEFT JOIN student_tbl ON atte
             </tbody>
     </table>
         <!-- Display pagination links -->
-       <p> <?php echo $pagination->createLinks(); ?>
+       <p class="text-dark"> <?php echo $pagination->createLinks(); ?>
     </div>
 </div>

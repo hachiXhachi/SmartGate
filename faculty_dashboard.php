@@ -202,6 +202,24 @@ include 'includes/session.php';
     </div>
   </div>
 </div>
+<!--Attendance record modal -->
+<div class="modal fade" id="attendanceRecordModal" tabindex="5" aria-labelledby="exampleModalLabel" aria-hidden="true"
+  style="font-family:arial">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="attendanceRecordModalLabel">Change Password</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="recordBody">
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <body id="background-image-dashboard">
   <div class="main-container d-flex" style="font-family: sans-seriff;">
@@ -349,47 +367,93 @@ include 'includes/session.php';
   function loadView(viewName) {
     document.getElementById('dropdown').value = "All";
     fetch(`${viewName}.php`)
-        .then(response => response.text())
-        .then(data => {
-            document.getElementById('base').innerHTML = data;
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById('base').innerHTML = data;
 
-            // Attach click event to each row inside the #base element
-            $('#base').on('click', '#attendance_list tr', function() {
-                var studentId = $(this).data('student-id');
-                calculateTotalDays(studentId)
-            });
-        })
-        .catch(error => {
-            console.error('Error loading view:', error);
+        // Attach click event to each row inside the #base element
+        $('#base').on('click', '#attendance_list tr', function () {
+          var studentId = $(this).data('student-id');
+          var studentName = $(this).data('student-name');
+          showAttendanceModal(studentId,studentName);
         });
-}
-function calculateTotalDays(studentId) {
-    var uniqueDays = [];
+      })
+      .catch(error => {
+        console.error('Error loading view:', error);
+      });
+  }
+  function showAttendanceModal(studentId,studentName) {
+  // Use AJAX to fetch attendance records for the selected student
+  $.ajax({
+    type: 'POST',
+    url: 'fetch_attendance.php', // Replace with the actual URL to fetch attendance records
+    data: { studentId: studentId },
+    dataType: 'json',
+    success: function (data) {
+      
+      // Build the HTML to display attendance records
+      var modalBody = document.getElementById('recordBody');
+      var htmlContent = '<h3>Attendance Records for Student ID: ' + studentName + '</h3>';
 
-    // Iterate through each row in the table
-    $('#attendance_list tr').each(function() {
-        var rowStudentId = $(this).data('student-id');
+      if (data.length > 0) {
+        htmlContent += '<table class="table table-bordered">';
+        htmlContent += '<thead><tr><th>Date</th><th>Time-in</th><th>Time-out</th></tr></thead>';
+        htmlContent += '<tbody>';
 
-        // Check if the row corresponds to the selected student
-        if (rowStudentId == studentId) {
-            // Get the date value
-            var dateString = $(this).find('td:eq(0)').text(); // Assuming date is in the 1st column
-
-            // Extract day from the date
-            var dayOfWeek = moment(dateString, 'MM-DD-YYYY').format('dddd');
-
-            // Add the unique day to the array
-            if (!uniqueDays.includes(dayOfWeek)) {
-                uniqueDays.push(dayOfWeek);
-            }
+        // Iterate through the attendance records and add rows to the table
+        for (var i = 0; i < data.length; i++) {
+          htmlContent += '<tr>';
+          htmlContent += '<td>' + data[i].date + '</td>';
+          htmlContent += '<td>' + data[i].time_in + '</td>';
+          htmlContent += '<td>' + data[i].time_out + '</td>';
+          htmlContent += '</tr>';
         }
-    });
 
-    // Display the total number of unique days
-    var totalDays = uniqueDays.length;
+        htmlContent += '</tbody></table>';
+      } else {
+        htmlContent += '<p>No attendance records found for this student.</p>';
+      }
 
-    alert('Total days for the week: ' + totalDays);
+      // Set the modal body's innerHTML
+      modalBody.innerHTML = htmlContent;
+
+      // Show the modal
+      $('#attendanceRecordModal').modal('show');
+    },
+    error: function (xhr, status, error) {
+      console.error('Error fetching attendance records:', error);
+    }
+  });
 }
+
+
+  // function calculateTotalDays(studentId) {
+  //     var uniqueDays = [];
+
+  //     // Iterate through each row in the table
+  //     $('#attendance_list tr').each(function() {
+  //         var rowStudentId = $(this).data('student-id');
+
+  //         // Check if the row corresponds to the selected student
+  //         if (rowStudentId == studentId) {
+  //             // Get the date value
+  //             var dateString = $(this).find('td:eq(0)').text(); // Assuming date is in the 1st column
+
+  //             // Extract day from the date
+  //             var dayOfWeek = moment(dateString, 'MM-DD-YYYY').format('dddd');
+
+  //             // Add the unique day to the array
+  //             if (!uniqueDays.includes(dayOfWeek)) {
+  //                 uniqueDays.push(dayOfWeek);
+  //             }
+  //         }
+  //     });
+
+  //     // Display the total number of unique days
+  //     var totalDays = uniqueDays.length;
+
+  //     alert('Total days for the week: ' + totalDays);
+  // }
 
 
 
