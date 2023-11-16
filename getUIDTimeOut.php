@@ -12,7 +12,7 @@ $stmt->execute();
 $row = $stmt->fetch();
 if ($row['numrows'] > 0) {
     echo '1';
-    $query1 = $con->prepare("SELECT * FROM `attendance_tbl` WHERE `date` = '$dateToday' AND `student_id` = '$row[studentid]' ORDER BY `date` DESC, `time_in` DESC, `id` DESC LIMIT 1");
+    $query1 = $con->prepare("SELECT * FROM `attendance_tbl` WHERE `date` = '$dateToday' AND `student_id` = '$row[studentid]' ORDER BY `date` DESC, `id` DESC LIMIT 1");
     $query1->execute();
     $result = $query1->fetch();
     if ($result['time_out'] == '') {

@@ -315,7 +315,7 @@ file_put_contents('UIDContainer.php', $Write);
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="column6">Rfid Code</label>
-                                <textarea rows="1" name="rfidtag" maxlength="12" id="getUID"
+                                <textarea rows="1" name="rfidtag" maxlength="12" id="getUIDModal"
                                     class="form-control bg-transparent column6"
                                     style="border: 2px solid black; resize:none;" placeholder="Please Tag your Card"
                                     readonly></textarea>
@@ -1167,7 +1167,7 @@ file_put_contents('UIDContainer.php', $Write);
                     $("#studidModal").val(data.studentId);
                     $("#sectionSelectModal").val(data.section);
                     $("#emailModal").val(data.email);
-                    $("#getUID").val(data.rfidTag);
+                    $("#getUIDModal").val(data.rfidTag);
                     $("#departmentModal").val(data.department);
 
                     // Set the data-id attribute for later use
@@ -1193,7 +1193,7 @@ file_put_contents('UIDContainer.php', $Write);
         var studid = $("#studidModal").val();
         var sectionSelect = $("#sectionSelectModal").val();
         var email = $("#emailModal").val();
-        var getUID = $("#getUID").val();
+        var getUID = $("#getUIDModal").val();
 
         // Perform validation
         if (name.trim() === "") {
@@ -1233,7 +1233,7 @@ file_put_contents('UIDContainer.php', $Write);
         var studentId = $("#studidModal").val();
         var section = $("#sectionSelectModal").val();
         var email = $("#emailModal").val();
-        var rfidTag = $("#getUID").val();
+        var rfidTag = $("#getUIDModal").val();
         var department = $("#departmentModal").val();
 
         // Make an AJAX request to your PHP script
@@ -1546,7 +1546,7 @@ file_put_contents('UIDContainer.php', $Write);
     const studid = document.getElementById("studid");
     const section = document.getElementById("sectionSelect");
     const email = document.getElementById("email");
-    const rfid = document.getElementById("getUID");
+    var rfid = document.getElementById("getUID");
 
     const modalbodycontent = document.getElementById("Errormodalbody");
     let errorMessage;
@@ -1581,7 +1581,9 @@ file_put_contents('UIDContainer.php', $Write);
                 console.log(response);
                 document.getElementById("succmodalbody").innerHTML = "This Account is successfully added!";
                 $('#succModal').modal('show');
+                rfid.value = "";
                 document.getElementById("registrationForm").reset();
+                
             } else {
                 modalbodycontent.innerHTML = "Form submission failed.";
                 $('#Errormodal').modal('show');

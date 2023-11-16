@@ -249,7 +249,7 @@ fetchFirebaseConfig();
             onclick="loadView('parents_attendance')"><i class="fa-solid fa-clipboard-user"></i> View Attendance</a></li>
         <hr class="h-color mx-4">
         <li><a class="text-decoration-none text-white d-block text-center py-2"
-            onclick="loadView('parents_notification')"><i class="fa-solid fa-bell"></i> Notification Tab</a></li>
+            onclick="loadView('parents_notification', myFunction)"><i class="fa-solid fa-bell"></i> Notification Tab</a></li>
         <hr class="h-color mx-4">
         <li><a class="text-decoration-none text-white d-block text-center py-2"
             onclick="loadView('parents_change_password')"><i class="fa-solid fa-key"></i> Change Password</a></li>
@@ -358,19 +358,67 @@ fetchFirebaseConfig();
     ;
   });
 
-  function loadView(viewName) {
+  function loadView(viewName, callback) {
     fetch(`${viewName}.php`)
       .then(response => response.text())
       .then(data => {
         document.getElementById('base').innerHTML = data;
+        if (callback) {
+                    callback();
+                }
       })
       .catch(error => {
         console.error('Error loading view:', error);
       });
   }
   function myFunction() {
-    var newDiv = $("<div>").addClass("child-div").text("Student enter the school premises");
-    $("#targetDiv").append(newDiv);
+    var parentid = "<?php echo $user['parentid'];?>";
+    $.ajax({
+      type: 'POST',
+      url: 'fetchLatestRow.php',
+      data: {
+        id: parentid
+      },
+      dataType: 'json',
+      success: function(response){
+                  var students = response.data;
+
+            // Iterate through students
+            for (var i = 0; i < students.length; i++) {
+                var student = students[i];
+
+                // Iterate through attendance records
+                for (var j = 0; j < student.length; j++) {
+                  if (student[j].time_in != "") {
+                    var attendanceRecord = student[j];
+                    
+                    // Create and append new div
+                    var newDiv = $("<div>").addClass("child-div").text("Your child "+ attendanceRecord.name +" entered the school premises at "+ attendanceRecord.time_in +" on " + attendanceRecord.date);
+                    $("#targetDiv").append(newDiv);
+
+                    if(attendanceRecord.time_out != ""){
+                      var attendanceRecord = student[j];
+                      
+                      // Create and append new div
+                      var newDiv = $("<div>").addClass("child-div").text("Your child "+ attendanceRecord.name +" exits the school premises at "+ attendanceRecord.time_out +" on " + attendanceRecord.date);
+                      $("#targetDiv").append(newDiv);
+                    }
+                  }
+                  else{
+                    if (student[j].time_out != "") {
+                      var attendanceRecord = student[j];
+                      
+                      // Create and append new div
+                      var newDiv = $("<div>").addClass("child-div").text("Your child "+ attendanceRecord.name +" exits the school premises at "+ attendanceRecord.time_out +" on " + attendanceRecord.date);
+                      $("#targetDiv").append(newDiv);
+                  }
+                }
+                }
+            }
+        }
+
+    });
+    
   }
 
   function logoutFunction() {
