@@ -31,8 +31,8 @@
 #include <MFRC522.h>
 //------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 
-#define SS_PIN D2  //--> SDA / SS is connected to pinout D2
-#define RST_PIN D1  //--> RST is connected to pinout D1
+#define SS_PIN D2 //--> SDA / SS is connected to pinout D2
+#define RST_PIN D1 //--> RST is connected to pinout D1
 MFRC522 mfrc522(SS_PIN, RST_PIN);  //--> Create MFRC522 instance.
 
 #define ON_Board_LED 2  //--> Defining an On Board LED, used for indicators when the process of connecting to a wifi router
@@ -101,7 +101,7 @@ void loop() {
     postData = "UIDresult=" + UIDresultSend;
 
     // Your_Host_or_IP = Your pc or server IP, example : 192.168.0.0 , if you are a windows os user, open cmd, then type ipconfig then look at IPv4 Address.
-    http.begin(client, "http://192.168.2.12/SmartGate/getUID.php");  //Specify request destination
+    http.begin(client, "http://192.168.1.3/SmartGate/getUID.php");  //Specify request destination
     http.addHeader("Content-Type", "application/x-www-form-urlencoded"); //Specify content-type header
        int httpCode = http.POST(postData);   //Send the request
     String payload = http.getString();    //Get the response payload

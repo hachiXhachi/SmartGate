@@ -19,7 +19,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt = $con->prepare($sql);
     if ($stmt->execute($data)) {
         // Send a JSON success response to the client
-		echo json_encode(array("success" => "Form submitted successfully"));
+        $Write = "<?php $" . "UIDresult=''; " . "echo $" . "UIDresult;" . " ?>";
+        file_put_contents('UIDContainer.php', $Write);
+        echo json_encode(array("success" => "Form submitted successfully"));
     } else {
         // Send a JSON error response to the client
         echo json_encode(array("error" => "Form submission failed"));

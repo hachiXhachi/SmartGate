@@ -1581,7 +1581,7 @@ file_put_contents('UIDContainer.php', $Write);
                 console.log(response);
                 document.getElementById("succmodalbody").innerHTML = "This Account is successfully added!";
                 $('#succModal').modal('show');
-                rfid.value = "";
+                $("#getUID").val('');
                 document.getElementById("registrationForm").reset();
                 
             } else {
