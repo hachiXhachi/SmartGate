@@ -208,7 +208,7 @@ include 'includes/session.php';
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="attendanceRecordModalLabel">Change Password</h1>
+        <h1 class="modal-title fs-5" id="attendanceRecordModalLabel">Student Record</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body" id="recordBody">
@@ -238,11 +238,11 @@ include 'includes/session.php';
             onclick="loadView('faculty_attendance');showSelect()" id="attend"><i class="fa-solid fa-clipboard-user"></i>
             View
             Attendance</a></li>
-        <hr class="h-color mx-4">
+        <!-- <hr class="h-color mx-4">
         <li><a class="text-decoration-none text-white d-block text-center py-2"
             onclick="loadView('faculty_notification');hideSelect()" id="notif"><i class="fa-solid fa-bell"></i>
             Notification
-            Tab</a></li>
+            Tab</a></li> -->
         <hr class="h-color mx-4">
         <li><a class="text-decoration-none text-white d-block text-center py-2"
             onclick="loadView('faculty_change_password');hideSelect()" id="pass"><i class="fa-solid fa-key"></i> Change
@@ -393,7 +393,7 @@ include 'includes/session.php';
       
       // Build the HTML to display attendance records
       var modalBody = document.getElementById('recordBody');
-      var htmlContent = '<h3>Attendance Records for Student ID: ' + studentName + '</h3>';
+      var htmlContent = '<h3>Attendance Records for Student: ' + studentName + '</h3>';
 
       if (data.length > 0) {
         htmlContent += '<table class="table table-bordered">';
