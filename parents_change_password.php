@@ -54,10 +54,10 @@ include 'includes/session.php';
       <label for="new_pass">New Password</label>
       <input type="password" class="form-control bg-transparent text-dark" name="new_pass" id="new_pass"
         style="width: 50%; border: 2px solid black;" required>
-      <label for="retype_pass">Re-type Password</label>
+      <label for="retype_pass">Confirm Password</label>
       <input type="password" class="form-control bg-transparent" name="retype_pass" id="retype_pass"
         style="width: 50%; border: 2px solid black;" required>
-      <button type="button" onclick="submitFormParent()" class="btn btn-outline-dark" id="button" style="border:3px solid black; color: #A0ABAA;">S A V E</button>
+      <button type="button" onclick="submitFormParent()" class="btn btn-outline-light" id="button" style="border:3px solid black; ">S A V E</button>
     </div>
   </form>
 </div>

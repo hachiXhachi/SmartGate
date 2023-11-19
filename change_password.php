@@ -25,7 +25,7 @@ if (password_verify($current_pass, $user['password'])) {
             $response['message'] = 'Password successfully changed.';
         } else {
             $response['success'] = false;
-            $response['message'] = 'New Password or Re-type Password doesn\'t match.';
+            $response['message'] = 'New password and/or confirm password doesn\'t match.';
         }
     } else {
         $response['success'] = false;

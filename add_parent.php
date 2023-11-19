@@ -9,7 +9,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $last_name = $_POST['last_name'];
         $name = $first_name . " " . $middle_name . " " . $last_name;
         $email = $_POST['email'];
-        $password = "password"; // You might want to generate a secure password
+        $password = $_POST['password']; // You might want to generate a secure password
 
         $children = $_POST['parent_studid'];
         $myArray = json_decode($children); // Decode the JSON array

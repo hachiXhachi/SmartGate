@@ -46,7 +46,7 @@
             <div class="col-md-4">
                 <div class="form-group">
                     <label for="prof_mname">Middle Name</label>
-                    <input type="text" class="form-control bg-transparent" required pattern="[A-Za-z ]{2,16}" id="prof_mname" name="middle_name" placeholder="Middle Name"
+                    <input type="text" class="form-control bg-transparent" pattern="[A-Za-z ]{2,16}" id="prof_mname" name="middle_name" placeholder="Middle Name"
                         style="border: 2px solid black;">
                 </div>
             </div>
@@ -63,6 +63,11 @@
                     <label for="prof_email">Email</label>
                     <input type="email" class="form-control bg-transparent" id="prof_email" name="email" placeholder="Email"
                         style="width:100%; border: 2px solid black;" required>
+                </div>
+
+                <div class="form-group">
+                    <input type="text" class="form-control bg-transparent" id="prof_password" name="password" placeholder="Password"
+                        style="width:100%; border: 2px solid black;" hidden>
                 </div>
             </div>
 

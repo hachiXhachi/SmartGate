@@ -50,15 +50,15 @@ include 'includes/session.php';
     <div class="form-group centered-form-group">
       <label for="current_pass">Current Password</label>
       <input type="password" class="form-control bg-transparent" name="current_pass" id="current_pass"
-        style="width: 50%; border: 2px solid black;">
+        style="width: 50%; border: 2px solid black;" required>
       <label for="new_pass">New Password</label>
       <input type="password" class="form-control bg-transparent text-dark" name="new_pass" id="new_pass"
-        style="width: 50%; border: 2px solid black;">
-      <label for="retype_pass">Re-type Password</label>
+        style="width: 50%; border: 2px solid black;" required>
+      <label for="retype_pass">Confirm Password</label>
       <input type="password" class="form-control bg-transparent" name="retype_pass" id="retype_pass"
-        style="width: 50%; border: 2px solid black;">
-      <button type="button" class="btn btn-outline-dark" onclick="submitFormFaculty()" id="button"
-        style="border:3px solid black; color: #A0ABAA;">S A V E</button>
+        style="width: 50%; border: 2px solid black;" required>
+      <button type="button" class="btn btn-outline-light" onclick="submitFormFaculty()" id="button"
+        style="border:3px solid black;">S A V E</button>
     </div>
   </form>
 </div>

@@ -48,7 +48,7 @@
                 <div class="form-group">
                     <label for="column2">Middle Name</label>
                     <input type="text" class="form-control bg-transparent" name="middle_name" id="parent_middle_name"
-                        placeholder="Middle Name" style="border: 2px solid black;" required>
+                        placeholder="Middle Name" style="border: 2px solid black;">
                 </div>
             </div>
             <div class="col-md-4">
@@ -63,6 +63,13 @@
                     <label for="column7">Email</label>
                     <input type="email" class="form-control bg-transparent" name="email" id="parent_email" placeholder="Email"
                         style="width:100%; border: 2px solid black;" required>
+                </div>
+            </div>
+
+            <div class="col-lg-12">
+                <div class="form-group">
+                    <input type="text" class="form-control bg-transparent" name="password" id="parent_password" placeholder="Password"
+                        style="width:100%; border: 2px solid black;" hidden>
                 </div>
             </div>
             <!-- <div class="col-md-4">
@@ -91,8 +98,6 @@
                 value="Add Children" onclick="addDiv()" style="width:50%; margin-left:25%; background-color: #773535">
         </div>
 
-        <!-- Add a button to trigger the function to get values -->
-        <input type="button" class="btn btn-secondary"  value="Verify Students">
         <p id="id">
         <div style="display: flex;justify-content: flex-end;margin-top: 10px; ">
              <!-- <button class="btn btn-primary btn-block" onclick="getInputValues()"
