@@ -6,7 +6,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $studentId = $_POST['studentId'];
 
     // Use PDO to fetch attendance records for the given student ID
-    $stmt = $con->prepare("SELECT date, time_in, time_out FROM attendance_tbl WHERE student_id = :studentId");
+    $stmt = $con->prepare("SELECT date, time_in, time_out FROM attendance_tbl WHERE student_id = :studentId ORDER BY id DESC");
     $stmt->bindParam(':studentId', $studentId, PDO::PARAM_INT);
     $stmt->execute();
 
