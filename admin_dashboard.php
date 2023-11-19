@@ -2,6 +2,11 @@
 include 'includes/session.php';
 $Write = "<?php $" . "UIDresult=''; " . "echo $" . "UIDresult;" . " ?>";
 file_put_contents('UIDContainer.php', $Write);
+
+if (!isset($_SESSION['user'])) {
+    header("Location: index.php");
+    exit();
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -452,10 +457,10 @@ file_put_contents('UIDContainer.php', $Write);
                                     <i class="fa-solid fa-graduation-cap"></i> Student</a></li>
 
                             <li><a class="text-decoration-none text-white d-block text-center "
-                                    onclick="loadView('admin_proffesorAccount')">
+                                    onclick="loadView('admin_proffesorAccount', generateProfPassword)">
                                     <i class="fa-solid fa-person-chalkboard"></i> Professor</a></li>
                             <li><a class="text-decoration-none text-white d-block text-center "
-                                    onclick="loadView('admin_parent')">
+                                    onclick="loadView('admin_parent', generateParentPassword)">
                                     <i class="fa-solid fa-user"></i> Parents</a></li>
 
                         </ul>
@@ -499,7 +504,7 @@ file_put_contents('UIDContainer.php', $Write);
             style="font-family:sans-serif;display: flex;align-items: center;justify-content: center;">
             <img src="assets/icon_email.jpg" class="img-fluid" width="70" alt="profile" style="margin-right: 10%;">
             <div class="text-white">
-                <h2>Jian Kyle Albaro
+                <h2>Welcome, ADMIN
                     <br>
                 </h2>
             </div>
@@ -1442,12 +1447,36 @@ file_put_contents('UIDContainer.php', $Write);
         return valid;
     }
 
+    //Random password generator to use for account creation
+    function generateRandomPassword(length) {
+        const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        let password = "";
+        
+        for (let i = 0; i < length; i++) {
+            const randomIndex = Math.floor(Math.random() * charset.length);
+            password += charset.charAt(randomIndex);
+        }
+        
+        return password;
+    }
+    
+    function generateProfPassword() {
+        const randomPassword = generateRandomPassword(7);
+        document.getElementById("prof_password").value = randomPassword;
+    }
+    function generateParentPassword() {
+        const randomPassword = generateRandomPassword(7);
+        document.getElementById("parent_password").value = randomPassword;
+    }
+    //Random password generator to use for account creation
+
     function validationParent() {
         const parent_fname = document.getElementById("parent_first_name");
         const parent_mname = document.getElementById("parent_middle_name");
         const parent_lname = document.getElementById("parent_last_name");
         var parent_studid = document.getElementById("parent_studid");
         const parent_email = document.getElementById("parent_email");
+        var parent_password = document.getElementById("parent_password").value;
         var convertstudid = parent_studid.value.toString();
         var errorMessage;
         var emailGet = parent_email.value;
@@ -1479,8 +1508,26 @@ file_put_contents('UIDContainer.php', $Write);
                             $('#succModal').modal('show');
 
                             // Close modal or show success message
-                            var subject = 'Email';
-                            var message = 'Test Message';
+                            var subject = 'BulSU - Sarmiento Campus SmartGate';
+                            var message = `
+Greetings!,
+
+This is to inform you that we have created a BulSU SmartGate Parent account for you.
+Below are your account details and a link for our Android application.
+
+Your Login Credentials:
+Username/Email: ${emailGet}
+Password: ${parent_password} (You can change this password after logging in for the first time.)
+
+Important Note: We highly recommend changing your password after the initial login for enhanced security.
+
+Download SmartGate for Android:
+Please see the attached APK file for SmartGate.
+
+For assistance, kindly message [MIS]
+
+This is an automatically generated email - please do not reply to this email
+`;
                             var emailData = 'email=' + emailGet + '&subject=' + subject + '&message=' + message;
                             $.ajax({
                                 type: 'POST',
@@ -1608,6 +1655,7 @@ file_put_contents('UIDContainer.php', $Write);
         const prof_mname = document.getElementById("prof_mname");
         const prof_lname = document.getElementById("prof_lname");
         const prof_email = document.getElementById("prof_email");
+        var prof_password = document.getElementById("prof_password").value;
         const prof_Form = document.getElementById("professorForm");
         var modalbodycontent = document.getElementById("Errormodalbody");
         var errorMessage;
@@ -1624,8 +1672,23 @@ file_put_contents('UIDContainer.php', $Write);
                         document.getElementById("succmodalbody").innerHTML = "This Account is successfully added!";
                         $('#succModal').modal('show');
 
-                        var subject = 'Email';
-                        var message = 'Test Message';
+                        var subject = 'BulSU - Sarmiento Campus SmartGate';
+                        var message = `
+Greetings!,
+
+This is to inform you that we have created a BulSU SmartGate Professor account for you.
+Below are your account details.
+
+Your Login Credentials:
+Username/Email: ${emailGet}
+Password: ${prof_password} (You can change this password after logging in for the first time.)
+
+Important Note: We highly recommend changing your password after the initial login for enhanced security.
+
+For assistance, kindly message [MIS]
+
+This is an automatically generated email - please do not reply to this email
+`;
                         var data = 'email=' + emailGet + '&subject=' + subject + '&message=' + message;
                         $.ajax({
                             type: 'POST',
