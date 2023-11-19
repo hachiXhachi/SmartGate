@@ -138,81 +138,81 @@ if (!isset($_SESSION['user'])) {
   <script src="https://www.gstatic.com/firebasejs/9.14.0/firebase-messaging-compat.js"></script>
 
   <script>
-   async function fetchFirebaseConfig() {
-    try {
+    async function fetchFirebaseConfig() {
+      try {
         const response = await fetch('config.php');
         if (!response.ok) {
-            console.log("error connecting")
+          console.log("error connecting")
         }
 
         const firebaseConfig = await response.json();
         const app = firebase.initializeApp(firebaseConfig);
         const messaging = app.messaging();
 
-      
+
 
         const vapidkey = firebaseConfig.vapidkey;
         messaging.getToken({ vapidKey: vapidkey }).then((currentToken) => {
-            sendTokenToServer(currentToken);
+          sendTokenToServer(currentToken);
         }).catch((err) => {
-            console.log(err);
-            setTokenSentToServer(false);
+          console.log(err);
+          setTokenSentToServer(false);
         });
 
         async function sendTokenToServer(currentToken) {
 
-            try {
-                const response = await fetch('update_token.php', {
-                    method: 'POST',
-                    body: JSON.stringify({ currentToken }),
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                });
+          try {
+            const response = await fetch('update_token.php', {
+              method: 'POST',
+              body: JSON.stringify({ currentToken }),
+              headers: {
+                'Content-Type': 'application/json',
+              },
+            });
 
-                if (response.ok) {
-                    const result = await response.json();
-                    console.log(result.message);
-                    setTokenSentToServer(true)
-                } else {
-                    console.error('Failed to update token on the server');
-                }
-            } catch (error) {
-                console.error('Error sending token to the server', error);
+            if (response.ok) {
+              const result = await response.json();
+              console.log(result.message);
+              setTokenSentToServer(true)
+            } else {
+              console.error('Failed to update token on the server');
             }
+          } catch (error) {
+            console.error('Error sending token to the server', error);
+          }
         }
 
         function isTokenSentToServer() {
-            return window.localStorage.getItem('sentToServer') === '1';
+          return window.localStorage.getItem('sentToServer') === '1';
         }
 
         function setTokenSentToServer(sent) {
-            window.localStorage.setItem('sentToServer', sent ? '1' : '0');
+          window.localStorage.setItem('sentToServer', sent ? '1' : '0');
         }
         messaging.onMessage((payload) => {
-            if (document.hasFocus()) {
-                displayBrowserNotification(payload);
-            }
+          if (document.hasFocus()) {
+            displayBrowserNotification(payload);
+          }
         });
 
         function displayBrowserNotification(payload) {
-            if ('Notification' in window && Notification.permission === 'granted') {
-                const notificationData = payload.notification; // Extract the notification data
+          if ('Notification' in window && Notification.permission === 'granted') {
+            const notificationData = payload.notification; // Extract the notification data
 
-                const options = {
-                    body: notificationData.body,
-                    icon: notificationData.icon,
-                };
+            const options = {
+              body: notificationData.body,
+              icon: notificationData.icon,
+            };
 
-                new Notification(notificationData.title, options);
-            }
+            new Notification(notificationData.title, options);
+          }
         }
-    } catch (error) {
+      } catch (error) {
         console.error(error);
+      }
     }
-}
 
-fetchFirebaseConfig();
+    fetchFirebaseConfig();
 
   </script>
 
@@ -254,7 +254,8 @@ fetchFirebaseConfig();
             onclick="loadView('parents_attendance')"><i class="fa-solid fa-clipboard-user"></i> View Attendance</a></li>
         <hr class="h-color mx-4">
         <li><a class="text-decoration-none text-white d-block text-center py-2"
-            onclick="loadView('parents_notification', myFunction)"><i class="fa-solid fa-bell"></i> Notification Tab</a></li>
+            onclick="loadView('parents_notification', myFunction)"><i class="fa-solid fa-bell"></i> Notification Tab</a>
+        </li>
         <hr class="h-color mx-4">
         <li><a class="text-decoration-none text-white d-block text-center py-2"
             onclick="loadView('parents_change_password')"><i class="fa-solid fa-key"></i> Change Password</a></li>
@@ -369,15 +370,15 @@ fetchFirebaseConfig();
       .then(data => {
         document.getElementById('base').innerHTML = data;
         if (callback) {
-                    callback();
-                }
+          callback();
+        }
       })
       .catch(error => {
         console.error('Error loading view:', error);
       });
   }
   function myFunction() {
-    var parentid = "<?php echo $user['parentid'];?>";
+    var parentid = "<?php echo $user['parentid']; ?>";
     $.ajax({
       type: 'POST',
       url: 'fetchLatestRow.php',
@@ -385,45 +386,36 @@ fetchFirebaseConfig();
         id: parentid
       },
       dataType: 'json',
-      success: function(response){
-                  var students = response.data;
+      success: function (response) {
+        var students = response.data;
+        console.log(students);
 
-            // Iterate through students
-            for (var i = 0; i < students.length; i++) {
-                var student = students[i];
+        // Iterate through students
+        for (var i = 0; i < students.length; i++) {
+          var student = students[i];
 
-                // Iterate through attendance records
-                for (var j = 0; j < student.length; j++) {
-                  if (student[j].time_in != "") {
-                    var attendanceRecord = student[j];
-                    
-                    // Create and append new div
-                    var newDiv = $("<div>").addClass("child-div").text("Your child "+ attendanceRecord.name +" entered the school premises at "+ attendanceRecord.time_in +" on " + attendanceRecord.date);
-                    $("#targetDiv").append(newDiv);
+          // Iterate through attendance records
+          for (var j = 0; j < student.length; j++) {
+            var attendanceRecord = student[j];
 
-                    if(attendanceRecord.time_out != ""){
-                      var attendanceRecord = student[j];
-                      
-                      // Create and append new div
-                      var newDiv = $("<div>").addClass("child-div").text("Your child "+ attendanceRecord.name +" exits the school premises at "+ attendanceRecord.time_out +" on " + attendanceRecord.date);
-                      $("#targetDiv").append(newDiv);
-                    }
-                  }
-                  else{
-                    if (student[j].time_out != "") {
-                      var attendanceRecord = student[j];
-                      
-                      // Create and append new div
-                      var newDiv = $("<div>").addClass("child-div").text("Your child "+ attendanceRecord.name +" exits the school premises at "+ attendanceRecord.time_out +" on " + attendanceRecord.date);
-                      $("#targetDiv").append(newDiv);
-                  }
-                }
-                }
+            if (attendanceRecord.time_out !== "") {
+              // Create and append new div for exit
+              var newDiv = $("<div>").addClass("child-div").text("Your child " + attendanceRecord.name + " exits the school premises at " + attendanceRecord.time_out + " on " + attendanceRecord.date);
+              $("#targetDiv").append(newDiv);
             }
+
+            if (attendanceRecord.time_in !== "") {
+              // Create and append new div for entry
+              var newDiv = $("<div>").addClass("child-div").text("Your child " + attendanceRecord.name + " entered the school premises at " + attendanceRecord.time_in + " on " + attendanceRecord.date);
+              $("#targetDiv").append(newDiv);
+            }
+          }
         }
 
+      }
+
     });
-    
+
   }
 
   function logoutFunction() {

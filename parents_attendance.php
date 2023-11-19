@@ -43,10 +43,27 @@ include 'includes/session.php';
           $con = $pdo->open();
           $stmt1 = $con->prepare("SELECT * FROM childtv LEFT JOIN student_tbl ON student_tbl.studentid=childtv.student_id WHERE parent_id=:user_id");
           $stmt1->execute(['user_id' => $user['parentid']]);
+          $studentIDs = []; // Initialize an array to store student IDs
+        
+          // Fetch all rows and collect student IDs
           foreach ($stmt1 as $row1) {
-            $stmt2 = $con->prepare("SELECT * FROM attendance_tbl LEFT JOIN student_tbl ON attendance_tbl.student_id=student_tbl.studentid WHERE student_id=:user_id ORDER BY id DESC");
-            $stmt2->execute(['user_id' => $row1['studentid']]);
+            $studentIDs[] = $row1['studentid'];
+          }
+
+          // Check if there are any student IDs before proceeding
+          if (!empty($studentIDs)) {
+            // Create placeholders for the IN clause
+            $placeholders = implode(',', array_fill(0, count($studentIDs), '?'));
+
+            // Prepare the second statement using the placeholders
+            $stmt2 = $con->prepare("SELECT * FROM attendance_tbl LEFT JOIN student_tbl ON attendance_tbl.student_id=student_tbl.studentid WHERE student_id IN ($placeholders) ORDER BY id DESC");
+
+            // Bind parameters and execute the second statement
+            $stmt2->execute($studentIDs);
+
+            // Fetch and display the results
             foreach ($stmt2 as $row2) {
+              echo "<tr>";
               echo "<td>" . $row2['studentid'] . "</td>";
               echo "<td>" . $row2['name'] . "</td>";
               echo "<td>" . $row2['sectionid'] . "</td>";
