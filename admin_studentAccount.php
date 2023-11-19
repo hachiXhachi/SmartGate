@@ -103,7 +103,7 @@
             <br>
             <div class="col-md-4">
                 <div class="form-group">
-                    <label for="column6">Rfid Code</label>
+                    <label for="column6">RFID code</label>
                     <textarea  rows="1" name="rfidtag" maxlength="12" id="getUID" class="form-control bg-transparent column6"
                         style="border: 2px solid black; resize:none;" placeholder="Please Tag your Card" readonly
                         ></textarea>
