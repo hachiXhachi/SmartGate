@@ -19,7 +19,7 @@ $mail->Username = "usernameistakenqwerty0@gmail.com";
 $mail->Password = "bghm wjxx hleg gyei";
 
 $mail->addAddress($email);
-$mail->setFrom("usernameistakenqwerty0@gmail.com", "Hachi");
+$mail->setFrom("usernameistakenqwerty0@gmail.com", "SmartGate");
 
 $mail->Subject = $subject;
 $mail->Body = $message;
