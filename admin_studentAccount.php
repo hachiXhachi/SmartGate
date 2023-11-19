@@ -48,7 +48,7 @@
             <div class="col-md-4">
                 <div class="form-group">
                     <label for="column2">Middle Name</label>
-                    <input type="text" class="form-control bg-transparent" name="middle_name"required pattern="[A-Za-z ]{2,16}" id="mname"
+                    <input type="text" class="form-control bg-transparent" name="middle_name" pattern="[A-Za-z ]{2,16}" id="mname"
                         placeholder="Middle Name" style="border: 2px solid black;">
                 </div>
             </div>
