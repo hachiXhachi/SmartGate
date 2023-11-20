@@ -10,15 +10,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $stmt1 = $con->prepare("SELECT * FROM childtv LEFT JOIN student_tbl ON student_tbl.studentid=childtv.student_id WHERE parent_id=:user_id");
     $stmt1->execute(['user_id' => $parentid]);
+    $studentIDs = []; // Initialize an array to store student IDs
 
+    // Fetch all rows and collect student IDs
     foreach ($stmt1 as $row1) {
-        $stmt2 = $con->prepare("SELECT * FROM attendance_tbl LEFT JOIN student_tbl ON student_tbl.studentid=attendance_tbl.student_id WHERE student_id=:user_id ORDER BY `date` DESC, `id` DESC, `time_in` DESC");
-        $stmt2->execute(['user_id' => $row1['studentid']]);
-        
-        // Fetch the data from the statement result
-        //$result = $stmt2->fetch(PDO::FETCH_ASSOC);
+        $studentIDs[] = $row1['studentid'];
+    }
 
-        // Append result to the array
+    if (!empty($studentIDs)) {
+        // Create placeholders for the IN clause
+        $placeholders = implode(',', array_fill(0, count($studentIDs), '?'));
+
+        // Prepare the second statement using the placeholders
+        $stmt2 = $con->prepare("SELECT * FROM attendance_tbl LEFT JOIN student_tbl ON attendance_tbl.student_id=student_tbl.studentid WHERE student_id IN ($placeholders) ORDER BY id DESC");
+
+        // Bind parameters and execute the second statement
+        $stmt2->execute($studentIDs);
         $results[] = $stmt2->fetchAll(PDO::FETCH_ASSOC);
     }
 
