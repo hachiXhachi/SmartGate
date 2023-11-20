@@ -146,12 +146,6 @@ $(document).ready(function () {
 				<button class="btn btn-outline-dark" style="border:3px solid black; color: #A0ABAA;">L O G I N</button>
 
 			</div>
-			<div class="d-flex justify-content-center">
-				<a class="icon-link icon-link-hover text-white" style="--bs-link-hover-color-rgb: 232,255,254;"
-					href="#">
-					Forgot Password
-				</a>
-			</div>
 
 
 	</form>
