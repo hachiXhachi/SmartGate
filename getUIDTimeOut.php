@@ -1,4 +1,5 @@
 <?php
+include "./get_access_token.php";
 include 'includes/session.php';
 $con = $pdo->open();
 
@@ -27,9 +28,49 @@ if ($row['numrows'] > 0) {
         $data = array($row['studentid'], $dateToday, $timeToday);
         $sql2->execute($data);
     }
-
+    $player_id = '';
+    $query = $con->prepare("SELECT * FROM childtv LEFT JOIN parent_tbl ON childtv.parent_id=parent_tbl.parentid WHERE student_id=:student");
+    $query->execute(['student' => $row['studentid']]);
+    foreach ($query as $row) {
+        $player_id = $row['player_id'];
+    }
+    $access_token = get_access_token("smartgate-17cc2-firebase-adminsdk-dkaqq-c2cb55ff77.json");
+    $device_tokens = $player_id;
+    $response = sendFCMNotification($access_token, $device_tokens);
+    
 } else {
     echo '0';
 }
-
+function sendFCMNotification($access_token, $token)
+{
+    $timeToday = date("g:i A");
+    $url = "https://fcm.googleapis.com/v1/projects/smartgate-17cc2/messages:send";
+    $data = [
+        'message' => [
+            "data" => [
+                "title" => "Notification",
+                "body" => "".$timeToday,
+                "icon" => "https://www.clipscutter.com/image/brand/brand-256.png",
+                "image" => "assets/bulsu_icon.png",
+                "click_action" => "https://smartgatebulsusc-001-site1.etempurl.com/index.php"
+            ],
+            'token' => $token
+        ]
+    ];
+    $options = array(
+        CURLOPT_URL => $url,
+        CURLOPT_POST => true,
+        CURLOPT_HTTPHEADER => array(
+            "Authorization: Bearer " . $access_token,
+            "Content-Type: application/json",
+        ),
+        CURLOPT_POSTFIELDS => json_encode($data),
+    );
+    $curl = curl_init();
+    curl_setopt_array($curl, $options);
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+    $response = curl_exec($curl);
+    curl_close($curl);
+    return $response;
+}
 ?>

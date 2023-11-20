@@ -27,6 +27,6 @@ $mail->Body = $message;
 if ($mail->send()) {
     echo 'success';
 } else {
-    echo 'error';
+    echo 'error: ' . $mail->ErrorInfo;
 }
 ?>

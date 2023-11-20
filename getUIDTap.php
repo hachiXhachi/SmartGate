@@ -71,8 +71,8 @@ function sendFCMNotification($access_token, $token)
                 "title" => "Notification",
                 "body" => "".$timeToday,
                 "icon" => "https://www.clipscutter.com/image/brand/brand-256.png",
-                "image" => "https://images.unsplash.com/photo-1514473776127-61e2dc1dded3?w=871&q=80",
-                "click_action" => "https://example.com"
+                "image" => "assets/bulsu_icon.png",
+                "click_action" => "https://smartgatebulsusc-001-site1.etempurl.com/index.php"
             ],
             'token' => $token
         ]
