@@ -210,7 +210,7 @@ if (!isset($_SESSION['user'])) {
 <!--Attendance record modal -->
 <div class="modal fade" id="attendanceRecordModal" tabindex="5" aria-labelledby="exampleModalLabel" aria-hidden="true"
   style="font-family:arial">
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-dialog-scrollable">
     <div class="modal-content">
       <div class="modal-header">
         <h1 class="modal-title fs-5" id="attendanceRecordModalLabel">Student Record</h1>
@@ -401,7 +401,7 @@ if (!isset($_SESSION['user'])) {
       var htmlContent = '<h3>Attendance Records for Student: ' + studentName + '</h3>';
 
       if (data.length > 0) {
-        htmlContent += '<table class="table table-bordered">';
+        htmlContent += '<table class="table table-bordered" style="max-height:100%; height:200px;overflow-y: auto;"';
         htmlContent += '<thead><tr><th>Date</th><th>Time-in</th><th>Time-out</th></tr></thead>';
         htmlContent += '<tbody>';
 
@@ -430,35 +430,6 @@ if (!isset($_SESSION['user'])) {
     }
   });
 }
-
-
-  // function calculateTotalDays(studentId) {
-  //     var uniqueDays = [];
-
-  //     // Iterate through each row in the table
-  //     $('#attendance_list tr').each(function() {
-  //         var rowStudentId = $(this).data('student-id');
-
-  //         // Check if the row corresponds to the selected student
-  //         if (rowStudentId == studentId) {
-  //             // Get the date value
-  //             var dateString = $(this).find('td:eq(0)').text(); // Assuming date is in the 1st column
-
-  //             // Extract day from the date
-  //             var dayOfWeek = moment(dateString, 'MM-DD-YYYY').format('dddd');
-
-  //             // Add the unique day to the array
-  //             if (!uniqueDays.includes(dayOfWeek)) {
-  //                 uniqueDays.push(dayOfWeek);
-  //             }
-  //         }
-  //     });
-
-  //     // Display the total number of unique days
-  //     var totalDays = uniqueDays.length;
-
-  //     alert('Total days for the week: ' + totalDays);
-  // }
 
 
 

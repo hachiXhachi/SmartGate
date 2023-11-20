@@ -27,6 +27,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                     $insertStmt = $con->prepare($insertSql);
                     $insertStmt->execute($insertData);
+                    $updatedData = fetchStudentData($id, $con);
+
+                    // Send a JSON success response to the client with the updated data
+                    echo json_encode([
+                        'status' => 'Success',
+                        'data' => $updatedData
+                    ]);
                 } else {
                     echo json_encode([
                         'status' => 'Error',
@@ -37,13 +44,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         // Fetch the updated data
-        $updatedData = fetchStudentData($id, $con);
-
-        // Send a JSON success response to the client with the updated data
-        echo json_encode([
-            'status' => 'Success',
-            'data' => $updatedData
-        ]);
+      
     } else {
         // Send a JSON error response to the client
         echo json_encode([

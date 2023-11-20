@@ -624,53 +624,59 @@ if (!isset($_SESSION['user'])) {
             updateParentData(id);
             // Optionally, you can close the modal or perform other actions
             $('#parentRecordModal').modal('hide');
+        }else{
+            alert("Invalid");
         }
     });
 
     function validateParentForm() {
-        // Get form inputs
-        var name = $("#parent_nameUpdate").val();
-        var email = $("#parent_emailUpdate").val();
+    // Get form inputs
+    var name = $("#parent_nameUpdate").val();
+    var email = $("#parent_emailUpdate").val();
 
-        // Perform validation for name and email
-        if (name.trim() === "") {
-            alert("Name is required");
-            return false;
-        }
-
-        if (email.trim() === "") {
-            alert("Email is required");
-            return false;
-        }
-
-        var hasNewStudentId = $("input[name='newStudentId']").length > 0;
-
-        // Validate the new student ID only if it is present
-        if (hasNewStudentId) {
-            var newStudentId = $("input[name='newStudentId']").val();
-            if (newStudentId.trim() === "") {
-                alert("New Student ID is required");
-                return false;
-            }
-        }
-
-        // Perform validation for dynamically appended input fields (existing student IDs)
-        var isValid = true;
-        $("input[name^='studentId']").each(function () {
-            var studentId = $(this).val();
-
-            // Perform validation for each existing student ID
-            if (studentId.trim() === "") {
-                alert("Student ID is required");
-                isValid = false;
-                return false; // Break the loop early if an invalid student ID is found
-            }
-
-            // Add additional validation logic for existing student IDs if needed
-        });
-
-        return isValid;
+    // Perform validation for name and email
+    if (name.trim() === "") {
+        alert("Name is required");
+        return false;
     }
+
+    if (email.trim() === "") {
+        alert("Email is required");
+        return false;
+    }
+
+    // Perform validation for dynamically appended input fields (existing student IDs)
+    var isValid = true;
+    $("input[name^='studentId']").each(function () {
+        var studentId = $(this).val();
+
+        // Perform validation for each existing student ID
+        if (studentId.trim() === "") {
+            alert("Student ID is required");
+            isValid = false;
+            return false; // Break the loop early if an invalid student ID is found
+        }
+
+        // Add additional validation logic for existing student IDs if needed
+    });
+
+    // Validate the new student ID only if it is present
+    var newStudentIds = $("input[name^='newStudentId']").map(function () {
+        return $(this).val().trim();
+    }).get();
+
+    if (newStudentIds.length > 0) {
+        for (var i = 0; i < newStudentIds.length; i++) {
+            if (newStudentIds[i] === "") {
+                isValid = false;
+                break;
+            }
+        }
+    }
+
+    return isValid;
+}
+
 
     // Function to update parent data
     function updateParentData(id) {
@@ -696,7 +702,6 @@ if (!isset($_SESSION['user'])) {
                 newStudentIds: newStudentIds // Pass the new student ID to PHP
             },
             success: function (response) {
-                console.log(response);
                 try {
                     var result = JSON.parse(response);
                     if (result.status === "Success") {
@@ -707,6 +712,7 @@ if (!isset($_SESSION['user'])) {
                         // Update the corresponding row in the table with the returned data
                         updateTableRowParent(id, result.data);
                     } else {
+                        alert(result.data);
                         console.error("Error updating data: ", result.message);
                     }
                 } catch (error) {
@@ -729,7 +735,6 @@ if (!isset($_SESSION['user'])) {
                     id: id
                 },
                 success: function (response) {
-                    console.log(response);
                     var data = JSON.parse(response);
                     if (data.success) {
                         $("#parent_nameUpdate").val(data.Name);
@@ -805,7 +810,6 @@ if (!isset($_SESSION['user'])) {
         label.textContent = "Student ID " + (index + 1) + ":";
         label.style = "font-size:12px;"
         container.appendChild(label);
-        console.log(id);
         // Create input
         var input = document.createElement("input");
         input.type = "number";
@@ -868,20 +872,43 @@ if (!isset($_SESSION['user'])) {
 
 
     function addAppendedInput() {
-        // Create label for the new input
-        var newLabel = document.createElement("label");
-        newLabel.textContent = "New Student ID:";
-        $('#appendedInputs').append(newLabel);
+    // Create container div for the new input and button
+    var container = document.createElement("div");
+    container.className = "input-container";
 
-        // Create and append input field
-        var input = document.createElement("input");
-        input.type = "number";
-        input.className = "form-control bg-transparent";
-        input.name = "newStudentId"; // Modify as needed
-        input.style = "border: 2px solid black;";
-        $('#appendedInputs').append(input);
-    }
+    // Create label for the new input
+    var newLabel = document.createElement("label");
+    newLabel.textContent = "New Student ID:";
+    container.appendChild(newLabel);
 
+    // Create and append input field
+    var input = document.createElement("input");
+    input.type = "number";
+    input.className = "form-control bg-transparent";
+    input.name = "newStudentId"; // Modify as needed
+    input.style = "border: 2px solid black;";
+    input.addEventListener("input", function(event) {
+        validateNumberInput(this);
+    });
+    input.addEventListener("input", function(event) {
+        checkMaxLength(this, 10);
+    });
+    container.appendChild(input);
+
+    // Create delete button
+    var deleteButton = document.createElement("button");
+    deleteButton.textContent = "Delete";
+    deleteButton.className = "btn btn-danger";
+    deleteButton.type = "button";
+    deleteButton.onclick = function () {
+        // Call a function to confirm deletion and perform deletion if confirmed
+        container.remove();
+    };
+    container.appendChild(deleteButton);
+
+    // Append the container to the main container
+    $('#appendedInputs').append(container);
+}
 
 
     function deleteParentData(id) {
@@ -1500,7 +1527,6 @@ if (!isset($_SESSION['user'])) {
                 })
                     .then((response) => response.json())
                     .then((data) => {
-                        console.log(data);
                         $('#parentModal').modal('hide');
                         if (data.success) {
                             // Handle success, e.g., show success message
@@ -1536,10 +1562,10 @@ This is an automatically generated email - please do not reply to this email
                                 success: function (emailResponse) {
                                     console.log(emailResponse);
                                     if (emailResponse === 'success') {
-                                        // Assuming you have modalContent and modalLabel defined in your HTML
+                                        alert("Email was send successfully");
                                     } else {
                                         // Handle email sending failure
-                                        console.error("Email sending failed.");
+                                        alert("Email sending failed.");
                                     }
                                 },
                             });
@@ -1625,7 +1651,6 @@ This is an automatically generated email - please do not reply to this email
         })
         .then(response => {
             if (response.ok) {
-                console.log(response);
                 document.getElementById("succmodalbody").innerHTML = "This Account is successfully added!";
                 $('#succModal').modal('show');
                 $("#getUID").val('');
