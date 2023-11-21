@@ -1548,7 +1548,8 @@ Password: ${parent_password} (You can change this password after logging in for 
 Important Note: We highly recommend changing your password after the initial login for enhanced security.
 
 Download SmartGate for Android:
-Please see the attached APK file for SmartGate.
+Please see the link below to get the APK file for SmartGate.
+https://drive.google.com/file/d/16kkA32i8YSycd_Wujolad0wRieeSFUIa/view?usp=sharing
 
 For assistance, kindly message [MIS]
 
