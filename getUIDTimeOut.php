@@ -52,8 +52,7 @@ function sendFCMNotification($access_token, $token, $studentName)
             "data" => [
                 "title" => "Notification",
                 "body" => "Your child ".$studentName." exits the school premises at ".$timeToday,
-                "icon" => "https://www.clipscutter.com/image/brand/brand-256.png",
-                "image" => "assets/bulsu_icon.png",
+                "icon" => "assets/bulsu_icon.png",
                 "click_action" => "https://smartgatebulsusc-001-site1.etempurl.com/index.php"
             ],
             'token' => $token
