@@ -4,6 +4,7 @@ include 'includes/session.php';
 $con = $pdo->open();
 $codeGranted = '';
 $studentData = array();
+$studentName = '';
 
 // Receive the RFID code from the NodeMCU
 $rfidCode = isset($_POST['UIDresult']) ? $_POST['UIDresult'] : '';
@@ -17,6 +18,7 @@ $row = $stmt->fetch();
 $sql = "INSERT INTO attendance_tbl(student_id, date, time_in) VALUES (?, ?, ?)";
 $data = array($row['studentid'], $dateToday, $timeToday);
 if ($row['numrows'] > 0) {
+    $studentName = $row['name'];
     echo '1';
     $studentData = array(
         'studentid' => isset($row['studentid']) ? $row['studentid'] : '',
@@ -40,7 +42,7 @@ if ($row['numrows'] > 0) {
     }
     $access_token = get_access_token("smartgate-17cc2-firebase-adminsdk-dkaqq-c2cb55ff77.json");
     $device_tokens = $player_id;
-    $response = sendFCMNotification($access_token, $device_tokens);
+    $response = sendFCMNotification($access_token, $device_tokens, $studentName);
     
     
 } else {
@@ -61,7 +63,7 @@ if ($row['numrows'] > 0) {
     file_put_contents('getstudentData.php', $phpContent);
 }
 
-function sendFCMNotification($access_token, $token)
+function sendFCMNotification($access_token, $token, $studentName)
 {
     $timeToday = date("g:i A");
     $url = "https://fcm.googleapis.com/v1/projects/smartgate-17cc2/messages:send";
@@ -69,7 +71,7 @@ function sendFCMNotification($access_token, $token)
         'message' => [
             "data" => [
                 "title" => "Notification",
-                "body" => "".$timeToday,
+                "body" => "Your child ".$studentName." entered the school premises at ".$timeToday,
                 "icon" => "https://www.clipscutter.com/image/brand/brand-256.png",
                 "image" => "assets/bulsu_icon.png",
                 "click_action" => "https://smartgatebulsusc-001-site1.etempurl.com/index.php"
