@@ -1725,8 +1725,13 @@ This is an automatically generated email - please do not reply to this email
                                     sanaolLabel.textContent = "Success";
                                     modalbodycontent.innerHTML = "Your Account credential was send to your Email";
                                     $('#Errormodal').modal('show');
-                                } else {
-
+                                } else if (response === "Email Not Existing"){
+                                    alert("Email is not Existing");
+                                }else{
+                                    var confirmation = confirm("Email sending failed");
+                                    if(confirmation){
+                                        resendEmail(data);
+                                    }
                                 }
                             }
                         });
@@ -1759,6 +1764,22 @@ This is an automatically generated email - please do not reply to this email
 
 
     }
+    function resendEmail(email){
+        $.ajax({
+                type: 'POST',
+                url: 'sample_send_email.php',
+                data: data,
+                success: function (response) {
+                    if (response === 'success') {
+                        sanaolLabel.textContent = "Success";
+                        modalbodycontent.innerHTML = "Your Account credential was send to your Email";
+                        $('#Errormodal').modal('show');
+                    }else{
+                        alert("email was not send");
+                    }
+                }
+    });
+}
 </script>
 
 </html>

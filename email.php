@@ -83,18 +83,18 @@
     <div class="lds-dual-ring" style="display:none;"></div>
 
 
-    <form id="emailForm">
+    <form id="emailForm" method = "POST" action="email verify.php">
       <br><br>
       <input type="email" name="email" id="email" class="form-control" placeholder="email" required>
       <br><br>
-      <input type="text" name="subject" id="subject" class="form-control" required placeholder="subject">
+      <input type="text" name="subject" id="subject" class="form-control" placeholder="subject">
       <br><br>
       <textarea name="message" class="form-control" id="message" cols="30" rows="5" placeholder="message"></textarea>
       <br><br>
-      <button type="button" onclick="sendEmail()" class="btn btn-primary">Send</button>
+      <button type="submit" class="btn btn-primary">Send</button>
     </form>
   </div>
-
+  
 </body>
 
 <script>
