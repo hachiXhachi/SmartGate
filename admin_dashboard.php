@@ -204,6 +204,7 @@ if (!isset($_SESSION['user'])) {
             </div>
             <div class="modal-body" id="parentConfirmationBody">
                 Create this Parent Account?
+                <div id="studentDetails"></div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -624,58 +625,58 @@ if (!isset($_SESSION['user'])) {
             updateParentData(id);
             // Optionally, you can close the modal or perform other actions
             $('#parentRecordModal').modal('hide');
-        }else{
+        } else {
             alert("Invalid");
         }
     });
 
     function validateParentForm() {
-    // Get form inputs
-    var name = $("#parent_nameUpdate").val();
-    var email = $("#parent_emailUpdate").val();
+        // Get form inputs
+        var name = $("#parent_nameUpdate").val();
+        var email = $("#parent_emailUpdate").val();
 
-    // Perform validation for name and email
-    if (name.trim() === "") {
-        alert("Name is required");
-        return false;
-    }
-
-    if (email.trim() === "") {
-        alert("Email is required");
-        return false;
-    }
-
-    // Perform validation for dynamically appended input fields (existing student IDs)
-    var isValid = true;
-    $("input[name^='studentId']").each(function () {
-        var studentId = $(this).val();
-
-        // Perform validation for each existing student ID
-        if (studentId.trim() === "") {
-            alert("Student ID is required");
-            isValid = false;
-            return false; // Break the loop early if an invalid student ID is found
+        // Perform validation for name and email
+        if (name.trim() === "") {
+            alert("Name is required");
+            return false;
         }
 
-        // Add additional validation logic for existing student IDs if needed
-    });
+        if (email.trim() === "") {
+            alert("Email is required");
+            return false;
+        }
 
-    // Validate the new student ID only if it is present
-    var newStudentIds = $("input[name^='newStudentId']").map(function () {
-        return $(this).val().trim();
-    }).get();
+        // Perform validation for dynamically appended input fields (existing student IDs)
+        var isValid = true;
+        $("input[name^='studentId']").each(function () {
+            var studentId = $(this).val();
 
-    if (newStudentIds.length > 0) {
-        for (var i = 0; i < newStudentIds.length; i++) {
-            if (newStudentIds[i] === "") {
+            // Perform validation for each existing student ID
+            if (studentId.trim() === "") {
+                alert("Student ID is required");
                 isValid = false;
-                break;
+                return false; // Break the loop early if an invalid student ID is found
+            }
+
+            // Add additional validation logic for existing student IDs if needed
+        });
+
+        // Validate the new student ID only if it is present
+        var newStudentIds = $("input[name^='newStudentId']").map(function () {
+            return $(this).val().trim();
+        }).get();
+
+        if (newStudentIds.length > 0) {
+            for (var i = 0; i < newStudentIds.length; i++) {
+                if (newStudentIds[i] === "") {
+                    isValid = false;
+                    break;
+                }
             }
         }
-    }
 
-    return isValid;
-}
+        return isValid;
+    }
 
 
     // Function to update parent data
@@ -708,7 +709,7 @@ if (!isset($_SESSION['user'])) {
                         // Close the modal after a successful update
                         alert("Success");
                         $('#parentRecordModal').modal('hide');
-                       
+
                         // Update the corresponding row in the table with the returned data
                         updateTableRowParent(id, result.data);
                     } else {
@@ -872,43 +873,43 @@ if (!isset($_SESSION['user'])) {
 
 
     function addAppendedInput() {
-    // Create container div for the new input and button
-    var container = document.createElement("div");
-    container.className = "input-container";
+        // Create container div for the new input and button
+        var container = document.createElement("div");
+        container.className = "input-container";
 
-    // Create label for the new input
-    var newLabel = document.createElement("label");
-    newLabel.textContent = "New Student ID:";
-    container.appendChild(newLabel);
+        // Create label for the new input
+        var newLabel = document.createElement("label");
+        newLabel.textContent = "New Student ID:";
+        container.appendChild(newLabel);
 
-    // Create and append input field
-    var input = document.createElement("input");
-    input.type = "number";
-    input.className = "form-control bg-transparent";
-    input.name = "newStudentId"; // Modify as needed
-    input.style = "border: 2px solid black;";
-    input.addEventListener("input", function(event) {
-        validateNumberInput(this);
-    });
-    input.addEventListener("input", function(event) {
-        checkMaxLength(this, 10);
-    });
-    container.appendChild(input);
+        // Create and append input field
+        var input = document.createElement("input");
+        input.type = "number";
+        input.className = "form-control bg-transparent";
+        input.name = "newStudentId"; // Modify as needed
+        input.style = "border: 2px solid black;";
+        input.addEventListener("input", function (event) {
+            validateNumberInput(this);
+        });
+        input.addEventListener("input", function (event) {
+            checkMaxLength(this, 10);
+        });
+        container.appendChild(input);
 
-    // Create delete button
-    var deleteButton = document.createElement("button");
-    deleteButton.textContent = "Delete";
-    deleteButton.className = "btn btn-danger";
-    deleteButton.type = "button";
-    deleteButton.onclick = function () {
-        // Call a function to confirm deletion and perform deletion if confirmed
-        container.remove();
-    };
-    container.appendChild(deleteButton);
+        // Create delete button
+        var deleteButton = document.createElement("button");
+        deleteButton.textContent = "Delete";
+        deleteButton.className = "btn btn-danger";
+        deleteButton.type = "button";
+        deleteButton.onclick = function () {
+            // Call a function to confirm deletion and perform deletion if confirmed
+            container.remove();
+        };
+        container.appendChild(deleteButton);
 
-    // Append the container to the main container
-    $('#appendedInputs').append(container);
-}
+        // Append the container to the main container
+        $('#appendedInputs').append(container);
+    }
 
 
     function deleteParentData(id) {
@@ -1189,7 +1190,7 @@ if (!isset($_SESSION['user'])) {
                 id: id
             },
             success: function (response) {
-  
+
                 var data = JSON.parse(response);
 
                 // Check if data is retrieved successfully
@@ -1457,10 +1458,67 @@ if (!isset($_SESSION['user'])) {
     }
 
     function submitFormParent() {
-        $('#parentModal').modal('show');
-        document.getElementById("parentconfirmButton").onclick = validationParent;
+    var studentNumbers = [];
+    $(".add_children").each(function () {
+        studentNumbers.push($(this).val());
+    });
 
-    }
+    var modalContent = $('#studentDetails');
+    var parentConfirmButton = $("#parentconfirmButton");
+
+    // AJAX call
+    $.ajax({
+        type: "POST",
+        url: "check_students.php", // Replace with the correct path to your PHP file
+        data: { studentNumbers: studentNumbers },
+        success: function (response) {
+            // Handle the response from the server
+            var data = JSON.parse(response);
+            var allExistInDatabase = true; // Flag to track if all student IDs exist in the database
+
+            if (data.status === 'success') {
+                // Clear previous content
+                modalContent.empty();
+
+                // Loop through the input student numbers
+                $.each(studentNumbers, function (index, studentNumber) {
+                    // Check if the current student number exists in the response data
+                    var student = data.data.find(function (s) {
+                        return s.studentid === studentNumber;
+                    });
+
+                    if (student) {
+                        // If found, append student details to the modal
+                        modalContent.append('<b>Student ID:</b> ' + student.studentid + ' <b>Name:</b> ' + student.name + '<br>');
+                    } else {
+                        // If not found, indicate that the data does not exist
+                        modalContent.append('<b>Student ID:</b> ' + studentNumber + ' <b>Data does not exist</b><br>');
+                        allExistInDatabase = false; // Set the flag to false
+                    }
+                });
+
+                // Enable or disable the parent confirm button based on the flag
+                parentConfirmButton.prop('disabled', !allExistInDatabase);
+
+                $('#parentModal').modal('show');
+                document.getElementById("parentconfirmButton").onclick = validationParent;
+            } else {
+                // Handle error case
+                modalContent.empty();
+                modalContent.append("Error: " + data.message);
+                parentConfirmButton.prop('disabled', true); // Disable the button in case of an error
+                $('#parentModal').modal('show');
+            }
+        },
+        error: function () {
+            // Handle AJAX error
+            alert("Error: Unable to communicate with the server");
+        }
+    });
+}
+
+
+
 
     function areAppendedInputsValid() {
         var valid = true;
@@ -1478,15 +1536,15 @@ if (!isset($_SESSION['user'])) {
     function generateRandomPassword(length) {
         const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         let password = "";
-        
+
         for (let i = 0; i < length; i++) {
             const randomIndex = Math.floor(Math.random() * charset.length);
             password += charset.charAt(randomIndex);
         }
-        
+
         return password;
     }
-    
+
     function generateProfPassword() {
         const randomPassword = generateRandomPassword(7);
         document.getElementById("prof_password").value = randomPassword;
@@ -1512,30 +1570,8 @@ if (!isset($_SESSION['user'])) {
 
         if (parent_fname.validity.valid && parent_mname.validity.valid && parent_lname.validity.valid && parent_email.validity.valid) {
             if (convertstudid.length === 10 && areAppendedInputsValid()) {
-                const formData = new FormData(parentForm);
-
-                // Collect student numbers and add them to the formData
-                var studentNumbers = [];
-                $(".add_children").each(function () {
-                    studentNumbers.push($(this).val());
-                });
-                formData.append("parent_studid", JSON.stringify(studentNumbers));
-
-                fetch("add_parent.php", {
-                    method: "POST",
-                    body: formData,
-                })
-                    .then((response) => response.json())
-                    .then((data) => {
-                        $('#parentModal').modal('hide');
-                        if (data.success) {
-                            // Handle success, e.g., show success message
-                            document.getElementById("succmodalbody").innerHTML = "This Account is successfully added!";
-                            $('#succModal').modal('show');
-
-                            // Close modal or show success message
-                            var subject = 'BulSU - Sarmiento Campus SmartGate';
-                            var message = `
+                var subject = 'BulSU - Sarmiento Campus SmartGate';
+                var message = `
 Greetings!,
 
 This is to inform you that we have created a BulSU SmartGate Parent account for you.
@@ -1555,35 +1591,60 @@ For assistance, kindly message [MIS]
 
 This is an automatically generated email - please do not reply to this email
 `;
-                            var emailData = 'email=' + emailGet + '&subject=' + subject + '&message=' + message;
-                            $.ajax({
-                                type: 'POST',
-                                url: 'sample_send_email.php',
-                                data: emailData,
-                                success: function (emailResponse) {
-                                    console.log(emailResponse);
-                                    if (emailResponse === 'success') {
-                                        alert("Email was send successfully");
-                                    } else {
-                                        // Handle email sending failure
-                                        alert("Email sending failed.");
-                                    }
-                                },
-                            });
-                            parentForm.reset();
-                            const divRemover = document.getElementById('child-div');
-                            divRemover.remove();
-                        } else {
-                            modalbodycontent.innerHTML = data.error;
-                            $('#Errormodal').modal('show');
-                        }
-                    })
-                    .catch((error) => {
-                        console.log(response.error);
-                        modalbodycontent.innerHTML = "An error occurred:", error;
-                        $('#Errormodal').modal('show');
+                var emailData = 'email=' + emailGet + '&subject=' + subject + '&message=' + message;
+                $.ajax({
+                    type: 'POST',
+                    url: 'sample_send_email.php',
+                    data: emailData,
+                    success: function (emailResponse) {
+                        console.log(emailResponse);
+                        if (emailResponse === 'success') {
+                            alert("Email was send successfully");
+                            const formData = new FormData(parentForm);
 
-                    });
+                            // Collect student numbers and add them to the formData
+                            var studentNumbers = [];
+                            $(".add_children").each(function () {
+                                studentNumbers.push($(this).val());
+                            });
+                            formData.append("parent_studid", JSON.stringify(studentNumbers));
+
+                            fetch("add_parent.php", {
+                                method: "POST",
+                                body: formData,
+                            })
+                                .then((response) => response.json())
+                                .then((data) => {
+                                    $('#parentModal').modal('hide');
+                                    if (data.success) {
+                                        // Handle success, e.g., show success message
+                                        document.getElementById("succmodalbody").innerHTML = "This Account is successfully added!";
+                                        $('#succModal').modal('show');
+                                        parentForm.reset();
+                                        const divRemover = document.getElementById('child-div');
+                                        divRemover.remove();
+                                    } else {
+                                        modalbodycontent.innerHTML = data.error;
+                                        $('#Errormodal').modal('show');
+                                    }
+                                })
+                                .catch((error) => {
+                                    console.log(response.error);
+                                    modalbodycontent.innerHTML = "An error occurred:", error;
+                                    $('#Errormodal').modal('show');
+
+                                });
+
+                        } else if (emailResponse === "Email Not Existing") {
+                            alert("Email is not Existing");
+                        } else {
+                            var confirmation = confirm("Email sending failed");
+                            if (confirmation) {
+                                resendEmail(data);
+                            }
+                        }
+                    },
+                });
 
             } else if (convertstudid.length <= 10) {
                 parent_studid.setCustomValidity("Your student id must be a 10-digit number");
@@ -1612,67 +1673,67 @@ This is an automatically generated email - please do not reply to this email
 
 
     function validationStudent() {
-    $('#confirmationModal').modal('hide');
+        $('#confirmationModal').modal('hide');
 
-    const fname = document.getElementById("fname");
-    const mname = document.getElementById("mname");
-    const lname = document.getElementById("lname");
-    const studid = document.getElementById("studid");
-    const section = document.getElementById("sectionSelect");
-    const email = document.getElementById("email");
-    var rfid = document.getElementById("getUID");
+        const fname = document.getElementById("fname");
+        const mname = document.getElementById("mname");
+        const lname = document.getElementById("lname");
+        const studid = document.getElementById("studid");
+        const section = document.getElementById("sectionSelect");
+        const email = document.getElementById("email");
+        var rfid = document.getElementById("getUID");
 
-    const modalbodycontent = document.getElementById("Errormodalbody");
-    let errorMessage;
+        const modalbodycontent = document.getElementById("Errormodalbody");
+        let errorMessage;
 
-    const convert = studid.value.toString();
+        const convert = studid.value.toString();
 
-    if (!fname.validity.valid) {
-        errorMessage = fname.validationMessage + " (First Name)";
-    } else if (!mname.validity.valid) {
-        errorMessage = mname.validationMessage + " (Middle Name)";
-    } else if (!lname.validity.valid) {
-        errorMessage = lname.validationMessage + " (Last Name)";
-    } else if (!section.validity.valid) {
-        errorMessage = section.validationMessage + " (Section)";
-    } else if (!email.validity.valid) {
-        errorMessage = email.validationMessage + " (Email)";
-    } else if (!rfid.validity.valid) {
-        errorMessage = "RFID is required.";
-    } else if (!studid.validity.valid) {
-        errorMessage = studid.validationMessage + " (Student Number)";
-    } else if (convert.length !== 10) {
-        errorMessage = "Your student id must be a 10-digit number";
-    } else {
-        const formData = new FormData(document.getElementById("registrationForm"));
+        if (!fname.validity.valid) {
+            errorMessage = fname.validationMessage + " (First Name)";
+        } else if (!mname.validity.valid) {
+            errorMessage = mname.validationMessage + " (Middle Name)";
+        } else if (!lname.validity.valid) {
+            errorMessage = lname.validationMessage + " (Last Name)";
+        } else if (!section.validity.valid) {
+            errorMessage = section.validationMessage + " (Section)";
+        } else if (!email.validity.valid) {
+            errorMessage = email.validationMessage + " (Email)";
+        } else if (!rfid.validity.valid) {
+            errorMessage = "RFID is required.";
+        } else if (!studid.validity.valid) {
+            errorMessage = studid.validationMessage + " (Student Number)";
+        } else if (convert.length !== 10) {
+            errorMessage = "Your student id must be a 10-digit number";
+        } else {
+            const formData = new FormData(document.getElementById("registrationForm"));
 
-        fetch("add_student.php", {
-            method: "POST",
-            body: formData
-        })
-        .then(response => {
-            if (response.ok) {
-                document.getElementById("succmodalbody").innerHTML = "This Account is successfully added!";
-                $('#succModal').modal('show');
-                $("#getUID").val('');
-                document.getElementById("registrationForm").reset();
-                
-            } else {
-                modalbodycontent.innerHTML = "Form submission failed.";
-                $('#Errormodal').modal('show');
-            }
-        })
-        .catch(error => {
-            modalbodycontent.innerHTML = "An error occurred: " + error;
-            $('#Errormodal').modal('show');
-        });
+            fetch("add_student.php", {
+                method: "POST",
+                body: formData
+            })
+                .then(response => {
+                    if (response.ok) {
+                        document.getElementById("succmodalbody").innerHTML = "This Account is successfully added!";
+                        $('#succModal').modal('show');
+                        $("#getUID").val('');
+                        document.getElementById("registrationForm").reset();
 
-        return;
+                    } else {
+                        modalbodycontent.innerHTML = "Form submission failed.";
+                        $('#Errormodal').modal('show');
+                    }
+                })
+                .catch(error => {
+                    modalbodycontent.innerHTML = "An error occurred: " + error;
+                    $('#Errormodal').modal('show');
+                });
+
+            return;
+        }
+
+        modalbodycontent.innerHTML = errorMessage;
+        $('#Errormodal').modal('show');
     }
-
-    modalbodycontent.innerHTML = errorMessage;
-    $('#Errormodal').modal('show');
-}
 
 
     function validationProf() {
@@ -1687,19 +1748,9 @@ This is an automatically generated email - please do not reply to this email
         var errorMessage;
         var emailGet = prof_email.value;
         if (prof_fname.validity.valid && prof_mname.validity.valid && prof_lname.validity.valid && prof_email.validity.valid) {
-            const formData = new FormData(prof_Form);
-            fetch("add_faculty.php", {
-                method: "POST",
-                body: formData
-            })
-                .then(response => {
-                    if (response.ok) {
-                        // Handle success, e.g., show success message
-                        document.getElementById("succmodalbody").innerHTML = "This Account is successfully added!";
-                        $('#succModal').modal('show');
 
-                        var subject = 'BulSU - Sarmiento Campus SmartGate';
-                        var message = `
+            var subject = 'BulSU - Sarmiento Campus SmartGate';
+            var message = `
 Greetings!,
 
 This is to inform you that we have created a BulSU SmartGate Professor account for you.
@@ -1715,36 +1766,45 @@ For assistance, kindly message [MIS]
 
 This is an automatically generated email - please do not reply to this email
 `;
-                        var data = 'email=' + emailGet + '&subject=' + subject + '&message=' + message;
-                        $.ajax({
-                            type: 'POST',
-                            url: 'sample_send_email.php',
-                            data: data,
-                            success: function (response) {
-                                if (response === 'success') {
-                                    sanaolLabel.textContent = "Success";
-                                    modalbodycontent.innerHTML = "Your Account credential was send to your Email";
+            var data = 'email=' + emailGet + '&subject=' + subject + '&message=' + message;
+            $.ajax({
+                type: 'POST',
+                url: 'sample_send_email.php',
+                data: data,
+                success: function (response) {
+                    if (response === 'success') {
+                        alert("Email was send successfully");
+                        const formData = new FormData(prof_Form);
+                        fetch("add_faculty.php", {
+                            method: "POST",
+                            body: formData
+                        })
+                            .then(response => {
+                                if (response.ok) {
+                                    // Handle success, e.g., show success message
+                                    document.getElementById("succmodalbody").innerHTML = "This Account is successfully added!";
+                                    $('#succModal').modal('show');
+
+                                } else {
+                                    modalbodycontent.innerHTML = "Form submission failed.";
                                     $('#Errormodal').modal('show');
-                                } else if (response === "Email Not Existing"){
-                                    alert("Email is not Existing");
-                                }else{
-                                    var confirmation = confirm("Email sending failed");
-                                    if(confirmation){
-                                        resendEmail(data);
-                                    }
                                 }
-                            }
-                        });
+                            })
+                            .catch(error => {
+                                modalbodycontent.innerHTML = "An error occurred:", error;
+                                $('#Errormodal').modal('show');
+                            });
+                        prof_Form.reset();
+                    } else if (response === "Email Not Existing") {
+                        alert("Email is not Existing");
                     } else {
-                        modalbodycontent.innerHTML = "Form submission failed.";
-                        $('#Errormodal').modal('show');
+                        var confirmation = confirm("Email sending failed");
+                        if (confirmation) {
+                            resendEmail(data);
+                        }
                     }
-                })
-                .catch(error => {
-                    modalbodycontent.innerHTML = "An error occurred:", error;
-                    $('#Errormodal').modal('show');
-                });
-            prof_Form.reset();
+                }
+            });
         } else {
             if (!prof_fname.validity.valid) {
                 errorMessage = prof_fname.validationMessage + " (First Name)";
@@ -1764,22 +1824,22 @@ This is an automatically generated email - please do not reply to this email
 
 
     }
-    function resendEmail(email){
+    function resendEmail(email) {
         $.ajax({
-                type: 'POST',
-                url: 'sample_send_email.php',
-                data: data,
-                success: function (response) {
-                    if (response === 'success') {
-                        sanaolLabel.textContent = "Success";
-                        modalbodycontent.innerHTML = "Your Account credential was send to your Email";
-                        $('#Errormodal').modal('show');
-                    }else{
-                        alert("email was not send");
-                    }
+            type: 'POST',
+            url: 'sample_send_email.php',
+            data: data,
+            success: function (response) {
+                if (response === 'success') {
+                    sanaolLabel.textContent = "Success";
+                    modalbodycontent.innerHTML = "Your Account credential was send to your Email";
+                    $('#Errormodal').modal('show');
+                } else {
+                    alert("email was not send");
                 }
-    });
-}
+            }
+        });
+    }
 </script>
 
 </html>
