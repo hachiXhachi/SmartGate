@@ -203,7 +203,7 @@ if (!isset($_SESSION['user'])) {
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body" id="parentConfirmationBody">
-                Create this Parent Account?
+                Create this Parent account? For students:
                 <div id="studentDetails"></div>
             </div>
             <div class="modal-footer">
