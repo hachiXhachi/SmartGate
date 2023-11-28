@@ -88,14 +88,42 @@ if (!isset($_SESSION['user'])) {
       margin: 0 auto;
     }
 
+    .lds-dual-ring:after {
+      content: " ";
+      display: block;
+      width: 64px;
+      height: 64px;
+      margin: 8px;
+      border-radius: 50%;
+      border: 6px solid #fdd;
+      border-color: #fdd transparent #fdd transparent;
+      animation: lds-dual-ring 1.2s linear infinite;
+    }
+
+    @keyframes lds-dual-ring {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
     .notification_container {
       max-height: 100%;
       overflow-y: auto;
-      max-width: 100%;
+      max-width: 50%;
       width: auto;
-      height: 400px;
+      height: 50%;
       background-color: #545454;
       font-family: sans-serif;
+      margin: auto;
+      padding-top: 25px;
+      padding-left: 25px;
+      padding-right: 25px;
+      padding-bottom: 25px;
+
     }
 
     .child-div {
@@ -243,11 +271,10 @@ if (!isset($_SESSION['user'])) {
             onclick="loadView('faculty_attendance');showSelect()" id="attend"><i class="fa-solid fa-clipboard-user"></i>
             View
             Attendance</a></li>
-        <!-- <hr class="h-color mx-4">
+        <hr class="h-color mx-4">
         <li><a class="text-decoration-none text-white d-block text-center py-2"
-            onclick="loadView('faculty_notification');hideSelect()" id="notif"><i class="fa-solid fa-bell"></i>
-            Notification
-            Tab</a></li> -->
+            onclick="loadView('faculty_upload');hideSelect()" id="notif"><i class="fa-solid fa-cloud-arrow-up"></i>
+            Upload Student Record</a></li>
         <hr class="h-color mx-4">
         <li><a class="text-decoration-none text-white d-block text-center py-2"
             onclick="loadView('faculty_change_password');hideSelect()" id="pass"><i class="fa-solid fa-key"></i> Change
@@ -380,58 +407,91 @@ if (!isset($_SESSION['user'])) {
         $('#base').on('click', '#attendance_list tr', function () {
           var studentId = $(this).data('student-id');
           var studentName = $(this).data('student-name');
-          showAttendanceModal(studentId,studentName);
+          showAttendanceModal(studentId, studentName);
         });
       })
       .catch(error => {
         console.error('Error loading view:', error);
       });
   }
-  function showAttendanceModal(studentId,studentName) {
-  // Use AJAX to fetch attendance records for the selected student
-  $.ajax({
-    type: 'POST',
-    url: 'fetch_attendance.php', // Replace with the actual URL to fetch attendance records
-    data: { studentId: studentId },
-    dataType: 'json',
-    success: function (data) {
-      
-      // Build the HTML to display attendance records
-      var modalBody = document.getElementById('recordBody');
-      var htmlContent = '<h3>Attendance Records for Student: ' + studentName + '</h3>';
+  function showAttendanceModal(studentId, studentName) {
+    // Use AJAX to fetch attendance records for the selected student
+    $.ajax({
+      type: 'POST',
+      url: 'fetch_attendance.php', // Replace with the actual URL to fetch attendance records
+      data: { studentId: studentId },
+      dataType: 'json',
+      success: function (data) {
+        // Build the HTML to display attendance records
+        var modalBody = document.getElementById('recordBody');
+        var htmlContent = '<h3>Attendance Records for Student: ' + studentName + '</h3>';
 
-      if (data.length > 0) {
-        htmlContent += '<table class="table table-bordered" style="max-height:100%; height:200px;overflow-y: auto;"';
-        htmlContent += '<thead><tr><th>Date</th><th>Time-in</th><th>Time-out</th></tr></thead>';
-        htmlContent += '<tbody>';
+        if (data.length > 0) {
+          htmlContent += '<table class="table table-bordered" style="max-height:100%; height:200px;overflow-y: auto;"';
+          htmlContent += '<thead><tr><th>Date</th><th>Time-in</th><th>Time-out</th></tr></thead>';
+          htmlContent += '<tbody>';
 
-        // Iterate through the attendance records and add rows to the table
-        for (var i = 0; i < data.length; i++) {
-          htmlContent += '<tr>';
-          htmlContent += '<td>' + data[i].date + '</td>';
-          htmlContent += '<td>' + data[i].time_in + '</td>';
-          htmlContent += '<td>' + data[i].time_out + '</td>';
-          htmlContent += '</tr>';
+          // Iterate through the attendance records and add rows to the table
+          for (var i = 0; i < data.length; i++) {
+            htmlContent += '<tr>';
+            htmlContent += '<td>' + data[i].date + '</td>';
+            htmlContent += '<td>' + data[i].time_in + '</td>';
+            htmlContent += '<td>' + data[i].time_out + '</td>';
+            htmlContent += '</tr>';
+          }
+
+          htmlContent += '</tbody></table>';
+        } else {
+          htmlContent += '<p>No attendance records found for this student.</p>';
         }
 
-        htmlContent += '</tbody></table>';
-      } else {
-        htmlContent += '<p>No attendance records found for this student.</p>';
+        // Set the modal body's innerHTML
+        modalBody.innerHTML = htmlContent;
+
+        // Show the modal
+        $('#attendanceRecordModal').modal('show');
+      },
+      error: function (xhr, status, error) {
+        console.error('Error fetching attendance records:', error);
       }
+    });
+  }
+  function downloadCsv() {
+    var sampleCSV = "studentid,name,sectionid,department,schoolemail,rfidtag";
 
-      // Set the modal body's innerHTML
-      modalBody.innerHTML = htmlContent;
+    // Create a Blob and download it
+    var blob = new Blob([sampleCSV], { type: 'text/csv' });
+    var link = document.createElement('a');
+    link.href = window.URL.createObjectURL(blob);
+    link.download = 'sample.csv';
+    link.click();
+  }
+  function addCsv() {
+    $('.lds-dual-ring').show();
+    var fileInput = document.getElementById('file');
+    var file = fileInput.files[0];
 
-      // Show the modal
-      $('#attendanceRecordModal').modal('show');
-    },
-    error: function (xhr, status, error) {
-      console.error('Error fetching attendance records:', error);
+    if (file) {
+      var formData = new FormData();
+      formData.append('file', file);
+
+      fetch('upload.php', {
+        method: 'POST',
+        body: formData
+      })
+        .then(response => response.text())
+        .then(data => {
+          $('.lds-dual-ring').hide();
+          document.getElementById('result').innerHTML = data;
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          document.getElementById('result').innerHTML = 'Error uploading file';
+        });
+    } else {
+      document.getElementById('result').innerHTML = 'Please select a file';
     }
-  });
-}
-
-
+  }
 
   $(document).ready(function () {
     var selectizeControl = $('#dropdown').selectize({
