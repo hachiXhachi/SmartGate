@@ -257,7 +257,7 @@ if (!isset($_SESSION['user'])) {
 </div>
 <!-- Error Modal -->
 <div class="modal fade" id="Errormodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
-    style="font-family:arial">
+    style="font-family:arial" data-bs-backdrop="static">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header" id="errorModalLabel">
@@ -696,7 +696,7 @@ if (!isset($_SESSION['user'])) {
         if (i < data.length && clicked) {
             var currentItem = data[i];
             var resultDiv = document.getElementById("result");
-            resultDiv.innerHTML = "<h3>Student ID: " + currentItem.ID + "</h3><br> <h3>Name: " + currentItem.Name + "</h3><br><h3> Email: " + currentItem.Email+"<h3>";
+            resultDiv.innerHTML = "<h3>Student ID: " + currentItem.ID + "</h3><br> <h3>Name: " + currentItem.Name + "</h3><br><h3> Email: " + currentItem.Email + "<h3>";
 
             var inputField = document.createElement("textarea");
             inputField.type = "textarea";
@@ -1774,7 +1774,7 @@ if (!isset($_SESSION['user'])) {
         xhr.send("selectedValue=" + selectedValue);
     }
 
-    
+
     function changeFunctionModal() {
         var selectedValue = document.getElementById("sectionSelectModal").value;
         var xhr = new XMLHttpRequest();
@@ -1894,8 +1894,8 @@ if (!isset($_SESSION['user'])) {
         var modalbodycontent = document.getElementById("Errormodalbody");
         var h1Element = document.querySelector('#Errormodal .modal-title');
         h1Element.innerText = 'Uploading';
-        document.getElementById("close").disabled = "true";
-        document.getElementById("close").disabled = "true";
+        document.getElementById("close").disabled = true;
+        document.getElementById("close2").disabled = true;
         modalbodycontent.innerHTML = "Uploading please wait...";
         $('#Errormodal').modal('show');
         var fileInput = document.getElementById('file');
@@ -1920,7 +1920,11 @@ if (!isset($_SESSION['user'])) {
                     $('#Errormodal').modal('show');
                 });
         } else {
+            var h1Element = document.querySelector('#Errormodal .modal-title');
+            h1Element.innerText = 'Add a file';
             modalbodycontent.innerHTML = "Please add a file";
+            document.getElementById("close").disabled = false;
+            document.getElementById("close2").disabled = false;
             $('#Errormodal').modal('show');
         }
     }
