@@ -17,9 +17,9 @@
 </style>
 <div class="notification_container text-dark">
     <div class="form-group centered-form-group" style="width:50%;">
-        <h2>Student Record Upload</h2>
+        <h2>Upload Student Record</h2>
         <div class="mb-3">
-            <label for="formFile" class="form-label">Upload Student CSV</label>
+            <label for="formFile" class="form-label">Upload Students CSV</label>
             <input type="file" name="file" id="file" accept=".csv" required class="form-control">
         </div>
         <button onclick="addCsv()" id="button" class="btn btn-success">Upload</button>
