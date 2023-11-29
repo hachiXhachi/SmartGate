@@ -93,11 +93,18 @@
                         style="border: 2px solid black;" readonly>
                 </div>
             </div>
-            <div class="col-lg-12">
+            <div class="col-lg-8">
                 <div class="form-group">
                     <label for="column7">Email</label>
                     <input type="email" class="form-control bg-transparent" name="schoolemail" id="email"
                         placeholder="Email" style="width:100%; border: 2px solid black;"required>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="column3">Year Level</label>
+                    <input type="text" class="form-control bg-transparent" id="yrlevel" name="yrlevel"
+                        style="border: 2px solid black;">
                 </div>
             </div>
             <br>

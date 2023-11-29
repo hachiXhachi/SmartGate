@@ -44,7 +44,7 @@ if (!isset($_SESSION['user'])) {
 
         .under_sidebar {
             position: relative;
-            max-height: 75px;
+            max-height: 100px;
             width: auto;
             background-color: #545454;
             transition: all .2s ease;
@@ -443,6 +443,9 @@ if (!isset($_SESSION['user'])) {
                             <li><a class="text-decoration-none text-white d-block text-center "
                                     onclick="loadView('adminRecord_faculty', showFaculty)">
                                     <i class="fa-solid fa-person-chalkboard"></i> Professor</a></li>
+                            <li><a class="text-decoration-none text-white d-block text-center "
+                                    onclick="loadView('admin_updateSection')">
+                                    <i class="fa-solid fa-users"></i> Update Section</a></li>
 
                         </ul>
                     </div>
@@ -1458,64 +1461,64 @@ if (!isset($_SESSION['user'])) {
     }
 
     function submitFormParent() {
-    var studentNumbers = [];
-    $(".add_children").each(function () {
-        studentNumbers.push($(this).val());
-    });
+        var studentNumbers = [];
+        $(".add_children").each(function () {
+            studentNumbers.push($(this).val());
+        });
 
-    var modalContent = $('#studentDetails');
-    var parentConfirmButton = $("#parentconfirmButton");
+        var modalContent = $('#studentDetails');
+        var parentConfirmButton = $("#parentconfirmButton");
 
-    // AJAX call
-    $.ajax({
-        type: "POST",
-        url: "check_students.php", // Replace with the correct path to your PHP file
-        data: { studentNumbers: studentNumbers },
-        success: function (response) {
-            // Handle the response from the server
-            var data = JSON.parse(response);
-            var allExistInDatabase = true; // Flag to track if all student IDs exist in the database
+        // AJAX call
+        $.ajax({
+            type: "POST",
+            url: "check_students.php", // Replace with the correct path to your PHP file
+            data: { studentNumbers: studentNumbers },
+            success: function (response) {
+                // Handle the response from the server
+                var data = JSON.parse(response);
+                var allExistInDatabase = true; // Flag to track if all student IDs exist in the database
 
-            if (data.status === 'success') {
-                // Clear previous content
-                modalContent.empty();
+                if (data.status === 'success') {
+                    // Clear previous content
+                    modalContent.empty();
 
-                // Loop through the input student numbers
-                $.each(studentNumbers, function (index, studentNumber) {
-                    // Check if the current student number exists in the response data
-                    var student = data.data.find(function (s) {
-                        return s.studentid === studentNumber;
+                    // Loop through the input student numbers
+                    $.each(studentNumbers, function (index, studentNumber) {
+                        // Check if the current student number exists in the response data
+                        var student = data.data.find(function (s) {
+                            return s.studentid === studentNumber;
+                        });
+
+                        if (student) {
+                            // If found, append student details to the modal
+                            modalContent.append('<b>Student ID:</b> ' + student.studentid + ' <b>Name:</b> ' + student.name + '<br>');
+                        } else {
+                            // If not found, indicate that the data does not exist
+                            modalContent.append('<b>Student ID:</b> ' + studentNumber + ' <b>Data does not exist</b><br>');
+                            allExistInDatabase = false; // Set the flag to false
+                        }
                     });
 
-                    if (student) {
-                        // If found, append student details to the modal
-                        modalContent.append('<b>Student ID:</b> ' + student.studentid + ' <b>Name:</b> ' + student.name + '<br>');
-                    } else {
-                        // If not found, indicate that the data does not exist
-                        modalContent.append('<b>Student ID:</b> ' + studentNumber + ' <b>Data does not exist</b><br>');
-                        allExistInDatabase = false; // Set the flag to false
-                    }
-                });
+                    // Enable or disable the parent confirm button based on the flag
+                    parentConfirmButton.prop('disabled', !allExistInDatabase);
 
-                // Enable or disable the parent confirm button based on the flag
-                parentConfirmButton.prop('disabled', !allExistInDatabase);
-
-                $('#parentModal').modal('show');
-                document.getElementById("parentconfirmButton").onclick = validationParent;
-            } else {
-                // Handle error case
-                modalContent.empty();
-                modalContent.append("Error: " + data.message);
-                parentConfirmButton.prop('disabled', true); // Disable the button in case of an error
-                $('#parentModal').modal('show');
+                    $('#parentModal').modal('show');
+                    document.getElementById("parentconfirmButton").onclick = validationParent;
+                } else {
+                    // Handle error case
+                    modalContent.empty();
+                    modalContent.append("Error: " + data.message);
+                    parentConfirmButton.prop('disabled', true); // Disable the button in case of an error
+                    $('#parentModal').modal('show');
+                }
+            },
+            error: function () {
+                // Handle AJAX error
+                alert("Error: Unable to communicate with the server");
             }
-        },
-        error: function () {
-            // Handle AJAX error
-            alert("Error: Unable to communicate with the server");
-        }
-    });
-}
+        });
+    }
 
 
 
