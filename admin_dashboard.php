@@ -260,15 +260,15 @@ if (!isset($_SESSION['user'])) {
     style="font-family:arial">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header" id="exampleModalLabel">
+            <div class="modal-header" id="errorModalLabel">
                 <h1 class="modal-title fs-5">Please fill out the fields Properly</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close" id="close2" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body" id=Errormodalbody>
                 ...
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="close">Close</button>
             </div>
         </div>
     </div>
@@ -461,7 +461,7 @@ if (!isset($_SESSION['user'])) {
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id ="addSectionForm">
+                <form id="addSectionForm">
                     <div class="col-lg-12">
                         <div class="form-group">
                             <label for="add_sectionModalValue">Section</label>
@@ -730,44 +730,44 @@ if (!isset($_SESSION['user'])) {
         displayDataItem(index);
     }
     function addSection() {
-    $('#addSectionModal').modal('show');
+        $('#addSectionModal').modal('show');
 
-    document.getElementById("sectionSubmit").addEventListener("click", function () {
-        var addSectionModalValue = $("#add_sectionModalValue").val();
-        var addDepartmentMdal = $("#add_DepartmentModal").val();
-        var yrLvlModal = $("#year_level").val();
+        document.getElementById("sectionSubmit").addEventListener("click", function () {
+            var addSectionModalValue = $("#add_sectionModalValue").val();
+            var addDepartmentMdal = $("#add_DepartmentModal").val();
+            var yrLvlModal = $("#year_level").val();
 
-        // Check if the form is valid
-        if ($("#addSectionForm")[0].reportValidity()) {
-            $.ajax({
-                type: "POST",
-                url: "add_section.php",
-                data: {
-                    addSectionModalValue: addSectionModalValue,
-                    addDepartmentMdal: addDepartmentMdal,
-                    yrLvlModal: yrLvlModal
-                },
-                complete: function (jqXHR, textStatus) {
-                    var response = jqXHR.responseText;
-                    var data = JSON.parse(response);
+            // Check if the form is valid
+            if ($("#addSectionForm")[0].reportValidity()) {
+                $.ajax({
+                    type: "POST",
+                    url: "add_section.php",
+                    data: {
+                        addSectionModalValue: addSectionModalValue,
+                        addDepartmentMdal: addDepartmentMdal,
+                        yrLvlModal: yrLvlModal
+                    },
+                    complete: function (jqXHR, textStatus) {
+                        var response = jqXHR.responseText;
+                        var data = JSON.parse(response);
 
-                    if (textStatus === "success") {
-                        // Handle the success response
-                        console.log(response);
-                        if (data.success) {
-                            alert("Section added!");
-                            $("#addSectionForm")[0].reset();
-                        } else {
-                            alert("Error: " + data.error);
+                        if (textStatus === "success") {
+                            // Handle the success response
+                            console.log(response);
+                            if (data.success) {
+                                alert("Section added!");
+                                $("#addSectionForm")[0].reset();
+                            } else {
+                                alert("Error: " + data.error);
+                            }
                         }
-                    }
 
-                    $('#addSectionModal').modal('hide');
-                }
-            });
-        }
-    });
-}
+                        $('#addSectionModal').modal('hide');
+                    }
+                });
+            }
+        });
+    }
 
 
 
@@ -1212,7 +1212,7 @@ if (!isset($_SESSION['user'])) {
         });
     }
 
-    
+
     function addAppendedInput() {
         // Create container div for the new input and button
         var container = document.createElement("div");
@@ -1859,8 +1859,9 @@ if (!isset($_SESSION['user'])) {
     }
 
     function downloadCsv() {
+
         var sampleCSV = "section_name,department_name,year_level";
-        
+
         // Create a Blob and download it
         var blob = new Blob([sampleCSV], { type: 'text/csv' });
         var link = document.createElement('a');
@@ -1869,31 +1870,39 @@ if (!isset($_SESSION['user'])) {
         link.click();
     }
     function addCsv() {
-    $('.lds-dual-ring').show();
-    var fileInput = document.getElementById('file');
-    var file = fileInput.files[0];
+        var modalbodycontent = document.getElementById("Errormodalbody");
+        var h1Element = document.querySelector('#Errormodal .modal-title');
+        h1Element.innerText = 'Uploading';
+        document.getElementById("close").disabled = "true";
+        document.getElementById("close2").disabled = "true";
+        modalbodycontent.innerHTML = "Uploading please wait...";
+        $('#Errormodal').modal('show');
+        var fileInput = document.getElementById('file');
+        var file = fileInput.files[0];
+        if (file) {
+            var formData = new FormData();
+            formData.append('file', file);
 
-    if (file) {
-      var formData = new FormData();
-      formData.append('file', file);
-
-      fetch('uploadSection.php', {
-        method: 'POST',
-        body: formData
-      })
-        .then(response => response.text())
-        .then(data => {
-          $('.lds-dual-ring').hide();
-          document.getElementById('result').innerHTML = data;
-        })
-        .catch(error => {
-          console.error('Error:', error);
-          document.getElementById('result').innerHTML = 'Error uploading file';
-        });
-    } else {
-      document.getElementById('result').innerHTML = 'Please select a file';
+            fetch('uploadSection.php', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.text())
+                .then(data => {
+                    $('#Errormodal').modal('hide');
+                    document.getElementById("succmodalbody").innerHTML = "Success";
+                    $('#succModal').modal('show');
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    modalbodycontent.innerHTML = error;
+                    $('#Errormodal').modal('show');
+                });
+        } else {
+            modalbodycontent.innerHTML = "Please add a file";
+            $('#Errormodal').modal('show');
+        }
     }
-  }
 
     function areAppendedInputsValid() {
         var valid = true;
