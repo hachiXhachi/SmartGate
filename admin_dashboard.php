@@ -17,6 +17,12 @@ if (!isset($_SESSION['user'])) {
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <link rel='stylesheet' href='cssCodes/main.css'>
     <script src="https://kit.fontawesome.com/613bb0837d.js" crossorigin="anonymous"></script>
+    <script src="node_modules\bootstrap\dist\js\bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.13.3/css/selectize.bootstrap4.min.css"
+        rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.13.3/js/standalone/selectize.min.js"></script>
     <style>
         .content {
             min-height: 100vh;
@@ -80,6 +86,25 @@ if (!isset($_SESSION['user'])) {
             transition: all .2s ease;
         }
 
+        .under_sidebar3 {
+            position: relative;
+            max-height: 75px;
+            width: auto;
+            background-color: #545454;
+            transition: all .2s ease;
+        }
+
+        .under_sidebar3.active {
+            margin-bottom: 20px;
+            transition: all .2s ease;
+        }
+
+        .under_sidebar3.d-none {
+            position: relative;
+            margin-bottom: 0;
+            transition: all .2s ease;
+        }
+
         #side_nav {
             position: fixed;
             height: 100vh;
@@ -119,6 +144,10 @@ if (!isset($_SESSION['user'])) {
 
         .sidebar li a {
             color: #fff;
+        }
+
+        #selectSection {
+            display: none;
         }
 
         #container {
@@ -173,6 +202,7 @@ if (!isset($_SESSION['user'])) {
             }
         }
     </style>
+
 </head>
 <!-- student and prof Modal -->
 <div class="modal fade" id="confirmationModal" tabindex="5" aria-labelledby="exampleModalLabel" aria-hidden="true"
@@ -421,50 +451,50 @@ if (!isset($_SESSION['user'])) {
             </div>
             <hr class="h-color mx-4">
             <ul class="list-unstyled px-5 py-3">
-                <li class="active"><a class="text-decoration-none text-white d-block text-center py-2"
-                        onclick="loadView('admin_home')">
+                <li class="active"><a id="home" class="text-decoration-none text-white d-block text-center py-2"
+                        onclick="loadView('admin_home');hideSelect()">
                         <i class="fa-solid fa-house"></i> Home</a></li>
                 <!-- ---------------------------------------------------- -->
 
                 <hr class="h-color mx-4">
                 <!--  ---------------------------------------------------- -->
-                <li class="dropdown"><a class="text-decoration-none text-white d-block text-center py-2">
+                <li class="dropdown"><a class="text-decoration-none text-white d-block text-center py-2"
+                        onclick="hideSelect()">
                         <i class="fa-solid fa-clipboard-user"></i> View Records</a>
                     <div class="under_sidebar d-none">
                         <ul class="list-unstyled">
-                            <li><a class="text-decoration-none text-white d-block text-center "
-                                    onclick="loadView('adminRecord_students', studentSelect)">
+                            <li><a id="student" class="text-decoration-none text-white d-block text-center "
+                                    onclick="loadView('adminRecord_students', studentSelect);hideSelect()">
                                     <i class="fa-solid fa-graduation-cap"></i> Student</a></li>
 
-                            <li><a class="text-decoration-none text-white d-block text-center "
-                                    onclick="loadView('adminRecord_parents', showParent)">
+                            <li><a id="parent" class="text-decoration-none text-white d-block text-center "
+                                    onclick="loadView('adminRecord_parents', showParent);hideSelect()">
                                     <i class="fa-solid fa-users"></i> Parents</a></li>
 
-                            <li><a class="text-decoration-none text-white d-block text-center "
-                                    onclick="loadView('adminRecord_faculty', showFaculty)">
+                            <li><a id="prof" class="text-decoration-none text-white d-block text-center "
+                                    onclick="loadView('adminRecord_faculty', showFaculty);hideSelect()">
                                     <i class="fa-solid fa-person-chalkboard"></i> Professor</a></li>
-                            <li><a class="text-decoration-none text-white d-block text-center "
-                                    onclick="loadView('admin_updateSection')">
-                                    <i class="fa-solid fa-users"></i> Update Section</a></li>
+
 
                         </ul>
                     </div>
                 </li>
 
                 <hr class="h-color mx-4">
-                <li class="dropdown2"><a class="text-decoration-none text-white d-block text-center py-2">
+                <li class="dropdown2"><a class="text-decoration-none text-white d-block text-center py-2"
+                        onclick="hideSelect()">
                         <i class="fa-solid fa-bell"></i> Create Account</a>
                     <div class="under_sidebar2 d-none">
                         <ul class="list-unstyled">
-                            <li><a class="text-decoration-none text-white d-block text-center "
-                                    onclick="loadView('admin_studentAccount')">
+                            <li><a id="stdCreate" class="text-decoration-none text-white d-block text-center "
+                                    onclick="loadView('admin_studentAccount');hideSelect()">
                                     <i class="fa-solid fa-graduation-cap"></i> Student</a></li>
 
-                            <li><a class="text-decoration-none text-white d-block text-center "
-                                    onclick="loadView('admin_proffesorAccount', generateProfPassword)">
+                            <li><a id="prfCreate" class="text-decoration-none text-white d-block text-center "
+                                    onclick="loadView('admin_proffesorAccount', generateProfPassword);hideSelect()">
                                     <i class="fa-solid fa-person-chalkboard"></i> Professor</a></li>
-                            <li><a class="text-decoration-none text-white d-block text-center "
-                                    onclick="loadView('admin_parent', generateParentPassword)">
+                            <li><a id="prCreate" class="text-decoration-none text-white d-block text-center "
+                                    onclick="loadView('admin_parent', generateParentPassword);hideSelect()">
                                     <i class="fa-solid fa-user"></i> Parents</a></li>
 
                         </ul>
@@ -473,6 +503,24 @@ if (!isset($_SESSION['user'])) {
                 </li>
 
                 <hr class="h-color mx-4">
+                <li class="dropdown3"><a class="text-decoration-none text-white d-block text-center py-2">
+                        <i class="fa-solid fa-bell"></i> Operations</a>
+                    <div class="under_sidebar3 d-none">
+                        <ul class="list-unstyled">
+                            <li><a id="archive" class="text-decoration-none text-white d-block text-center "
+                                    onclick="loadView('admin_archiveRecords');hideSelect()">
+                                    <i class="fa-solid fa-person-chalkboard"></i> Archive Records</a></li>
+                            <li><a id="sectionUp" class="text-decoration-none text-white d-block text-center "
+                                    onclick="loadView('admin_updateSection' );showSelect()">
+                                    <i class="fa-solid fa-users"></i> Update Section</a></li>
+                            <li><a id="sectionUp" class="text-decoration-none text-white d-block text-center "
+                                    onclick="loadView('admin_updateSection' );showSelect()">
+                                    <i class="fa-solid fa-users"></i> Register RFIDs</a></li>
+
+                        </ul>
+                    </div>
+
+                </li>
             </ul>
             <div class="text-center">
                 <button type="button" id="logout_button" class="btn tn btn-outline-secondary text-white px-5"
@@ -499,9 +547,14 @@ if (!isset($_SESSION['user'])) {
                     </div>
                 </div>
             </nav>
-
         </div>
-
+        <div class="container mt-4" id="selectSection">
+            <div class="form-group" id="insideDiv" style="position:relative; left:10%;width:60%;">
+                <select id="dropdown4" value="All" onChange="searchFilter();">
+                    <option id="allQuery">All</option>
+                </select>
+            </div>
+        </div>
     </div>
     <div class="base position-absolute top-50 start-50 translate-middle text-white" id="base">
         <div class="cotainer position-absolute top-50 start-50 translate-middle text-white" id="container"
@@ -556,10 +609,131 @@ if (!isset($_SESSION['user'])) {
 
 
 </body>
-<script src="node_modules\bootstrap\dist\js\bootstrap.bundle.min.js"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
 
+<script>
+function getCheckedCheckboxIds() {
+    var checkedCheckboxes = document.querySelectorAll('.delete-checkbox:checked');
+        var sectionIds = [];
+
+        checkedCheckboxes.forEach(function (checkbox) {
+            sectionIds.push(checkbox.dataset.sectionId);
+        });
+
+        if (sectionIds.length > 0) {
+            // Confirm with the user before deleting
+            var confirmation = confirm('Are you sure you want to delete the selected rows?');
+
+            if (confirmation) {
+                // Send an AJAX request to delete the selected rows
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', 'deleteRows.php', true);
+                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                xhr.onload = function () {
+                    // Check the response from the server
+                    if (xhr.status === 200) {
+                        // Show success message
+                        alert('Rows deleted successfully');
+                        
+                        // Update the UI as needed (remove deleted rows)
+                        checkedCheckboxes.forEach(function (checkbox) {
+                            checkbox.closest('tr').remove();
+                        });
+                    } else {
+                        // Show error message
+                        alert('Error deleting rows');
+                    }
+                };
+                xhr.send('sectionIds=' + sectionIds.join(','));
+            }
+        } else {
+            alert('No checkboxes are checked.');
+        }
+    }
+    function searchFilter(page_num) {
+        page_num = page_num ? page_num : 0;
+        var sectionSearch = $('#dropdown4').val(); // Get the selected section value
+        $.ajax({
+            type: 'POST',
+            url: 'getSection.php',
+            data: {
+                page: page_num,
+                sectionSearch: sectionSearch
+            },
+            beforeSend: function () {
+                $('.loading-overlay').show();
+            },
+            success: function (html) {
+                $('#dataContainer').html(html);
+                $('.loading-overlay').fadeOut("slow");
+            }
+        });
+    }
+    function showSelect() {
+        document.getElementById("selectSection").style.display = "block";
+    }
+    function hideSelect() {
+        document.getElementById("selectSection").style.display = "none";
+    }
+    $(document).ready(function () {
+        var selectizeControl = $('#dropdown4').selectize({
+            create: false,
+            sortField: 'text',
+            value: 'All',
+        });
+
+        // Function to fetch data from the database using PHP with a POST request
+        function fetchDataFromDatabase() {
+            $.ajax({
+                url: 'yrLevelSearch.php', // Replace with the actual PHP script URL
+                method: 'POST', // Use POST method
+                dataType: 'json',
+                success: function (data) {
+                    // Update the options in the Selectize dropdown
+                    var selectize = selectizeControl[0].selectize;
+                    selectize.clearOptions();
+                    data.forEach(function (item) {
+                        selectize.addOption({ value: item.value, text: item.value });
+                    });
+                    $('#sectionUp').click(function () {
+                        // Set the value of the Selectize input to "all"
+                        selectize.setValue('All');
+                    });
+                    $('#archive').click(function () {
+                        // Set the value of the Selectize input to "all"
+                        selectize.setValue('All');
+                    });
+                    $('#prCreate').click(function () {
+                        // Set the value of the Selectize input to "all"
+                        selectize.setValue('All');
+                    });
+                    $('#stdCreate').click(function () {
+                        // Set the value of the Selectize input to "all"
+                        selectize.setValue('All');
+                    });
+                    $('#prof').click(function () {
+                        // Set the value of the Selectize input to "all"
+                        selectize.setValue('All');
+                    });
+                    $('#parent').click(function () {
+                        // Set the value of the Selectize input to "all"
+                        selectize.setValue('All');
+                    });
+                    $('#student').click(function () {
+                        // Set the value of the Selectize input to "all"
+                        selectize.setValue('All');
+                    });
+                    selectize.refreshOptions();
+                },
+                error: function (error) {
+                    console.error('Error fetching data: ', error);
+                }
+            });
+        }
+
+        // Call the function to fetch data from the database
+        fetchDataFromDatabase();
+
+    });
     function logoutFunction() {
         window.location.href = 'logout.php';
     }
@@ -575,6 +749,7 @@ if (!isset($_SESSION['user'])) {
         $(".sidebar ul li.active").removeClass('active');
         $('.under_sidebar').addClass('d-none');
         $('.under_sidebar2').addClass('d-none');
+        $('.under_sidebar3').addClass('d-none');
         $(this).addClass('active');
     });
     $('.open-btn').on('click', function () {
@@ -592,6 +767,10 @@ if (!isset($_SESSION['user'])) {
     $('.dropdown2').on('click', function () {
         $('.under_sidebar2').removeClass('d-none');
         $('.under_sidebar2').addClass('active');;
+    });
+    $('.dropdown3').on('click', function () {
+        $('.under_sidebar3').removeClass('d-none');
+        $('.under_sidebar3').addClass('active');;
     });
 
     function loadView(viewName, callback) {

@@ -76,7 +76,7 @@ class Pagination{
         // Is there only one page? will not need to continue 
         if ($numPages == 1){ 
             if ($this->showCount){ 
-                $info = '<p>Showing : ' . $this->totalRows.'</p>'; 
+                $info = '<p class="text-dark">Showing : ' . $this->totalRows.'</p>'; 
                 return $info; 
             }else{ 
                 return ''; 
@@ -89,7 +89,7 @@ class Pagination{
         } 
          
         // Links content string variable 
-        $output = ''; 
+        $output = '<p class="text-dark">'; 
          
         // Showing links notification 
         if ($this->showCount){ 
