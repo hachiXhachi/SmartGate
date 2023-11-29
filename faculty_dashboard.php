@@ -467,7 +467,6 @@ if (!isset($_SESSION['user'])) {
     link.click();
   }
   function addCsv() {
-    $('.lds-dual-ring').show();
     var fileInput = document.getElementById('file');
     var file = fileInput.files[0];
 
@@ -481,7 +480,6 @@ if (!isset($_SESSION['user'])) {
       })
         .then(response => response.text())
         .then(data => {
-          $('.lds-dual-ring').hide();
           document.getElementById('result').innerHTML = data;
         })
         .catch(error => {

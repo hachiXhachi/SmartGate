@@ -22,7 +22,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             'section' => $result['sectionid'],
             'email' => $result['schoolemail'],
             'rfidTag' => $result['rfidtag'],
-            'department' => $result['department']
+            'department' => $result['department'],
+            'year_level' => $result['year_level']
         ]);
     } else {
         // Return an error message

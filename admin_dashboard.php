@@ -350,12 +350,19 @@ if (!isset($_SESSION['user'])) {
                                     name="department" style="border: 2px solid black;" readonly>
                             </div>
                         </div>
-                        <div class="col-lg-12">
+                        <div class="col-lg-8">
                             <div class="form-group">
                                 <label for="column7">Email</label>
                                 <input type="email" class="form-control bg-transparent" name="schoolemail"
                                     id="emailModal" placeholder="Email" style="width:100%; border: 2px solid black;"
                                     required>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="column3">Year Level</label>
+                                <input type="text" class="form-control bg-transparent" id="yrlevelModal" name="yrlevel"
+                                    style="border: 2px solid black;" readonly>
                             </div>
                         </div>
                         <br>
@@ -1541,6 +1548,7 @@ if (!isset($_SESSION['user'])) {
                     $("#studidModal").val(data.studentId);
                     $("#sectionSelectModal").val(data.section);
                     $("#emailModal").val(data.email);
+                    $("#yrlevelModal").val(data.year_level);
                     $("#getUIDModal").val(data.rfidTag);
                     $("#departmentModal").val(data.department);
 
@@ -1607,6 +1615,7 @@ if (!isset($_SESSION['user'])) {
         var studentId = $("#studidModal").val();
         var section = $("#sectionSelectModal").val();
         var email = $("#emailModal").val();
+        var yrlvl = $("#yrlevelModal").val();
         var rfidTag = $("#getUIDModal").val();
         var department = $("#departmentModal").val();
 
@@ -1621,6 +1630,7 @@ if (!isset($_SESSION['user'])) {
                 section: section,
                 department: department,
                 email: email,
+                yrlvl: yrlvl,
                 rfidTag: rfidTag
             },
             success: function (response) {
@@ -1749,14 +1759,20 @@ if (!isset($_SESSION['user'])) {
 
         xhr.onreadystatechange = function () {
             if (xhr.readyState == 4 && xhr.status == 200) {
-                // Display the response from the PHP script in the result container
-                document.getElementById("department").value = xhr.responseText;
+                // Parse the JSON response
+                var response = JSON.parse(xhr.responseText);
+
+                // Update both the Department and Year Level textboxes
+                document.getElementById("department").value = response.department;
+                document.getElementById("yrlevel").value = response.year_level;
             }
         };
 
         // Send the selected value as POST data
         xhr.send("selectedValue=" + selectedValue);
     }
+
+    
     function changeFunctionModal() {
         var selectedValue = document.getElementById("sectionSelectModal").value;
         var xhr = new XMLHttpRequest();
@@ -1765,15 +1781,18 @@ if (!isset($_SESSION['user'])) {
 
         xhr.onreadystatechange = function () {
             if (xhr.readyState == 4 && xhr.status == 200) {
-                // Display the response from the PHP script in the result container
-                document.getElementById("departmentModal").value = xhr.responseText;
+                // Parse the JSON response
+                var response = JSON.parse(xhr.responseText);
+
+                // Update both the Department and Year Level textboxes
+                document.getElementById("departmentModal").value = response.department;
+                document.getElementById("yrlevelModal").value = response.year_level;
             }
         };
 
         // Send the selected value as POST data
         xhr.send("selectedValue=" + selectedValue);
     }
-
     function validateNumberInput(inputElement) {
         const inputValue = inputElement.value;
         const sanitizedValue = inputValue.replace(/[^0-9]/g, '');
@@ -1874,7 +1893,7 @@ if (!isset($_SESSION['user'])) {
         var h1Element = document.querySelector('#Errormodal .modal-title');
         h1Element.innerText = 'Uploading';
         document.getElementById("close").disabled = "true";
-        document.getElementById("close2").disabled = "true";
+        document.getElementById("close").disabled = "true";
         modalbodycontent.innerHTML = "Uploading please wait...";
         $('#Errormodal').modal('show');
         var fileInput = document.getElementById('file');

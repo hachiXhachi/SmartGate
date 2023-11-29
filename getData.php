@@ -34,7 +34,7 @@ if (isset($_POST['page'])) {
 
     // Fetch records based on the offset and limit 
     // $query = $con->query("SELECT * FROM attendance_tbl LEFT JOIN student_tbl ON attendance_tbl.student_id=student_tbl.studentid" . $whereSQL . " ORDER BY id DESC LIMIT $offset,$limit");
-    $query = $con->query("SELECT * FROM student_tbl". $whereSQL ." ORDER BY studentid DESC LIMIT $offset,$limit")
+    $query = $con->query("SELECT * FROM faculty_tbl LEFT JOIN student_tbl ON faculty_tbl.department=student_tbl.department". $whereSQL ." ORDER BY studentid DESC LIMIT $offset,$limit")
     ?>
     <!-- Data list container --><div>
         <table class="table table-hover text-center">

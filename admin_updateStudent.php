@@ -10,10 +10,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST["email"];
     $rfidTag = $_POST["rfidTag"];
     $department = $_POST["department"];
+    $year_lvl = $_POST["yrlvl"];
 
     // Corrected SQL syntax for UPDATE statement
-    $sql = "UPDATE student_tbl SET name = ?, sectionid = ?, department = ?, schoolemail = ?, rfidtag = ? WHERE studentid = ?";
-    $data = array($Name, $section, $department, $email, $rfidTag, $studentId);
+    $sql = "UPDATE student_tbl SET name = ?, sectionid = ?, department = ?, schoolemail = ?, rfidtag = ?, year_level =? WHERE studentid = ?";
+    $data = array($Name, $section, $department, $email, $rfidTag, $year_lvl, $studentId);
 
     $stmt = $con->prepare($sql);
 

@@ -11,7 +11,7 @@ $baseURL = 'getData.php';
 $limit = 5;
 
 // Count of all records 
-$query = $con->query("SELECT COUNT(*) as rowNum FROM student_tbl");
+$query = $con->query("SELECT COUNT(*) as rowNum FROM faculty_tbl LEFT JOIN student_tbl ON faculty_tbl.department=student_tbl.department");
 $result = $query->fetch(PDO::FETCH_ASSOC);
 $rowCount = $result['rowNum'];
 
@@ -27,7 +27,7 @@ $pagination = new Pagination($pagConfig);
 
 // Fetch records based on the limit 
 // $query = $con->query("SELECT * FROM attendance_tbl LEFT JOIN student_tbl ON attendance_tbl.student_id=student_tbl.studentid ORDER BY id DESC LIMIT $limit");
-$query = $con->query("SELECT * FROM student_tbl ORDER BY studentid DESC LIMIT $limit")
+$query = $con->query("SELECT * FROM faculty_tbl LEFT JOIN student_tbl ON faculty_tbl.department=student_tbl.department ORDER BY studentid DESC LIMIT $limit")
 ?>
 
 <div class="datalist-wrapper">

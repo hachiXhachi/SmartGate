@@ -1,6 +1,6 @@
 <?php
 include 'includes/session.php';
-$stmt = $con->prepare("SELECT section_name FROM section_tbl");
+$stmt = $con->prepare("SELECT * FROM faculty_tbl LEFT JOIN section_tbl ON faculty_tbl.department=section_tbl.department_name");
 $stmt->execute();
 
 $data = array();

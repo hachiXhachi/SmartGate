@@ -75,7 +75,7 @@
                         <option value="" disabled selected hidden>Section</option>
                         <?php
                         include 'includes/session.php';
-                        $sql = "SELECT section_name, department_name FROM section_tbl";
+                        $sql = "SELECT section_name, department_name, year_level FROM section_tbl";
                         $stmt = $con->query($sql);
 
                         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
@@ -104,7 +104,7 @@
                 <div class="form-group">
                     <label for="column3">Year Level</label>
                     <input type="text" class="form-control bg-transparent" id="yrlevel" name="yrlevel"
-                        style="border: 2px solid black;">
+                        style="border: 2px solid black;" readonly>
                 </div>
             </div>
             <br>
