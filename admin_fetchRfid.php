@@ -2,7 +2,7 @@
 include 'includes/session.php';
 
 $con = $pdo->open();
-$stmt = $con->prepare("SELECT * FROM student_tbl");
+$stmt = $con->prepare("SELECT * FROM student_tbl WHERE rfidtag = ''");
 $stmt->execute();
 
 $data = array(); // Array to store the data

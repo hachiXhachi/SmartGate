@@ -689,7 +689,7 @@ if (!isset($_SESSION['user'])) {
         if (i < data.length && clicked) {
             var currentItem = data[i];
             var resultDiv = document.getElementById("result");
-            resultDiv.innerHTML = "<h3>Student ID: " + currentItem.ID + "</h3><br> <h3>Name: <span id='nameSpan'>" + currentItem.Name + "</span></h3><br><h3> Email: " + currentItem.Email + "<h3>";
+            resultDiv.innerHTML = "<h3>Student ID: " + currentItem.ID + "</h3><br> <h3>Name: " + currentItem.Name + "</h3><br><h3> Email: " + currentItem.Email+"<h3>";
 
             var inputField = document.createElement("textarea");
             inputField.type = "textarea";
@@ -697,9 +697,11 @@ if (!isset($_SESSION['user'])) {
             inputField.rows = "1";
             inputField.className = "form-control";
             inputField.id = "getUID";
-            inputField.style = "resize:none";
+            inputField.style = "resize:none; text-align: center";
+            inputField.placeholder = "---> TAP RFID CARD <---";
+            //inputField.readOnly = "true";
             inputField.addEventListener("blur", function () {
-                updateName(currentItem.ID, inputField.value, function () {
+                updateRFID(currentItem.ID, inputField.value, function () {
                     document.getElementById("nameSpan").innerText = inputField.value;
                 });
             });
@@ -707,12 +709,12 @@ if (!isset($_SESSION['user'])) {
             resultDiv.appendChild(inputField);
             document.getElementById("nextRfid").disabled = false;
         } else {
-            document.getElementById("result").innerHTML = "All data items displayed.";
+            document.getElementById("result").innerHTML = "All students have RFID tags registered.";
         }
     }
 
-    function updateName(studentID, rfidtags, callback) {
-        // Make an AJAX request to the server-side script (updatename.php in this case)
+    function updateRFID(studentID, rfidtags, callback) {
+        // Make an AJAX request to the server-side script (admin_rfidUpdate.php in this case)
         var updateXhttp = new XMLHttpRequest();
         updateXhttp.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
