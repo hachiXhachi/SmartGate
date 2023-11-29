@@ -567,7 +567,7 @@ if (!isset($_SESSION['user'])) {
 
                 <hr class="h-color mx-4">
                 <li class="dropdown3"><a class="text-decoration-none text-white d-block text-center py-2">
-                        <i class="fa-solid fa-bell"></i> Operations</a>
+                <i class="fa-solid fa-wrench"></i></i> Operations</a>
                     <div class="under_sidebar3 d-none">
                         <ul class="list-unstyled">
                             <li><a id="archive" class="text-decoration-none text-white d-block text-center "
@@ -778,7 +778,14 @@ if (!isset($_SESSION['user'])) {
         });
     }
 
+    function selectAllItems() {
+    var selectAllCheckbox = document.getElementById('selectAll');
+    var checkboxes = document.querySelectorAll('.delete-checkbox');
 
+    checkboxes.forEach(function (checkbox) {
+        checkbox.checked = selectAllCheckbox.checked;
+    });
+}
 
     function getCheckedCheckboxIds() {
         var checkedCheckboxes = document.querySelectorAll('.delete-checkbox:checked');

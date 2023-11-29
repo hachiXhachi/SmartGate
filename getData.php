@@ -17,7 +17,7 @@ if (isset($_POST['page'])) {
       $whereSQL = " WHERE (sectionid LIKE '%" . $_POST['sectionSearch'] . "%')"; 
   }
     // Count of all records 
-    $query = $con->query("SELECT COUNT(*) as rowNum FROM student_tbl" . $whereSQL);
+    $query = $con->query("SELECT COUNT(*) as rowNum FROM faculty_tbl LEFT JOIN student_tbl ON faculty_tbl.department=student_tbl.department" . $whereSQL);
     $result = $query->fetch(PDO::FETCH_ASSOC);
     $rowCount = $result['rowNum'];
 

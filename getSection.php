@@ -41,7 +41,7 @@ if (isset($_POST['page'])) {
         <table class="table table-hover text-center" id="section_table">
             <thead>
                 <tr class="table-secondary">
-                    <th></th>
+                <th><input type="checkbox" id="selectAll" onchange="selectAllItems()"></th>
                     <th>Section</th>
                     <th>Department</th>
                 </tr>

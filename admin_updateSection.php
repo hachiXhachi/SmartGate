@@ -10,7 +10,7 @@ $baseURL = 'getSection.php';
 $limit = 5;
 
 // Count of all records 
-$query = $con->query("SELECT COUNT(*) as rowNum FROM student_tbl");
+$query = $con->query("SELECT COUNT(*) as rowNum FROM section_tbl");
 $result = $query->fetch(PDO::FETCH_ASSOC);
 $rowCount = $result['rowNum'];
 
@@ -36,7 +36,7 @@ $query = $con->query("SELECT * FROM section_tbl ORDER BY section_name ASC LIMIT 
             <table class="table table-hover text-center" id="faculty_attendance">
                 <thead>
                     <tr class="table-secondary">
-                        <th></th>
+                    <th><input type="checkbox" id="selectAll" onchange="selectAllItems()"></th>
                         <th>Section</th>
                         <th>Department</th>
                     </tr>
