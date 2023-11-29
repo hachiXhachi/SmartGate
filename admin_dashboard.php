@@ -160,6 +160,16 @@ if (!isset($_SESSION['user'])) {
             padding-bottom: 50px;
             background-color: rgb(84, 84, 84);
         }
+        #rfidContainer {
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+            padding-top: 25px;
+            padding-left: 25px;
+            padding-right: 25px;
+            padding-bottom: 50px;
+            background-color: rgb(84, 84, 84);
+        }
 
         #base {
             width: 100%;
@@ -514,8 +524,8 @@ if (!isset($_SESSION['user'])) {
                                     onclick="loadView('admin_updateSection' );showSelect()">
                                     <i class="fa-solid fa-users"></i> Update Section</a></li>
                             <li><a id="sectionUp" class="text-decoration-none text-white d-block text-center "
-                                    onclick="loadView('admin_updateSection' );showSelect()">
-                                    <i class="fa-solid fa-users"></i> Register RFIDs</a></li>
+                                    onclick="loadView('admin_registerRfid' );hideSelect()">
+                                    <i class="fa-solid fa-qrcode"></i></i> Register RFIDs</a></li>
 
                         </ul>
                     </div>
@@ -611,8 +621,68 @@ if (!isset($_SESSION['user'])) {
 </body>
 
 <script>
-function getCheckedCheckboxIds() {
-    var checkedCheckboxes = document.querySelectorAll('.delete-checkbox:checked');
+    var index = 0;
+    var data = [];
+
+    function fetchAndDisplayData() {
+        index = 0;
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                data = JSON.parse(this.responseText);
+                displayDataItem(index);
+            }
+        };
+        xhttp.open("GET", "admin_fetchRfid.php", true);
+        xhttp.send();
+    }
+
+    function displayDataItem(i) {
+        if (i < data.length) {
+            var currentItem = data[i];
+            var resultDiv = document.getElementById("result");
+            resultDiv.innerHTML = "<h3>Student ID: " + currentItem.ID + "</h3><br> <h3>Name: <span id='nameSpan'>" + currentItem.Name + "</span></h3><br><h3> Email: " + currentItem.Email+"<h3>";
+
+            var inputField = document.createElement("textarea");
+            inputField.type = "textarea";
+            inputField.value = currentItem.rfid;
+            inputField.rows = "1";
+            inputField.className = "form-control";
+            inputField.id = "getUID";
+            inputField.style = "resize:none";
+            inputField.addEventListener("blur", function () {
+                updateName(currentItem.ID, inputField.value, function () {
+                    document.getElementById("nameSpan").innerText = inputField.value;
+                });
+            });
+
+            resultDiv.appendChild(inputField);
+            
+        } else {
+            document.getElementById("result").innerHTML = "All data items displayed.";
+        }
+    }
+
+    function updateName(studentID, rfidtags, callback) {
+        // Make an AJAX request to the server-side script (updatename.php in this case)
+        var updateXhttp = new XMLHttpRequest();
+        updateXhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                // Execute the callback function after the update is complete
+                callback();
+            }
+        };
+        updateXhttp.open("GET", "admin_rfidUpdate.php?studentID=" + studentID + "&rfid=" + rfidtags, true);
+        updateXhttp.send();
+    }
+
+    function proceedToNext() {
+        // Proceed to the next data item
+        index++;
+        displayDataItem(index);
+    }
+    function getCheckedCheckboxIds() {
+        var checkedCheckboxes = document.querySelectorAll('.delete-checkbox:checked');
         var sectionIds = [];
 
         checkedCheckboxes.forEach(function (checkbox) {
@@ -633,7 +703,7 @@ function getCheckedCheckboxIds() {
                     if (xhr.status === 200) {
                         // Show success message
                         alert('Rows deleted successfully');
-                        
+
                         // Update the UI as needed (remove deleted rows)
                         checkedCheckboxes.forEach(function (checkbox) {
                             checkbox.closest('tr').remove();
