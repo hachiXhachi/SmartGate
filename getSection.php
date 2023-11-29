@@ -88,6 +88,7 @@ if (isset($_POST['page'])) {
     </p>
 
     <button onclick="getCheckedCheckboxIds()" class="btn btn-primary" style="align-self: flex-end;">Delete</button>
+    <button onclick="addSection()" class="btn btn-success" style="align-self: flex-end;">Add Section</button>
     <?php
 
 }

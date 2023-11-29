@@ -1,5 +1,5 @@
 
-<div id="rfidContainer">
+<div id="rfidContainer" style = "font-family:arial;">
 <h1>Register Rfids</h1>
     <div id="result">
     <h3>Student ID</h3>
@@ -8,5 +8,5 @@
     </div>
     <br>
     <button onclick="fetchAndDisplayData()" class="btn btn-primary">Fetch Data</button>
-    <button onclick="proceedToNext()" class="btn btn-success">Next</button>
+    <button onclick="proceedToNext()" class="btn btn-success" id= "nextRfid" disabled>Next</button>
 </div>

@@ -160,6 +160,7 @@ if (!isset($_SESSION['user'])) {
             padding-bottom: 50px;
             background-color: rgb(84, 84, 84);
         }
+
         #rfidContainer {
             width: 100%;
             max-width: 500px;
@@ -450,6 +451,51 @@ if (!isset($_SESSION['user'])) {
     </div>
 </div>
 
+<!--add Section -->
+<div class="modal fade" id="addSectionModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel"
+    aria-hidden="true" style="font-family: arial;">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel">Add Section</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id ="addSectionForm">
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            <label for="add_sectionModalValue">Section</label>
+                            <input type="text" class="form-control bg-transparent" id="add_sectionModalValue"
+                                name="add_sectionModalValue" style="border: 2px solid black; text-transform: uppercase;"
+                                required>
+                        </div>
+                        <div class="form-group">
+                            <label for="add_DepartmentModal">Department</label>
+                            <input type="text" class="form-control bg-transparent" id="add_DepartmentModal"
+                                name="add_DepartmentModal" style="border: 2px solid black; text-transform: uppercase;"
+                                required>
+                        </div>
+                        <div class="form-group">
+                            <label for="year_level">Year level</label>
+                            <select id="year_level" class="form-control" style="border: 2px solid black;" required>
+                                <option value="1st Year">1st Year</option>
+                                <option value="2nd Year">2nd Year</option>
+                                <option value="3rd Year">3rd Year</option>
+                                <option value="4th Year">4th Year</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="sectionSubmit" class="btn btn-primary">Save Changes</button>
+                        <button type="submit" id="addSectionSubmitBtn" style="display: none;"></button>
+                    </div>
+            </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
 <body id="background-image-dashboard">
     <div class="main-container d-flex" style="font-family: sans-seriff;">
         <div class="sidebar d-mb-none" id="side_nav">
@@ -623,14 +669,16 @@ if (!isset($_SESSION['user'])) {
 <script>
     var index = 0;
     var data = [];
-
+    var clicked = false;
     function fetchAndDisplayData() {
+        clicked = true;
         index = 0;
         var xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
                 data = JSON.parse(this.responseText);
                 displayDataItem(index);
+                document.getElementById("nextRfid").disabled = false;
             }
         };
         xhttp.open("GET", "admin_fetchRfid.php", true);
@@ -638,10 +686,10 @@ if (!isset($_SESSION['user'])) {
     }
 
     function displayDataItem(i) {
-        if (i < data.length) {
+        if (i < data.length && clicked) {
             var currentItem = data[i];
             var resultDiv = document.getElementById("result");
-            resultDiv.innerHTML = "<h3>Student ID: " + currentItem.ID + "</h3><br> <h3>Name: <span id='nameSpan'>" + currentItem.Name + "</span></h3><br><h3> Email: " + currentItem.Email+"<h3>";
+            resultDiv.innerHTML = "<h3>Student ID: " + currentItem.ID + "</h3><br> <h3>Name: <span id='nameSpan'>" + currentItem.Name + "</span></h3><br><h3> Email: " + currentItem.Email + "<h3>";
 
             var inputField = document.createElement("textarea");
             inputField.type = "textarea";
@@ -657,7 +705,7 @@ if (!isset($_SESSION['user'])) {
             });
 
             resultDiv.appendChild(inputField);
-            
+            document.getElementById("nextRfid").disabled = false;
         } else {
             document.getElementById("result").innerHTML = "All data items displayed.";
         }
@@ -681,6 +729,48 @@ if (!isset($_SESSION['user'])) {
         index++;
         displayDataItem(index);
     }
+    function addSection() {
+    $('#addSectionModal').modal('show');
+
+    document.getElementById("sectionSubmit").addEventListener("click", function () {
+        var addSectionModalValue = $("#add_sectionModalValue").val();
+        var addDepartmentMdal = $("#add_DepartmentModal").val();
+        var yrLvlModal = $("#year_level").val();
+
+        // Check if the form is valid
+        if ($("#addSectionForm")[0].reportValidity()) {
+            $.ajax({
+                type: "POST",
+                url: "add_section.php",
+                data: {
+                    addSectionModalValue: addSectionModalValue,
+                    addDepartmentMdal: addDepartmentMdal,
+                    yrLvlModal: yrLvlModal
+                },
+                complete: function (jqXHR, textStatus) {
+                    var response = jqXHR.responseText;
+                    var data = JSON.parse(response);
+
+                    if (textStatus === "success") {
+                        // Handle the success response
+                        console.log(response);
+                        if (data.success) {
+                            alert("Section added!");
+                            $("#addSectionForm")[0].reset();
+                        } else {
+                            alert("Error: " + data.error);
+                        }
+                    }
+
+                    $('#addSectionModal').modal('hide');
+                }
+            });
+        }
+    });
+}
+
+
+
     function getCheckedCheckboxIds() {
         var checkedCheckboxes = document.querySelectorAll('.delete-checkbox:checked');
         var sectionIds = [];
