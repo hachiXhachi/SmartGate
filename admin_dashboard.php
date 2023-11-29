@@ -806,7 +806,7 @@ if (!isset($_SESSION['user'])) {
                 xhr.send('sectionIds=' + sectionIds.join(','));
             }
         } else {
-            alert('No checkboxes are checked.');
+            alert('No sections are selected.');
         }
     }
     function searchFilter(page_num) {
@@ -1212,8 +1212,7 @@ if (!isset($_SESSION['user'])) {
         });
     }
 
-
-
+    
     function addAppendedInput() {
         // Create container div for the new input and button
         var container = document.createElement("div");
@@ -1859,8 +1858,42 @@ if (!isset($_SESSION['user'])) {
         });
     }
 
+    function downloadCsv() {
+        var sampleCSV = "section_name,department_name,year_level";
+        
+        // Create a Blob and download it
+        var blob = new Blob([sampleCSV], { type: 'text/csv' });
+        var link = document.createElement('a');
+        link.href = window.URL.createObjectURL(blob);
+        link.download = 'sample.csv';
+        link.click();
+    }
+    function addCsv() {
+    $('.lds-dual-ring').show();
+    var fileInput = document.getElementById('file');
+    var file = fileInput.files[0];
 
+    if (file) {
+      var formData = new FormData();
+      formData.append('file', file);
 
+      fetch('uploadSection.php', {
+        method: 'POST',
+        body: formData
+      })
+        .then(response => response.text())
+        .then(data => {
+          $('.lds-dual-ring').hide();
+          document.getElementById('result').innerHTML = data;
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          document.getElementById('result').innerHTML = 'Error uploading file';
+        });
+    } else {
+      document.getElementById('result').innerHTML = 'Please select a file';
+    }
+  }
 
     function areAppendedInputsValid() {
         var valid = true;

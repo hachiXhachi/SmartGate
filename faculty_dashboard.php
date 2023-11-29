@@ -457,7 +457,7 @@ if (!isset($_SESSION['user'])) {
     });
   }
   function downloadCsv() {
-    var sampleCSV = "studentid,name,sectionid,department,schoolemail,rfidtag";
+    var sampleCSV = "studentid,name,sectionid,department,schoolemail";
 
     // Create a Blob and download it
     var blob = new Blob([sampleCSV], { type: 'text/csv' });

@@ -30,15 +30,13 @@ $query = $con->query("SELECT * FROM section_tbl ORDER BY section_name ASC LIMIT 
     ?>
 
 <div class="datalist-wrapper">
-
-
     <!-- Data list container -->
     <div id="dataContainer" class="container" style="font-family:sans-seriff; width: 100%;">
         <div class="table-container" id="tball">
             <table class="table table-hover text-center" id="faculty_attendance">
                 <thead>
                     <tr class="table-secondary">
-                        <th>Delete</th>
+                        <th></th>
                         <th>Section</th>
                         <th>Department</th>
                     </tr>
@@ -51,7 +49,7 @@ $query = $con->query("SELECT * FROM section_tbl ORDER BY section_name ASC LIMIT 
                             $i++;
                             ?>
                             <tr>
-                            <td></td>
+                                <td></td>
                                 <td>
                                     <?php echo $row["section_name"]; ?>
                                 </td>
@@ -72,5 +70,5 @@ $query = $con->query("SELECT * FROM section_tbl ORDER BY section_name ASC LIMIT 
             <p class="text-dark">
                 <?php echo $pagination->createLinks(); ?>
         </div>
-        
+
     </div>

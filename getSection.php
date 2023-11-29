@@ -33,15 +33,15 @@ if (isset($_POST['page'])) {
     $pagination = new Pagination($pagConfig);
 
     // Fetch records based on the offset and limit 
-    // $query = $con->query("SELECT * FROM attendance_tbl LEFT JOIN student_tbl ON attendance_tbl.student_id=student_tbl.studentid" . $whereSQL . " ORDER BY id DESC LIMIT $offset,$limit");
     $query = $con->query("SELECT * FROM section_tbl" . $whereSQL . " ORDER BY section_name ASC LIMIT $offset,$limit")
         ?>
     <!-- Data list container -->
+
     <div style="overflow-y:auto; max-height:300px;">
         <table class="table table-hover text-center" id="section_table">
             <thead>
                 <tr class="table-secondary">
-                    <th>Delete</th>
+                    <th></th>
                     <th>Section</th>
                     <th>Department</th>
                 </tr>
