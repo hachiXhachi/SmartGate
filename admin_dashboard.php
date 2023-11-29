@@ -790,7 +790,7 @@ if (!isset($_SESSION['user'])) {
 
         if (sectionIds.length > 0) {
             // Confirm with the user before deleting
-            var confirmation = confirm('Are you sure you want to delete the selected rows?');
+            var confirmation = confirm('Are you sure you want to delete selected sections?');
 
             if (confirmation) {
                 // Send an AJAX request to delete the selected rows
@@ -801,7 +801,7 @@ if (!isset($_SESSION['user'])) {
                     // Check the response from the server
                     if (xhr.status === 200) {
                         // Show success message
-                        alert('Rows deleted successfully');
+                        alert('Sections deleted successfully');
 
                         // Update the UI as needed (remove deleted rows)
                         checkedCheckboxes.forEach(function (checkbox) {
@@ -1893,9 +1893,9 @@ if (!isset($_SESSION['user'])) {
     function addCsv() {
         var modalbodycontent = document.getElementById("Errormodalbody");
         var h1Element = document.querySelector('#Errormodal .modal-title');
-        h1Element.innerText = 'Uploading';
-        document.getElementById("close").disabled = true;
-        document.getElementById("close2").disabled = true;
+        h1Element.innerText = 'Upload Section';
+        document.getElementById("close").disabled = "true";
+        document.getElementById("close").disabled = "true";
         modalbodycontent.innerHTML = "Uploading please wait...";
         $('#Errormodal').modal('show');
         var fileInput = document.getElementById('file');
