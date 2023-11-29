@@ -10,7 +10,7 @@ if ($_FILES["file"]["error"] == 0) {
 
     $headers = fgetcsv($handle, 1000, ",");
     
-    $requiredColumns = ['section_name','department_name'];
+    $requiredColumns = ['section_name', 'department_name', 'year_level'];
 
     $columnPositions = array_flip($headers);
 
@@ -24,19 +24,20 @@ if ($_FILES["file"]["error"] == 0) {
     while (($data = fgetcsv($handle, 1000, ",")) !== false) {
         $section_name = $data[0];
         $department_name = $data[1];
+        $year_level = $data[2];
 
         // Check if the user with the same studentid already exists
-        $result = $con->query("SELECT * FROM sectiontbl_tbl WHERE studentid='$studentid'");
+        $result = $con->query("SELECT * FROM section_tbl WHERE section_name='$section_name'");
         $existing_user = $result->fetch(PDO::FETCH_ASSOC);
 
         if ($existing_user) {
             // Update existing user
-            $stmt = $con->prepare("UPDATE section_tbl SET studentid='$studentid', name='$name', sectionid='$sectionid', department='$department', schoolemail='$schoolemail', rfidtag='$rfidtag' WHERE studentid='$studentid'");
+            $stmt = $con->prepare("UPDATE section_tbl SET section_name='$section_name', department_name='$department_name', year_level='$year_level' WHERE section_name='$section_name'");
             $stmt->execute();
         } else {
             // Insert new user
-            $sql = "INSERT INTO student_tbl(studentid, name, sectionid, department, schoolemail, rfidtag) VALUES (?, ?, ?, ?, ?, ?)";
-            $data = array($studentid, $name, $sectionid, $department, $schoolemail, $rfidtag);
+            $sql = "INSERT INTO section_tbl(section_name, department_name, year_level) VALUES (?, ?, ?)";
+            $data = array($section_name, $department_name, $year_level);
             $stmt = $con->prepare($sql);
             $stmt->execute($data);
         }
