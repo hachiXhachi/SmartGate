@@ -172,6 +172,17 @@ if (!isset($_SESSION['user'])) {
             background-color: rgb(84, 84, 84);
         }
 
+        #buttonsContainer {
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+            padding-top: 25px;
+            padding-left: 25px;
+            padding-right: 25px;
+            padding-bottom: 50px;
+            background-color: rgb(84, 84, 84);
+        }
+
         #base {
             width: 100%;
             margin: 0 auto;
@@ -567,7 +578,7 @@ if (!isset($_SESSION['user'])) {
 
                 <hr class="h-color mx-4">
                 <li class="dropdown3"><a class="text-decoration-none text-white d-block text-center py-2">
-                <i class="fa-solid fa-wrench"></i></i> Operations</a>
+                        <i class="fa-solid fa-wrench"></i></i> Operations</a>
                     <div class="under_sidebar3 d-none">
                         <ul class="list-unstyled">
                             <li><a id="archive" class="text-decoration-none text-white d-block text-center "
@@ -674,6 +685,91 @@ if (!isset($_SESSION['user'])) {
 </body>
 
 <script>
+    function archiveStudents() {
+        var confirmation = confirm('You are about to archive student records. Proceed with caution.');
+
+        if (confirmation) {
+            // Send an AJAX request to delete the selected rows
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', 'archive_student.php', true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.onload = function () {
+                // Check the response from the server
+                if (xhr.status === 200) {
+                    // Show success message
+                    alert('Students archived successfully');
+                } else {
+                    // Show error message
+                    alert('Error archiving students.');
+                }
+            };
+            xhr.send();
+        }
+    }
+    function archiveParents() {
+        var confirmation = confirm('You are about to archive parents records. Proceed with caution.');
+
+        if (confirmation) {
+            // Send an AJAX request to delete the selected rows
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', 'archive_parents.php', true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.onload = function () {
+                // Check the response from the server
+                if (xhr.status === 200) {
+                    // Show success message
+                    alert('Parents archived successfully');
+                } else {
+                    // Show error message
+                    alert('Error archiving parents.');
+                }
+            };
+            xhr.send();
+        }
+    }
+    function archiveProfessors() {
+        var confirmation = confirm('You are about to archive professor records. Proceed with caution.');
+
+        if (confirmation) {
+            // Send an AJAX request to delete the selected rows
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', 'archive_teachers.php', true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.onload = function () {
+                // Check the response from the server
+                if (xhr.status === 200) {
+                    // Show success message
+                    alert('Professors archived successfully');
+                } else {
+                    // Show error message
+                    alert('Error archiving professors.');
+                }
+            };
+            xhr.send();
+        }
+    }
+    function archiveSections() {
+        var confirmation = confirm('You are about to archive section records. Proceed with caution.');
+
+        if (confirmation) {
+            // Send an AJAX request to delete the selected rows
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', 'archive_section.php', true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.onload = function () {
+                // Check the response from the server
+                if (xhr.status === 200) {
+                    // Show success message
+                    alert('Sections archived successfully');
+                } else {
+                    // Show error message
+                    alert('Error archiving sections.');
+                }
+            };
+            xhr.send();
+        }
+    }
+
     var index = 0;
     var data = [];
     var clicked = false;
@@ -685,7 +781,6 @@ if (!isset($_SESSION['user'])) {
             if (this.readyState == 4 && this.status == 200) {
                 data = JSON.parse(this.responseText);
                 displayDataItem(index);
-                document.getElementById("nextRfid").disabled = false;
             }
         };
         xhttp.open("GET", "admin_fetchRfid.php", true);
@@ -779,13 +874,13 @@ if (!isset($_SESSION['user'])) {
     }
 
     function selectAllItems() {
-    var selectAllCheckbox = document.getElementById('selectAll');
-    var checkboxes = document.querySelectorAll('.delete-checkbox');
+        var selectAllCheckbox = document.getElementById('selectAll');
+        var checkboxes = document.querySelectorAll('.delete-checkbox');
 
-    checkboxes.forEach(function (checkbox) {
-        checkbox.checked = selectAllCheckbox.checked;
-    });
-}
+        checkboxes.forEach(function (checkbox) {
+            checkbox.checked = selectAllCheckbox.checked;
+        });
+    }
 
     function getCheckedCheckboxIds() {
         var checkedCheckboxes = document.querySelectorAll('.delete-checkbox:checked');
@@ -1897,6 +1992,7 @@ if (!isset($_SESSION['user'])) {
         link.download = 'sample.csv';
         link.click();
     }
+
     function addCsv() {
         var modalbodycontent = document.getElementById("Errormodalbody");
         var h1Element = document.querySelector('#Errormodal .modal-title');
