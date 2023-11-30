@@ -2086,7 +2086,7 @@ if (!isset($_SESSION['user'])) {
             if (convertstudid.length === 10 && areAppendedInputsValid()) {
                 var subject = 'BulSU - Sarmiento Campus SmartGate';
                 var message = `
-Greetings!,
+Greetings!
 
 This is to inform you that we have created a BulSU SmartGate Parent account for you.
 Below are your account details and a link for our Android application.
@@ -2099,7 +2099,7 @@ Important Note: We highly recommend changing your password after the initial log
 
 Download SmartGate for Android:
 Please see the link below to get the APK file for SmartGate.
-https://we.tl/t-ZK42n4YnCl  
+https://we.tl/t-1Xmyuubu0y  
 
 For assistance, kindly message [MIS]
 
