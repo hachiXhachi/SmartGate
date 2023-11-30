@@ -9,11 +9,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $name = $first_name . " " . $middle_name . " " . $last_name;
     $email = $_POST['email'];
     $password = $_POST['password']; // You might want to generate a secure password
+    $departmentId = $_POST['departmentid'];
 
     $password = password_hash($password, PASSWORD_DEFAULT);
 
-    $sql = "INSERT INTO faculty_tbl(name, email, password) VALUES (?, ?, ?)";
-    $data = array($name, $email, $password);
+    $sql = "INSERT INTO faculty_tbl(name, email, password, department) VALUES (?, ?, ?, ?)";
+    $data = array($name, $email, $password, $departmentId);
 
     $stmt = $con->prepare($sql);
     if ($stmt->execute($data)) {
