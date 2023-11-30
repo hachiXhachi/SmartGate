@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         // Insert data into section_tbl
         $sql = "INSERT INTO section_tbl(section_name, department_name, year_level) VALUES (?, ?, ?)";
-        $data = array($addSection, $addDepartment, $addYrlvl);
+        $data = array(strtoupper($addSection), strtoupper($addDepartment), $addYrlvl);
 
         $stmt = $con->prepare($sql);
         if ($stmt->execute($data)) {
