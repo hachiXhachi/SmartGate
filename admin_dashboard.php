@@ -165,10 +165,7 @@ if (!isset($_SESSION['user'])) {
             width: 100%;
             max-width: 500px;
             margin: 0 auto;
-            padding-top: 25px;
-            padding-left: 25px;
-            padding-right: 25px;
-            padding-bottom: 50px;
+            padding: 25px;
             background-color: rgb(84, 84, 84);
         }
 
@@ -781,6 +778,8 @@ if (!isset($_SESSION['user'])) {
         var xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
+                document.getElementById("fetch_bttn").hidden = true;
+                document.getElementById("next_bttn").hidden = false;
                 data = JSON.parse(this.responseText);
                 displayDataItem(index);
             }
@@ -814,6 +813,7 @@ if (!isset($_SESSION['user'])) {
             document.getElementById("nextRfid").disabled = false;
         } else {
             document.getElementById("result").innerHTML = "All students have RFID tags registered.";
+            document.getElementById("next_bttn").hidden = true;
         }
     }
 
