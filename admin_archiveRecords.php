@@ -1,5 +1,6 @@
-<div id="buttonsContainer" style="font-family:arial;">
+<div id="buttonsContainer" style="font-family: arial; text-align: center;">
     <h3>ARCHIVE RECORDS</h3>
+    <br>
     <button onclick="archiveStudents()" class="btn btn-danger">STUDENTS</button>
     <br>
     <br>

@@ -176,11 +176,13 @@ if (!isset($_SESSION['user'])) {
             width: 100%;
             max-width: 500px;
             margin: 0 auto;
-            padding-top: 25px;
-            padding-left: 25px;
-            padding-right: 25px;
-            padding-bottom: 50px;
+            padding: 25px;
             background-color: rgb(84, 84, 84);
+        }
+
+        #buttonsContainer button {
+            width: 100%;
+            max-width: 200px;
         }
 
         #base {
