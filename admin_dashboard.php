@@ -792,25 +792,24 @@ if (!isset($_SESSION['user'])) {
         if (i < data.length && clicked) {
             var currentItem = data[i];
             var resultDiv = document.getElementById("result");
+            var next_bttn = document.getElementById("next_bttn");
             resultDiv.innerHTML = "<h3>Student ID: " + currentItem.ID + "</h3><br> <h3>Name: " + currentItem.Name + "</h3><br><h3> Email: " + currentItem.Email + "<h3>";
 
             var inputField = document.createElement("textarea");
             inputField.type = "textarea";
-            inputField.value = currentItem.rfid;
             inputField.rows = "1";
             inputField.className = "form-control";
             inputField.id = "getUID";
             inputField.style = "resize:none; text-align: center";
             inputField.placeholder = "---> TAP RFID CARD <---";
-            //inputField.readOnly = "true";
-            inputField.addEventListener("blur", function () {
+            inputField.readOnly = "true";
+            next_bttn.addEventListener("click", function () {
                 updateRFID(currentItem.ID, inputField.value, function () {
                     document.getElementById("nameSpan").innerText = inputField.value;
                 });
             });
 
             resultDiv.appendChild(inputField);
-            document.getElementById("nextRfid").disabled = false;
         } else {
             document.getElementById("result").innerHTML = "All students have RFID tags registered.";
             document.getElementById("next_bttn").hidden = true;
