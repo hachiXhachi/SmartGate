@@ -111,7 +111,7 @@ $statement->execute();
 
 		@media (max-width: 767px) {
 			#side_nav {
-				margin-left: -270px;
+				margin-left: -280px;
 				position: fixed;
 				min-height: 100vh;
 				z-index: 1;
@@ -143,14 +143,34 @@ $statement->execute();
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script src="https://www.gstatic.com/firebasejs/9.14.0/firebase-app-compat.js"></script>
 	<script src="https://www.gstatic.com/firebasejs/9.14.0/firebase-messaging-compat.js"></script>
-	<!-- <script>
-			$(document).ready(function(){
-				 $("#getUID").load("mobileTokenContainer.php");
-				setInterval(function() {
-					$("#getUID").load("mobileTokenContainer.php");	
-				}, 500);
-			});
-		</script> -->
+	
+     <script>
+        // Function to update the token via AJAX
+        function updateToken() {
+            $.ajax({
+                type: 'GET',
+                url: 'updatetoken.php',
+                success: function(response) {
+                    console.log(response);  // Log the response (for debugging)
+                },
+                error: function(error) {
+                    console.error('Error updating token:', error);
+                }
+            });
+        }
+
+        // Function to periodically update the token (every 5 seconds in this example)
+        function startTokenUpdate() {
+            setInterval(function() {
+                updateToken();
+            }, 5000);  // Adjust the interval as needed (in milliseconds)
+        }
+
+        // Start updating the token when the page loads
+        $(document).ready(function() {
+            startTokenUpdate();
+        });
+    </script>
 
 </head>
 <!-- change pass Modal -->
@@ -178,7 +198,7 @@ $statement->execute();
 		<div class="sidebar d-mb-none" id="side_nav">
 			<div class="header-box px-3 pt-3 pb-4 py-2 d-flex justify-content-between">
 				<img src="assets/logo_sarmiento.png" width="40" class="img-fluid"> &nbsp;
-				<h5 class="text-white py-1 px-2">Mon Dashboard</h5>
+				<h5 class="text-white py-1 px-2">Mobile Dashboard</h5>
 				<button class="btn d-block px-1 py-0 close-btn text-white"><i
 						class="fa-solid fa-bars-staggered"></i></button>
 			</div>
