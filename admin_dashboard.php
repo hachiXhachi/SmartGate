@@ -165,11 +165,21 @@ if (!isset($_SESSION['user'])) {
             width: 100%;
             max-width: 500px;
             margin: 0 auto;
-            padding-top: 25px;
-            padding-left: 25px;
-            padding-right: 25px;
-            padding-bottom: 50px;
+            padding: 25px;
             background-color: rgb(84, 84, 84);
+        }
+
+        #buttonsContainer {
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 25px;
+            background-color: rgb(84, 84, 84);
+        }
+
+        #buttonsContainer button {
+            width: 100%;
+            max-width: 200px;
         }
 
         #base {
@@ -567,7 +577,7 @@ if (!isset($_SESSION['user'])) {
 
                 <hr class="h-color mx-4">
                 <li class="dropdown3"><a class="text-decoration-none text-white d-block text-center py-2">
-                <i class="fa-solid fa-wrench"></i></i> Operations</a>
+                        <i class="fa-solid fa-wrench"></i></i> Operations</a>
                     <div class="under_sidebar3 d-none">
                         <ul class="list-unstyled">
                             <li><a id="archive" class="text-decoration-none text-white d-block text-center "
@@ -674,6 +684,99 @@ if (!isset($_SESSION['user'])) {
 </body>
 
 <script>
+    function archiveStudents() {
+        var confirmation = prompt('You are about to archive student records. Proceed with caution.\nType "CONFIRM" to proceed.');
+
+        if (confirmation === "CONFIRM") {
+            // Send an AJAX request to delete the selected rows
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', 'archive_student.php', true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.onload = function () {
+                // Check the response from the server
+                if (xhr.status === 200) {
+                    // Show success message
+                    alert('Students archived successfully');
+                } else {
+                    // Show error message
+                    alert('Error archiving students.');
+                }
+            };
+            xhr.send();
+        } else {
+            alert("Invalid input.");
+        }
+    }
+    function archiveParents() {
+        var confirmation = prompt('You are about to archive parents records. Proceed with caution.\nType "CONFIRM" to proceed.');
+
+        if (confirmation === "CONFIRM") {
+            // Send an AJAX request to delete the selected rows
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', 'archive_parents.php', true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.onload = function () {
+                // Check the response from the server
+                if (xhr.status === 200) {
+                    // Show success message
+                    alert('Parents archived successfully');
+                } else {
+                    // Show error message
+                    alert('Error archiving parents.');
+                }
+            };
+            xhr.send();
+        } else {
+            alert("Invalid input.");
+        }
+    }
+    function archiveProfessors() {
+        var confirmation = prompt('You are about to archive professor records. Proceed with caution.\nType "CONFIRM" to proceed.');
+
+        if (confirmation === "CONFIRM") {
+            // Send an AJAX request to delete the selected rows
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', 'archive_teachers.php', true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.onload = function () {
+                // Check the response from the server
+                if (xhr.status === 200) {
+                    // Show success message
+                    alert('Professors archived successfully');
+                } else {
+                    // Show error message
+                    alert('Error archiving professors.');
+                }
+            };
+            xhr.send();
+        } else {
+            alert("Invalid input.");
+        }
+    }
+    function archiveSections() {
+        var confirmation = prompt('You are about to archive section records. Proceed with caution.\nType "CONFIRM" to proceed.');
+
+        if (confirmation === "CONFIRM") {
+            // Send an AJAX request to delete the selected rows
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', 'archive_section.php', true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.onload = function () {
+                // Check the response from the server
+                if (xhr.status === 200) {
+                    // Show success message
+                    alert('Sections archived successfully');
+                } else {
+                    // Show error message
+                    alert('Error archiving sections.');
+                }
+            };
+            xhr.send();
+        } else {
+            alert("Invalid input.");
+        }
+    }
+
     var index = 0;
     var data = [];
     var clicked = false;
@@ -683,9 +786,10 @@ if (!isset($_SESSION['user'])) {
         var xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
+                document.getElementById("fetch_bttn").hidden = true;
+                document.getElementById("next_bttn").hidden = false;
                 data = JSON.parse(this.responseText);
                 displayDataItem(index);
-                document.getElementById("nextRfid").disabled = false;
             }
         };
         xhttp.open("GET", "admin_fetchRfid.php", true);
@@ -696,27 +800,27 @@ if (!isset($_SESSION['user'])) {
         if (i < data.length && clicked) {
             var currentItem = data[i];
             var resultDiv = document.getElementById("result");
+            var next_bttn = document.getElementById("next_bttn");
             resultDiv.innerHTML = "<h3>Student ID: " + currentItem.ID + "</h3><br> <h3>Name: " + currentItem.Name + "</h3><br><h3> Email: " + currentItem.Email + "<h3>";
 
             var inputField = document.createElement("textarea");
             inputField.type = "textarea";
-            inputField.value = currentItem.rfid;
             inputField.rows = "1";
             inputField.className = "form-control";
             inputField.id = "getUID";
             inputField.style = "resize:none; text-align: center";
             inputField.placeholder = "---> TAP RFID CARD <---";
-            //inputField.readOnly = "true";
-            inputField.addEventListener("blur", function () {
+            inputField.readOnly = "true";
+            next_bttn.addEventListener("click", function () {
                 updateRFID(currentItem.ID, inputField.value, function () {
                     document.getElementById("nameSpan").innerText = inputField.value;
                 });
             });
 
             resultDiv.appendChild(inputField);
-            document.getElementById("nextRfid").disabled = false;
         } else {
             document.getElementById("result").innerHTML = "All students have RFID tags registered.";
+            document.getElementById("next_bttn").hidden = true;
         }
     }
 
@@ -779,13 +883,13 @@ if (!isset($_SESSION['user'])) {
     }
 
     function selectAllItems() {
-    var selectAllCheckbox = document.getElementById('selectAll');
-    var checkboxes = document.querySelectorAll('.delete-checkbox');
+        var selectAllCheckbox = document.getElementById('selectAll');
+        var checkboxes = document.querySelectorAll('.delete-checkbox');
 
-    checkboxes.forEach(function (checkbox) {
-        checkbox.checked = selectAllCheckbox.checked;
-    });
-}
+        checkboxes.forEach(function (checkbox) {
+            checkbox.checked = selectAllCheckbox.checked;
+        });
+    }
 
     function getCheckedCheckboxIds() {
         var checkedCheckboxes = document.querySelectorAll('.delete-checkbox:checked');
@@ -1897,6 +2001,7 @@ if (!isset($_SESSION['user'])) {
         link.download = 'sample.csv';
         link.click();
     }
+
     function addCsv() {
         var modalbodycontent = document.getElementById("Errormodalbody");
         var h1Element = document.querySelector('#Errormodal .modal-title');
@@ -1988,7 +2093,7 @@ if (!isset($_SESSION['user'])) {
             if (convertstudid.length === 10 && areAppendedInputsValid()) {
                 var subject = 'BulSU - Sarmiento Campus SmartGate';
                 var message = `
-Greetings!,
+Greetings!
 
 This is to inform you that we have created a BulSU SmartGate Parent account for you.
 Below are your account details and a link for our Android application.
@@ -2001,7 +2106,7 @@ Important Note: We highly recommend changing your password after the initial log
 
 Download SmartGate for Android:
 Please see the link below to get the APK file for SmartGate.
-https://we.tl/t-ZK42n4YnCl  
+https://we.tl/t-1Xmyuubu0y  
 
 For assistance, kindly message [MIS]
 

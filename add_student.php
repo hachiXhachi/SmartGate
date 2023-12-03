@@ -12,9 +12,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $department = $_POST['department'];
     $schoolemail = $_POST['schoolemail'];
     $rfidtag = $_POST['rfidtag'];
+    $year_level = $_POST['yrlevel'];
 
-    $sql = "INSERT INTO student_tbl(studentid, name, sectionid, department, schoolemail, rfidtag) VALUES (?, ?, ?, ?, ?, ?)";
-    $data = array($studentid, $name, $sectionid, $department, $schoolemail, $rfidtag);
+    $sql = "INSERT INTO student_tbl(studentid, name, sectionid, department, schoolemail, rfidtag, year_level) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    $data = array($studentid, $name, $sectionid, $department, $schoolemail, $rfidtag, $year_level);
 
     $stmt = $con->prepare($sql);
     if ($stmt->execute($data)) {
