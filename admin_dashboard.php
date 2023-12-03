@@ -685,9 +685,9 @@ if (!isset($_SESSION['user'])) {
 
 <script>
     function archiveStudents() {
-        var confirmation = confirm('You are about to archive student records. Proceed with caution.');
+        var confirmation = prompt('You are about to archive student records. Proceed with caution.\nType "CONFIRM" to proceed.');
 
-        if (confirmation) {
+        if (confirmation === "CONFIRM") {
             // Send an AJAX request to delete the selected rows
             var xhr = new XMLHttpRequest();
             xhr.open('POST', 'archive_student.php', true);
@@ -703,12 +703,14 @@ if (!isset($_SESSION['user'])) {
                 }
             };
             xhr.send();
+        } else {
+            alert("Invalid input.");
         }
     }
     function archiveParents() {
-        var confirmation = confirm('You are about to archive parents records. Proceed with caution.');
+        var confirmation = prompt('You are about to archive parents records. Proceed with caution.\nType "CONFIRM" to proceed.');
 
-        if (confirmation) {
+        if (confirmation === "CONFIRM") {
             // Send an AJAX request to delete the selected rows
             var xhr = new XMLHttpRequest();
             xhr.open('POST', 'archive_parents.php', true);
@@ -724,12 +726,14 @@ if (!isset($_SESSION['user'])) {
                 }
             };
             xhr.send();
+        } else {
+            alert("Invalid input.");
         }
     }
     function archiveProfessors() {
-        var confirmation = confirm('You are about to archive professor records. Proceed with caution.');
+        var confirmation = prompt('You are about to archive professor records. Proceed with caution.\nType "CONFIRM" to proceed.');
 
-        if (confirmation) {
+        if (confirmation === "CONFIRM") {
             // Send an AJAX request to delete the selected rows
             var xhr = new XMLHttpRequest();
             xhr.open('POST', 'archive_teachers.php', true);
@@ -745,12 +749,14 @@ if (!isset($_SESSION['user'])) {
                 }
             };
             xhr.send();
+        } else {
+            alert("Invalid input.");
         }
     }
     function archiveSections() {
-        var confirmation = confirm('You are about to archive section records. Proceed with caution.');
+        var confirmation = prompt('You are about to archive section records. Proceed with caution.\nType "CONFIRM" to proceed.');
 
-        if (confirmation) {
+        if (confirmation === "CONFIRM") {
             // Send an AJAX request to delete the selected rows
             var xhr = new XMLHttpRequest();
             xhr.open('POST', 'archive_section.php', true);
@@ -766,6 +772,8 @@ if (!isset($_SESSION['user'])) {
                 }
             };
             xhr.send();
+        } else {
+            alert("Invalid input.");
         }
     }
 
