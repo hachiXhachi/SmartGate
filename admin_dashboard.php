@@ -2106,7 +2106,7 @@ Important Note: We highly recommend changing your password after the initial log
 
 Download SmartGate for Android:
 Please see the link below to get the APK file for SmartGate.
-https://we.tl/t-jUKTTSmkny  
+https://we.tl/t-K4VN99LtaH  
 
 For assistance, kindly message [MIS]
 
