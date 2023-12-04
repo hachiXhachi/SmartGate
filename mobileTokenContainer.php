@@ -1,1 +1,1 @@
-<?php header("Cache-Control: no-cache, no-store, must-revalidate"); header("Pragma: no-cache"); header("Expires: 0"); $token='dqsZS395SrWpP7rn4fbhle:APA91bHzlOa90t-vOuhrOaiGJQFT7pePU4aRIFedrrfQSc6h7F-cebwhDfZCO6_XJ-sbkbmlCIIWcOLXhVad-C4NtJ7fWibkPwDfeSXbxvwWOZjeZpoNs3OTVFzk0Ka_TAdubzfe27Yc'; ?>
+<?php $token=''; echo $token; ?>

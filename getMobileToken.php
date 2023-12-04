@@ -2,15 +2,15 @@
 include 'includes/session.php';
 include 'mobileTokenContainer.php';
 
-$userId = $_SESSION['user'];
-$updateTokenQuery = "UPDATE parent_tbl SET player_id = :newToken WHERE parentid = :userId";
-$statement = $con->prepare($updateTokenQuery);
+// $userId = $_SESSION['user'];
+// $updateTokenQuery = "UPDATE parent_tbl SET player_id = :newToken WHERE parentid = :userId";
+// $statement = $con->prepare($updateTokenQuery);
 
-$statement->bindParam(':newToken', $token);
-$statement->bindParam(':userId', $userId);
-$statement->execute();
+// $statement->bindParam(':newToken', $token);
+// $statement->bindParam(':userId', $userId);
+// $statement->execute();
 
-	
+
 ?>
 
 <!DOCTYPE html>
@@ -143,34 +143,36 @@ $statement->execute();
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script src="https://www.gstatic.com/firebasejs/9.14.0/firebase-app-compat.js"></script>
 	<script src="https://www.gstatic.com/firebasejs/9.14.0/firebase-messaging-compat.js"></script>
-	
-     <script>
-        // Function to update the token via AJAX
-        function updateToken() {
-            $.ajax({
-                type: 'GET',
-                url: 'updatetoken.php',
-                success: function(response) {
-                    console.log(response);  // Log the response (for debugging)
-                },
-                error: function(error) {
-                    console.error('Error updating token:', error);
-                }
-            });
-        }
 
-        // Function to periodically update the token (every 5 seconds in this example)
-        function startTokenUpdate() {
-            setInterval(function() {
-                updateToken();
-            }, 5000);  // Adjust the interval as needed (in milliseconds)
-        }
+	<script>
+function updateToken(token) {
+    var userId = <?php echo $_SESSION['user']; ?>;  // Retrieve user ID from PHP session
+    document.getElementById('result').innerText = token;
+    var getter = document.getElementById('result').innerText;
+    sendToken(userId, getter);
+}
 
-        // Start updating the token when the page loads
-        $(document).ready(function() {
-            startTokenUpdate();
-        });
-    </script>
+function sendToken(userId, token) {
+    $.ajax({
+        url: 'updatetoken.php',
+        type: 'POST',
+        data: { userId: userId, token: token },
+        dataType: 'json',
+        success: function (response) {
+            // Handle the response from the server
+            if (response.success) {
+               console.log("success");
+            } else {
+                console.log("error");
+            }
+        },
+        error: function () {
+            console.error('Error sending token to server');
+        }
+    });
+}
+
+	</script>
 
 </head>
 <!-- change pass Modal -->
@@ -194,6 +196,7 @@ $statement->execute();
 </div>
 
 <body id="background-image-dashboard">
+<p id="result" hidden></p>
 	<div class="main-container d-flex" style="font-family: sans-seriff;">
 		<div class="sidebar d-mb-none" id="side_nav">
 			<div class="header-box px-3 pt-3 pb-4 py-2 d-flex justify-content-between">

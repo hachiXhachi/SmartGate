@@ -1,16 +1,27 @@
 <?php
+// updatetoken.php
 include 'includes/session.php';
 
-include 'mobileTokenContainer.php';
-header("Cache-Control: no-cache, no-store, must-revalidate"); // HTTP 1.1.
-header("Pragma: no-cache"); // HTTP 1.0.
-header("Expires: 0");
-$userId = $_SESSION['user'];
-$updateTokenQuery = "UPDATE parent_tbl SET player_id = :newToken WHERE parentid = :userId";
-$statement = $con->prepare($updateTokenQuery);
-$statement->bindParam(':newToken', $token);
-$statement->bindParam(':userId', $userId);
-$statement->execute();
+// Check if the request is an Ajax request
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['token']) && isset($_POST['userId'])) {
+    $token = $_POST['token'];
+    $userId = $_POST['userId'];
 
-echo "Token updated successfully";
+    // Update the token in the database
+    $updateTokenQuery = "UPDATE parent_tbl SET player_id = :newToken WHERE parentid = :userId";
+    $statement = $con->prepare($updateTokenQuery);
+    $statement->bindParam(':newToken', $token);
+    $statement->bindParam(':userId', $userId);
+
+    // Execute the update
+    if ($statement->execute()) {
+        echo json_encode(['success' => true, 'message' => 'Token updated successfully']);
+    } else {
+        echo json_encode(['success' => false, 'message' => 'Error updating token']);
+    }
+} else {
+    // Handle non-Ajax requests or missing token
+    echo json_encode(['success' => false, 'message' => 'Invalid request']);
+}
+
 ?>
