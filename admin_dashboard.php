@@ -488,9 +488,13 @@ if (!isset($_SESSION['user'])) {
                         </div>
                         <div class="form-group">
                             <label for="add_DepartmentModal">Department</label>
-                            <input type="text" class="form-control bg-transparent" id="add_DepartmentModal"
-                                name="add_DepartmentModal" style="border: 2px solid black; text-transform: uppercase;"
-                                required>
+                            <select id="add_DepartmentModal" class="form-control" style="border: 2px solid black;" required>
+                                <option value="GATE">GATE</option>
+                                <option value="BA">BA</option>
+                                <option value="HTM">HTM</option>
+                                <option value="ITDS">ITDS</option>
+                                <option value="BIT">BIT</option>
+                            </select>
                         </div>
                         <div class="form-group">
                             <label for="year_level">Year level</label>
