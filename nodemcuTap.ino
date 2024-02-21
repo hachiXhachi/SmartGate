@@ -4,14 +4,9 @@
 
 #define ON_Board_LED 2
 
-// const char* ssid = "AXE-142";
-// const char* password = "KIYOKOKURO142";
-const char* ssid = "PLDTHOMEFIBR2ch2J";
-const char* password = "Albarofamilywifi@3123";
-// const char* ssid = "Kisses";
-// const char* password = "1234567890";
-// const char* ssid = "hey";
-// const char* password = "12345678";
+const char* ssid = "";
+const char* password = "";
+
 HTTPClient http;
 WiFiClient client;
 

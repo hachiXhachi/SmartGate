@@ -1,0 +1,10 @@
+To test the site:
+1. install xampp
+2.open xampp and start apache and mysql
+3. click mysql admin at xampp (beside start button)
+4.import smartgatedb.sql
+5.copy the whole folder to the htdocs (C:\xampp\htdocs)
+6.open browser and click url localhost/SmartGate
+7.to open admin dashboard (user:admin, pass:admin)
+8.create student/teacher account on the admin dashboard
+9. source code of rfid/arduino/servomotor is in the wemosfinal.txt

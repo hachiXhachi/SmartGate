@@ -41,13 +41,13 @@ Servo myservo;      // Create a servo object
 int servoPin = D3;  // Servo control pin
 
 //----------------------------------------SSID and Password of your WiFi router-------------------------------------------------------------------------------------------------------------//
-// const char* ssid = "AXE-142";
-// const char* password = "KIYOKOKURO142";
+// const char* ssid = "";
+// const char* password = "";
 
-// const char* ssid = "ACUIN";
-// const char* password = "MAXILEIH142";
-const char* ssid = "HONOR 9X";
-const char* password = "0912345apigo";
+// const char* ssid = "";
+// const char* password = "";
+const char* ssid = "";
+const char* password = "";
 //------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 
 int readsuccess;

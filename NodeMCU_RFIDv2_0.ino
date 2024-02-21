@@ -38,8 +38,8 @@ MFRC522 mfrc522(SS_PIN, RST_PIN);  //--> Create MFRC522 instance.
 #define ON_Board_LED 2  //--> Defining an On Board LED, used for indicators when the process of connecting to a wifi router
 
 //----------------------------------------SSID and Password of your WiFi router-------------------------------------------------------------------------------------------------------------//
-const char* ssid = "PLDTHOMEFIBR2ch2J";
-const char* password = "Albarofamilywifi@3123";
+const char* ssid = "";
+const char* password = "";
 //------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 
 int readsuccess;
